@@ -1,0 +1,43 @@
+@import 'tailwindcss';
+
+/*
+ * Design-tokens aflæst fra det live din-laasesmed.dk (farver/skrifttyper via
+ * computed styles), da dette er en migrering uden eget Figma-design.
+ * Pixel-perfect genskabelse er ikke målet — kun et realistisk udgangspunkt.
+ */
+@theme {
+  --font-sans: var(--font-montserrat);
+  --font-heading: var(--font-archivo);
+
+  --color-brand-500: #3c50a3;
+  --color-ink-900: #121729;
+  --color-surface-muted: #e4e8ef;
+  --color-background: #f2f5f9;
+  --color-text-body: #4b556a;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background font-sans text-text-body;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .button {
+    @apply inline-flex items-center justify-center rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ink-900;
+  }
+}
