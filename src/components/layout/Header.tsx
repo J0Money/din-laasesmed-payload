@@ -1,28 +1,20 @@
 import Link from 'next/link'
 
 import { resolveLinkHref } from '@/lib/link'
-import { mediaAlt, mediaUrl } from '@/lib/media'
 import { getPayloadClient } from '@/lib/payload'
 import { ROUTES } from '@/lib/routes'
 
+import { Logo } from './Logo'
+
 export async function Header() {
   const payload = await getPayloadClient()
-  const [header, siteSettings] = await Promise.all([
-    payload.findGlobal({ slug: 'header' }),
-    payload.findGlobal({ slug: 'siteSettings' }),
-  ])
-
-  const logoUrl = mediaUrl(siteSettings.logo)
+  const header = await payload.findGlobal({ slug: 'header' })
 
   return (
-    <header className="bg-ink-900 text-white">
+    <header className="border-b border-surface-muted bg-white text-ink-900">
       <div className="container flex items-center justify-between gap-6 py-4">
-        <Link href={ROUTES.home()} className="flex items-center gap-2 font-heading text-lg font-semibold">
-          {logoUrl ? (
-            <img src={logoUrl} alt={mediaAlt(siteSettings.logo)} className="h-8 w-auto" />
-          ) : (
-            siteSettings.companyName || 'Din Låsesmed'
-          )}
+        <Link href={ROUTES.home()} aria-label="Forside" className="text-brand-500">
+          <Logo className="h-8 w-auto" />
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm md:flex">
