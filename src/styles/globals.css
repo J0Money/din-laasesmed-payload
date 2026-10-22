@@ -12,8 +12,10 @@
   --color-brand-500: #3c50a3;
   --color-accent-red: #e7000b;
   --color-ink-900: #121729;
+  --color-ink-800: #22293b;
   --color-ink-muted: #96a1b7;
   --color-surface-muted: #e4e8ef;
+  --color-surface-form: #edf0f3;
   --color-background: #f2f5f9;
   --color-text-body: #4b556a;
 }
@@ -41,6 +43,10 @@
 
   .button {
     @apply inline-flex items-center justify-center rounded-lg bg-brand-500 px-6 py-4 text-sm font-normal text-white transition-colors hover:bg-ink-900;
+  }
+
+  .button-accent {
+    @apply inline-flex items-center justify-center rounded-lg bg-accent-red px-6 py-4 text-sm font-normal text-white transition-colors hover:brightness-110;
   }
 
   /*
