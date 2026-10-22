@@ -9,6 +9,9 @@ async function run() {
   const categories = await payload.find({ collection: 'categories', limit: 100 })
   const categoryIdBySlug = new Map(categories.docs.map((doc) => [doc.slug, doc.id]))
 
+  const articles = await payload.find({ collection: 'articles', limit: 1000 })
+  const articleIdBySlug = new Map(articles.docs.map((doc) => [doc.slug, doc.id]))
+
   function categoryRef(slug: string) {
     const id = categoryIdBySlug.get(slug)
     if (!id) throw new Error(`Kategori "${slug}" findes ikke`)
@@ -17,6 +20,13 @@ async function run() {
 
   function categoryLink(label: string, slug: string) {
     return { link: { type: 'reference' as const, label, reference: categoryRef(slug) } }
+  }
+
+  // Mega-menuens undermenupunkter peger på artikler, så ikonet i menuen altid er artiklens eget hovedbillede.
+  function articleLink(label: string, slug: string) {
+    const id = articleIdBySlug.get(slug)
+    if (!id) throw new Error(`Artikel "${slug}" findes ikke`)
+    return { link: { type: 'reference' as const, label, reference: { relationTo: 'articles' as const, value: id } } }
   }
 
   function customLink(label: string, url: string) {
@@ -116,33 +126,33 @@ async function run() {
         {
           ...categoryLink('Mekanisk sikring', 'mekanisk-sikring'),
           children: [
-            customLink('Værdiskabe', '/artikler/vaerdiskabe'),
-            customLink('Magnetlåse', '/artikler/magnetlase'),
-            customLink('Hængelåse', '/artikler/haengelase'),
-            customLink('Vindueslåse', '/artikler/vindueslase'),
-            customLink('Låsesystemer mekanisk', '/artikler/lasesystemer-mekanisk'),
-            customLink('Nøgler', '/artikler/nogler'),
-            customLink('Oplukning af dør', '/artikler/oplukning-af-doer'),
-            customLink('Cylindere', '/artikler/cylindere'),
+            articleLink('Værdiskabe', 'vaerdiskabe'),
+            articleLink('Magnetlåse', 'magnetlase'),
+            articleLink('Hængelåse', 'haengelase'),
+            articleLink('Vindueslåse', 'vindueslase'),
+            articleLink('Låsesystemer mekanisk', 'lasesystemer-mekanisk'),
+            articleLink('Nøgler', 'nogler'),
+            articleLink('Oplukning af dør', 'oplukning-af-doer'),
+            articleLink('Cylindere', 'cylindere'),
           ],
         },
         {
           ...categoryLink('Elektronisk sikring', 'elektronisk-sikring'),
           children: [
-            customLink('Dørtelefoni', '/artikler/dortelefoni'),
-            customLink('iLOQ låsesystem', '/artikler/iloq-lasesystem'),
-            customLink('Adgangskontrol', '/artikler/adgangskontrol'),
-            customLink('Låsesystemer elektronisk', '/artikler/lasesystemer-elektronisk'),
-            customLink('Videoovervågning', '/artikler/videoovervagning'),
-            customLink('Dørautomatik', '/artikler/dorautomatik'),
-            customLink('Dørlukker', '/artikler/dorlukker'),
+            articleLink('Dørtelefoni', 'dortelefoni'),
+            articleLink('iLOQ låsesystem', 'iloq-lasesystem'),
+            articleLink('Adgangskontrol', 'adgangskontrol'),
+            articleLink('Låsesystemer elektronisk', 'lasesystemer-elektronisk'),
+            articleLink('Videoovervågning', 'videoovervagning'),
+            articleLink('Dørautomatik', 'dorautomatik'),
+            articleLink('Dørlukker', 'dorlukker'),
           ],
         },
         {
           ...categoryLink('Service', 'service'),
           children: [
-            customLink('Skal du ud og rejse?', '/artikler/skal-du-ud-og-rejse'),
-            customLink('Uforpligtende servicetjek', '/artikler/uforpligtende-servicetjek'),
+            articleLink('Skal du ud og rejse?', 'skal-du-ud-og-rejse'),
+            articleLink('Uforpligtende servicetjek', 'uforpligtende-servicetjek'),
           ],
         },
       ],

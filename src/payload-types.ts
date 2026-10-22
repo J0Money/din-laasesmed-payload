@@ -898,6 +898,10 @@ export interface Header {
             | ({
                 relationTo: 'categories';
                 value: string | Category;
+              } | null)
+            | ({
+                relationTo: 'articles';
+                value: string | Article;
               } | null);
           /**
            * Fx en ekstern adresse eller et tel:-link.
@@ -921,6 +925,10 @@ export interface Header {
                   | ({
                       relationTo: 'categories';
                       value: string | Category;
+                    } | null)
+                  | ({
+                      relationTo: 'articles';
+                      value: string | Article;
                     } | null);
                 /**
                  * Fx en ekstern adresse eller et tel:-link.
@@ -953,6 +961,10 @@ export interface Header {
             | ({
                 relationTo: 'categories';
                 value: string | Category;
+              } | null)
+            | ({
+                relationTo: 'articles';
+                value: string | Article;
               } | null);
           /**
            * Fx en ekstern adresse eller et tel:-link.
@@ -976,6 +988,10 @@ export interface Header {
                   | ({
                       relationTo: 'categories';
                       value: string | Category;
+                    } | null)
+                  | ({
+                      relationTo: 'articles';
+                      value: string | Article;
                     } | null);
                 /**
                  * Fx en ekstern adresse eller et tel:-link.
@@ -1004,6 +1020,10 @@ export interface Header {
         | ({
             relationTo: 'categories';
             value: string | Category;
+          } | null)
+        | ({
+            relationTo: 'articles';
+            value: string | Article;
           } | null);
       /**
        * Fx en ekstern adresse eller et tel:-link.
@@ -1037,6 +1057,10 @@ export interface Footer {
             | ({
                 relationTo: 'categories';
                 value: string | Category;
+              } | null)
+            | ({
+                relationTo: 'articles';
+                value: string | Article;
               } | null);
           /**
            * Fx en ekstern adresse eller et tel:-link.

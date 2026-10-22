@@ -1,11 +1,12 @@
 import Link from 'next/link'
 
-import { linkCategorySlug, resolveLinkHref } from '@/lib/link'
+import { linkArticle, linkCategorySlug, resolveLinkHref } from '@/lib/link'
+import { mediaAlt, mediaUrl } from '@/lib/media'
 import { getPayloadClient } from '@/lib/payload'
 import { ROUTES } from '@/lib/routes'
 
 import { Logo } from './Logo'
-import { NAV_ICON_BY_CATEGORY_SLUG } from './NavIcons'
+import { GridIcon, NAV_ICON_BY_CATEGORY_SLUG } from './NavIcons'
 
 /** Mål aflæst fra din-laasesmed.dk: topbjælke 38px, hovednav 72px, logo 208px der hænger ud under nav-kanten. */
 export async function Header() {
@@ -75,25 +76,50 @@ export async function Header() {
             <nav className="hidden items-center gap-10 font-heading text-[0.9rem] font-medium md:flex">
               {(header.navItems ?? []).map((item, index) => {
                 const Icon = NAV_ICON_BY_CATEGORY_SLUG[linkCategorySlug(item.link) ?? '']
+                const categoryHref = resolveLinkHref(item.link)
 
                 return (
                   <div key={item.id ?? index} className="group relative">
-                    <Link href={resolveLinkHref(item.link)} className="flex items-center gap-3 py-[5px] leading-5 transition-colors duration-200 hover:text-brand-500">
+                    <Link href={categoryHref} className="flex items-center gap-3 py-[5px] leading-5 transition-colors duration-200 hover:text-brand-500">
                       {Icon && <Icon />}
                       {item.link?.label}
                     </Link>
 
+                    {/* Mega-menu, mål og lag aflæst fra din-laasesmed.dk (1600px): mørkt bånd i fuld bredde, 5-kolonners grid, ikon = artiklens eget billede. */}
                     {item.children && item.children.length > 0 && (
-                      <div className="absolute left-0 top-full z-30 hidden min-w-48 flex-col gap-1 rounded-lg bg-white p-2 font-sans text-ink-900 shadow-lg group-hover:flex">
-                        {item.children.map((child, childIndex) => (
-                          <Link
-                            key={child.id ?? childIndex}
-                            href={resolveLinkHref(child.link)}
-                            className="rounded-md px-3 py-2 font-normal hover:bg-surface-muted"
-                          >
-                            {child.link?.label}
-                          </Link>
-                        ))}
+                      <div className="absolute left-1/2 top-full z-30 hidden w-screen -translate-x-1/2 bg-[rgba(18,23,41,0.9)] py-10 font-sans group-hover:block">
+                        <div className="site-container">
+                          <p className="mb-[10px] text-[19px] leading-[29px] font-medium text-[#96a1b7]">{item.link?.label}</p>
+
+                          <div className="grid grid-cols-5 gap-x-[38px] gap-y-[30px]">
+                            {item.children.map((child, childIndex) => {
+                              const article = linkArticle(child.link)
+                              const imageUrl = article ? mediaUrl(article.mainImage, 'thumbnail') : undefined
+
+                              return (
+                                <Link
+                                  key={child.id ?? childIndex}
+                                  href={resolveLinkHref(child.link)}
+                                  className="flex items-center gap-3 text-[15px] text-[#edf0f3] hover:text-white"
+                                >
+                                  {imageUrl && (
+                                    <img
+                                      src={imageUrl}
+                                      alt={article ? mediaAlt(article.mainImage) : ''}
+                                      className="h-[43px] w-16 shrink-0 rounded-lg object-cover"
+                                    />
+                                  )}
+                                  {child.link?.label}
+                                </Link>
+                              )
+                            })}
+
+                            <Link href={categoryHref} className="button-accent gap-3">
+                              <GridIcon />
+                              Se alle artikler
+                            </Link>
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -106,6 +132,7 @@ export async function Header() {
                 {header.cta.link.label}
               </Link>
             )}
+
           </div>
         </div>
       </div>

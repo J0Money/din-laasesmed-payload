@@ -31,7 +31,7 @@ export const linkField: Field = {
     {
       name: 'reference',
       type: 'relationship',
-      relationTo: ['pages', 'categories'],
+      relationTo: ['pages', 'categories', 'articles'],
       label: 'Side',
       admin: {
         condition: (_, siblingData) => siblingData?.type === 'reference',
