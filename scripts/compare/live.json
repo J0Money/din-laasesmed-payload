@@ -1,0 +1,40 @@
+{
+  "heroBand": {
+    "rect": { "w": 1585, "h": 396, "top": 110, "left": 0 },
+    "opacity": "1"
+  },
+  "heroImg": {
+    "rect": { "w": 1585, "h": 396, "top": 110, "left": 0 },
+    "opacity": "0.15",
+    "filter": "saturate(2) blur(14px)",
+    "objectFit": "cover"
+  },
+  "mainImg": {
+    "rect": { "w": 896, "h": 504, "top": 307, "left": 120 },
+    "borderRadius": "16px",
+    "boxShadow": "rgba(0, 0, 0, 0.05) 0px 2px 8px 0px"
+  },
+  "headingAboveImage": {
+    "rect": { "w": 896, "h": 26, "top": 239, "left": 120 },
+    "fontSize": "32px",
+    "lineHeight": "48px",
+    "fontWeight": "300",
+    "color": "rgb(34, 41, 59)"
+  },
+  "h1": {
+    "rect": { "w": 896, "h": 84, "top": 883, "left": 120 },
+    "fontSize": "40px",
+    "lineHeight": "52px",
+    "fontWeight": "300",
+    "color": "rgb(34, 41, 59)"
+  },
+  "ctaRow": {
+    "rect": { "w": 342, "h": 48, "top": 989, "left": 120 }
+  },
+  "ctaLink": {
+    "rect": { "w": 148, "h": 48, "top": 989, "left": 120 },
+    "padding": "16px 24px",
+    "borderRadius": "8px",
+    "backgroundColor": "rgb(231, 0, 11)"
+  }
+}

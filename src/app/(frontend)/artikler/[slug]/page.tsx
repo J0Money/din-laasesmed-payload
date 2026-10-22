@@ -106,7 +106,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               />
             )}
   
-            <h1 className="text-trim mt-[52px] mb-[10px] font-heading text-[40px] leading-[52px] font-light text-ink-800">
+            <h1 className="text-trim mt-[72px] mb-[10px] font-heading text-[40px] leading-[52px] font-light text-ink-800">
               {article.mainHeading}
             </h1>
   
