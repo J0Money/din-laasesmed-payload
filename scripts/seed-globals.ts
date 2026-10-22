@@ -117,7 +117,10 @@ async function run() {
         },
         { ...customLink('Om os', '/om-os'), children: [] },
         { ...customLink('Mærker', '/brands'), children: [] },
-        { ...customLink('Formular', '/formular'), children: [] },
+        {
+          ...customLink('Formular', '/formular'),
+          children: [customLink('Formularer', '/formular'), customLink('Nøgleformular', '/noegleformular')],
+        },
         { ...customLink('ISO 9001', '/iso-9001'), children: [] },
         { ...customLink('Job', '/ledige-stillinger'), children: [] },
         { ...categoryLink('Nyt', 'nyheder'), children: [] },

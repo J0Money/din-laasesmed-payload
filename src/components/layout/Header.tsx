@@ -43,13 +43,10 @@ export async function Header() {
               item.children && item.children.length > 0 ? (
                 <div key={item.id ?? index} className="group relative">
                   <span className="cursor-default">{item.link?.label}</span>
-                  <div className="absolute right-0 top-full z-30 hidden min-w-40 flex-col gap-1 rounded-lg bg-white p-2 text-ink-900 shadow-lg group-hover:flex">
+                  {/* Mål fra din-laasesmed.dk: mørk boks (samme farve som topbjælken), ikke hvid. */}
+                  <div className="absolute right-0 top-full z-30 hidden min-w-max flex-col gap-[6px] rounded-md bg-ink-800 px-3 py-[10px] text-[#ced5e1] group-hover:flex">
                     {item.children.map((child, childIndex) => (
-                      <Link
-                        key={child.id ?? childIndex}
-                        href={resolveLinkHref(child.link)}
-                        className="rounded-md px-3 py-2 hover:bg-surface-muted"
-                      >
+                      <Link key={child.id ?? childIndex} href={resolveLinkHref(child.link)} className="whitespace-nowrap hover:text-white">
                         {child.link?.label}
                       </Link>
                     ))}
