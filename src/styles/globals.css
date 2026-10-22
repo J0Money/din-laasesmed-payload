@@ -40,4 +40,45 @@
   .button {
     @apply inline-flex items-center justify-center rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-ink-900;
   }
+
+  /*
+   * Typografi-skala til rich text fra RichText-komponenten (@payloadcms/richtext-lexical/react).
+   * Tailwinds preflight nulstiller alle heading-/liste-styles, så uden denne klasse
+   * ser h1-h3 og ul/ol ud som almindelig brødtekst.
+   */
+  .rich-text {
+    @apply space-y-4;
+  }
+
+  .rich-text h1 {
+    @apply mt-8 mb-4 font-heading text-4xl font-semibold text-ink-900;
+  }
+
+  .rich-text h2 {
+    @apply mt-8 mb-3 font-heading text-2xl font-semibold text-ink-900;
+  }
+
+  .rich-text h3 {
+    @apply mt-6 mb-2 font-heading text-xl font-semibold text-ink-900;
+  }
+
+  .rich-text p {
+    @apply leading-relaxed;
+  }
+
+  .rich-text ul {
+    @apply list-disc space-y-1 pl-6;
+  }
+
+  .rich-text ol {
+    @apply list-decimal space-y-1 pl-6;
+  }
+
+  .rich-text a {
+    @apply text-brand-500 underline hover:no-underline;
+  }
+
+  .rich-text strong {
+    @apply font-semibold text-ink-900;
+  }
 }

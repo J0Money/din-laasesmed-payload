@@ -74,7 +74,7 @@ export function TextWithImage({
           imagePosition === 'left' ? 'md:[&>*:first-child]:order-2' : ''
         }`}
       >
-        <div>
+        <div className="rich-text">
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <RichText data={content as any} />
         </div>

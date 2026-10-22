@@ -47,8 +47,10 @@ export function Text({
       blockClass={blockClass}
     >
       <div className="container max-w-3xl">
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-        <RichText data={content as any} />
+        <div className="rich-text">
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          <RichText data={content as any} />
+        </div>
       </div>
     </BlockWrapper>
   )
