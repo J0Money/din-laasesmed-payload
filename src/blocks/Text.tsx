@@ -46,7 +46,7 @@ export function Text({
       mutedBackground={mutedBackground}
       blockClass={blockClass}
     >
-      <div className="container max-w-3xl">
+      <div className="site-container max-w-3xl">
         <div className="rich-text">
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <RichText data={content as any} />

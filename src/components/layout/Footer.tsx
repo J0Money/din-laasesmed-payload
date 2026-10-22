@@ -37,7 +37,7 @@ export async function Footer() {
 
   return (
     <footer className="mt-24 bg-ink-900 text-[#f2f5f9]">
-      <div className="container grid gap-10 py-12 md:grid-cols-2">
+      <div className="site-container grid gap-10 py-12 md:grid-cols-2">
         <div className="space-y-8">
           <div>
             <h2 className="text-lg font-medium text-ink-muted">Brug for hjælp?</h2>
@@ -98,7 +98,7 @@ export async function Footer() {
         </div>
       </div>
 
-      <div className="container grid gap-8 border-t border-white/10 py-12 md:grid-cols-3">
+      <div className="site-container grid gap-8 border-t border-white/10 py-12 md:grid-cols-3">
         {categoriesWithArticles.map(({ category, articles }) => {
           const Icon = NAV_ICON_BY_CATEGORY_SLUG[category.slug as keyof typeof NAV_ICON_BY_CATEGORY_SLUG]
           return (
@@ -123,7 +123,7 @@ export async function Footer() {
       </div>
 
       <div className="border-t border-white/10 py-4">
-        <div className="container flex flex-col items-center justify-between gap-2 text-xs text-white/60 md:flex-row">
+        <div className="site-container flex flex-col items-center justify-between gap-2 text-xs text-white/60 md:flex-row">
           <p>
             {siteSettings.companyName || 'Din Låsesmed'} © {new Date().getFullYear()}
             {siteSettings.cvr ? ` · CVR: ${siteSettings.cvr}` : ''}

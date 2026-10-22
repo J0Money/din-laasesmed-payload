@@ -18,7 +18,7 @@ export async function Header() {
     <header>
       {/* Øverste bjælke */}
       <div className="bg-ink-900 text-[#ced5e1]">
-        <div className="container flex items-center justify-between gap-6 py-2 text-sm">
+        <div className="site-container flex items-center justify-between gap-6 py-2 text-sm">
           <div className="flex items-center gap-4">
             {siteSettings.phone && (
               <a href={`tel:${siteSettings.phone.replace(/\s/g, '')}`} className="hover:text-white">
@@ -60,7 +60,7 @@ export async function Header() {
 
       {/* Hovednavigation */}
       <div className="border-b border-surface-muted bg-white text-text-body">
-        <div className="container flex items-center justify-between gap-6 py-4">
+        <div className="site-container flex items-center justify-between gap-6 py-4">
           <Link href={ROUTES.home()} aria-label="Forside" className="text-brand-500">
             <Logo className="h-8 w-auto" />
           </Link>

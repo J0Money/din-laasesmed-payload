@@ -70,7 +70,7 @@ export function TextWithImage({
       blockClass={blockClass}
     >
       <div
-        className={`container grid items-center gap-8 md:grid-cols-2 ${
+        className={`site-container grid items-center gap-8 md:grid-cols-2 ${
           imagePosition === 'left' ? 'md:[&>*:first-child]:order-2' : ''
         }`}
       >
