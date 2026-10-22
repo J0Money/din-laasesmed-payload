@@ -1,4 +1,4 @@
-import { RichText } from '@payloadcms/richtext-lexical/react'
+import { RichText } from '@/components/RichText'
 import type { Block } from 'payload'
 
 import { BlockWrapper } from '@/components/blocks/BlockWrapper'
@@ -47,10 +47,7 @@ export function Text({
       blockClass={blockClass}
     >
       <div className="site-container max-w-3xl">
-        <div className="rich-text">
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          <RichText data={content as any} />
-        </div>
+        <RichText data={content} />
       </div>
     </BlockWrapper>
   )

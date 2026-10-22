@@ -1,4 +1,4 @@
-import { RichText } from '@payloadcms/richtext-lexical/react'
+import { RichText } from '@/components/RichText'
 import type { Block } from 'payload'
 
 import { BlockWrapper } from '@/components/blocks/BlockWrapper'
@@ -74,10 +74,7 @@ export function TextWithImage({
           imagePosition === 'left' ? 'md:[&>*:first-child]:order-2' : ''
         }`}
       >
-        <div className="rich-text">
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          <RichText data={content as any} />
-        </div>
+        <RichText data={content} />
         <img
           src={mediaUrl(image, 'ratio32')}
           alt={mediaAlt(image)}

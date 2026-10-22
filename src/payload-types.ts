@@ -358,6 +358,10 @@ export interface Article {
     };
     [k: string]: unknown;
   };
+  /**
+   * Styrer rækkefølgen i "Læs også" (nyeste først).
+   */
+  publishedAt?: string | null;
   brands?: (string | Brand)[] | null;
   titleTag?: string | null;
   metaDescription?: string | null;
@@ -666,6 +670,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   mainImage?: T;
   mainHeading?: T;
   mainText?: T;
+  publishedAt?: T;
   brands?: T;
   titleTag?: T;
   metaDescription?: T;
@@ -1052,6 +1057,10 @@ export interface Footer {
 export interface SiteSetting {
   id: string;
   logo?: (string | null) | Media;
+  /**
+   * Vises i footeren, fx ISO 9001.
+   */
+  certificationLogo?: (string | null) | Media;
   companyName?: string | null;
   cvr?: string | null;
   address?: string | null;
@@ -1192,6 +1201,7 @@ export interface FooterSelect<T extends boolean = true> {
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
   logo?: T;
+  certificationLogo?: T;
   companyName?: T;
   cvr?: T;
   address?: T;
@@ -1232,6 +1242,23 @@ export interface CollectionsWidget {
     [k: string]: unknown;
   };
   width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlock".
+ */
+export interface VideoEmbedBlock {
+  /**
+   * Fx https://www.youtube.com/watch?v=... eller et embed-link.
+   */
+  url: string;
+  /**
+   * Læses op af skærmlæsere.
+   */
+  title?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoEmbed';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

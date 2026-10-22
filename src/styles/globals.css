@@ -36,51 +36,79 @@
   }
 }
 
+/*
+ * Originalen (Webflow/Lumos) trimmer den tomme luft over og under tekstlinjer.
+ * Udledt af målinger: trim pr. side = 0.5lh - 0.4em (passer på h1, h2, p og formular-overskrift).
+ */
+@utility text-trim {
+  &::before,
+  &::after {
+    content: '';
+    display: table;
+  }
+  &::before {
+    margin-bottom: calc(-0.5lh + 0.4em);
+  }
+  &::after {
+    margin-top: calc(-0.5lh + 0.4em);
+  }
+}
+
 @layer components {
   /* Mål 1:1 fra din-laasesmed.dk: u-container har max-width 1344px og ingen padding. */
   .site-container {
     @apply mx-auto w-full max-w-[1344px] px-4 sm:px-6 lg:px-0;
   }
 
+  /* Hover fra originalens CSS: alle knapper skifter til slate-800 (#22293b) over 0.2s. */
   .button {
-    @apply inline-flex items-center justify-center rounded-lg bg-brand-500 px-6 py-4 text-sm font-normal text-white transition-colors hover:bg-ink-900;
+    @apply inline-flex h-12 items-center justify-center rounded-lg border-[0.8px] border-brand-500 bg-brand-500 px-6 font-heading text-sm leading-none font-normal text-white transition-colors duration-200 hover:border-ink-800 hover:bg-ink-800 hover:text-white;
   }
 
   .button-accent {
-    @apply inline-flex items-center justify-center rounded-lg bg-accent-red px-6 py-4 text-sm font-normal text-white transition-colors hover:brightness-110;
+    @apply inline-flex h-12 items-center justify-center rounded-lg border-[0.8px] border-accent-red bg-accent-red px-6 font-heading text-sm leading-none font-normal text-white transition-colors duration-200 hover:border-ink-800 hover:bg-ink-800 hover:text-[#f2f5f9];
   }
 
   /*
-   * Typografi-skala til rich text fra RichText-komponenten (@payloadcms/richtext-lexical/react).
-   * Tailwinds preflight nulstiller alle heading-/liste-styles, så uden denne klasse
-   * ser h1-h3 og ul/ol ud som almindelig brødtekst.
+   * Typografi til rich text, mål aflæst fra .u-rich-text på din-laasesmed.dk (1600px viewport).
+   * Tailwinds preflight nulstiller heading-/liste-styles, så alt skal sættes eksplicit.
    */
   .rich-text {
-    @apply space-y-4;
+    @apply text-base leading-6 text-text-body;
   }
 
-  .rich-text h1 {
-    @apply mt-8 mb-4 font-heading text-4xl font-semibold text-ink-900;
-  }
-
-  .rich-text h2 {
-    @apply mt-8 mb-3 font-heading text-2xl font-semibold text-ink-900;
-  }
-
-  .rich-text h3 {
-    @apply mt-6 mb-2 font-heading text-xl font-semibold text-ink-900;
+  .rich-text > :first-child {
+    @apply mt-0;
   }
 
   .rich-text p {
-    @apply leading-relaxed;
+    @apply text-trim mb-[10px] flow-root;
   }
 
+  .rich-text h2 {
+    @apply text-trim mt-12 mb-8 font-heading text-[40px] leading-[52px] font-light tracking-[-0.03em] text-ink-800;
+  }
+
+  .rich-text h3 {
+    @apply text-trim mt-12 mb-8 font-heading text-[32px] leading-[41.6px] font-light tracking-[-0.03em] text-ink-800;
+  }
+
+  .rich-text h4 {
+    @apply text-trim mt-8 mb-4 font-heading text-2xl font-light text-ink-800;
+  }
+
+  /* Originalen er flex-kolonne med 14.4px gap, så li-marginerne ikke kollapser. */
   .rich-text ul {
-    @apply list-disc space-y-1 pl-6;
+    @apply my-6 flex list-disc flex-col gap-[14.4px] pl-[19.2px];
   }
 
   .rich-text ol {
-    @apply list-decimal space-y-1 pl-6;
+    @apply my-6 flex list-decimal flex-col gap-[14.4px] pl-[19.2px];
+  }
+
+  .rich-text li {
+    display: list-item;
+    margin: -7.2px 0 -5.6px;
   }
 
   .rich-text a {
@@ -88,6 +116,15 @@
   }
 
   .rich-text strong {
-    @apply font-semibold text-ink-900;
+    @apply font-semibold;
+  }
+
+  /* Webflow-videoer fylder 60% af tekstbredden (538/896px) med 16px hjørner. */
+  .rich-text-video {
+    @apply mt-12 aspect-video w-full overflow-hidden rounded-2xl md:w-[60%];
+  }
+
+  .rich-text-video iframe {
+    @apply h-full w-full border-0;
   }
 }

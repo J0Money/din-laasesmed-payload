@@ -11,6 +11,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import config from '../src/payload.config.js'
+import { extractVideos, injectVideoBlocks } from './lib/webflowVideos.js'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const DATA_DIR = path.resolve(dirname, '../data/webflow-export')
@@ -67,7 +68,8 @@ async function run() {
   function htmlToLexical(html: string | undefined): any {
     if (!html || !html.trim()) return emptyLexicalState()
     try {
-      return convertHTMLToLexical({ editorConfig, html, JSDOM })
+      const { html: withMarkers, videos } = extractVideos(html)
+      return injectVideoBlocks(convertHTMLToLexical({ editorConfig, html: withMarkers, JSDOM }), videos)
     } catch (err) {
       console.warn(`  ⚠ Kunne ikke konvertere rich text, bruger tom tekst: ${(err as Error).message}`)
       return emptyLexicalState()
@@ -201,6 +203,9 @@ async function run() {
         brands: brandIds.length ? brandIds : undefined,
         titleTag: row['Title tag'] || undefined,
         metaDescription: row['Meta description'] || undefined,
+        // Webflows datoer bevares, da "Læs også" sorterer efter dem.
+        publishedAt: row['Published On'] ? new Date(row['Published On']).toISOString() : undefined,
+        createdAt: row['Created On'] ? new Date(row['Created On']).toISOString() : undefined,
         _status: isPublished(row),
       },
     })

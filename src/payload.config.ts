@@ -1,10 +1,11 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { BlocksFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+import { videoEmbedBlock } from './blocks/richtext/VideoEmbed'
 import { Articles } from './collections/Articles'
 import { Brands } from './collections/Brands'
 import { Categories } from './collections/Categories'
@@ -28,7 +29,9 @@ export default buildConfig({
   },
   collections: [Pages, Articles, Categories, Brands, Employees, Users, Media],
   globals: [Header, Footer, SiteSettings],
-  editor: lexicalEditor(),
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [...defaultFeatures, BlocksFeature({ blocks: [videoEmbedBlock] })],
+  }),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

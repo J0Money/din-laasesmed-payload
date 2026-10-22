@@ -56,6 +56,16 @@ export const Articles: CollectionConfig = {
       label: 'Brødtekst',
     },
     {
+      name: 'publishedAt',
+      type: 'date',
+      label: 'Publiceringsdato',
+      admin: {
+        position: 'sidebar',
+        description: 'Styrer rækkefølgen i "Læs også" (nyeste først).',
+        date: { pickerAppearance: 'dayAndTime' },
+      },
+    },
+    {
       name: 'brands',
       type: 'relationship',
       relationTo: 'brands',

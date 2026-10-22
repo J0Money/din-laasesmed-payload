@@ -19,6 +19,13 @@ export const SiteSettings: GlobalConfig = {
               label: 'Logo',
             },
             {
+              name: 'certificationLogo',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Certificeringslogo',
+              admin: { description: 'Vises i footeren, fx ISO 9001.' },
+            },
+            {
               name: 'companyName',
               type: 'text',
               label: 'Virksomhedsnavn',

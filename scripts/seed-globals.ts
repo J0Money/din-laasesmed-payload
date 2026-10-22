@@ -42,11 +42,30 @@ async function run() {
     }
   }
 
-  // --- Site settings ---
+  // --- Certificeringslogo (ISO), hentet fra originalens footer ---
+  let certificationLogoId: string | undefined
+  const isoAlt = 'ISO 9001 certificeret'
+  const existingIso = await payload.find({ collection: 'media', where: { alt: { equals: isoAlt } } })
+  if (existingIso.docs[0]) {
+    certificationLogoId = String(existingIso.docs[0].id)
+  } else {
+    const res = await fetch('https://cdn.prod.website-files.com/68219f1c6821c86ed6240d9e/68271eec709f6fa497081850_iso-logo.avif')
+    const buffer = Buffer.from(await res.arrayBuffer())
+    const doc = await payload.create({
+      collection: 'media',
+      data: { alt: isoAlt },
+      file: { name: 'iso-logo.avif', data: buffer, mimetype: 'image/avif', size: buffer.length },
+    })
+    certificationLogoId = String(doc.id)
+  }
+
+  // --- Site settings (tekster 1:1 fra originalens footer, inkl. "Abyhøj" og "2575 1297") ---
   await payload.updateGlobal({
     slug: 'siteSettings',
     data: {
       logo: logoId,
+      certificationLogo: certificationLogoId,
+      linkedin: 'https://www.linkedin.com/company/din-l%C3%A5sesmed-a-s/',
       companyName: 'Din Låsesmed A/S',
       cvr: '41013141',
       address: 'Silkeborgvej 329, 8230 Åbyhøj',
@@ -60,14 +79,14 @@ async function run() {
       departments: [
         {
           name: 'Butik i Aarhus',
-          address: 'Silkeborgvej 329, 8230 Åbyhøj',
+          address: 'Silkeborgvej 329, 8230 Abyhøj',
           phone: '86 20 66 00',
           email: 'info@din-laasesmed.dk',
         },
         {
           name: 'Butik i Aalborg',
           address: 'Gasværksvej 44, 9000 Aalborg',
-          phone: '25 75 12 97',
+          phone: '2575 1297',
           email: 'info@din-laasesmed.dk',
         },
       ],
@@ -138,8 +157,8 @@ async function run() {
       links: [
         customLink('Find låsesmed', '/artikler/find-lasesmed'),
         customLink('Brand Info', '/artikler/brand-info-side'),
-        customLink('Cookie- og privatlivspolitik', '/cookiepolitik'),
-        { link: { type: 'custom' as const, label: 'Searchmind', url: 'https://searchmind.tech', newTab: true } },
+        customLink('Cookie- og privatlivspolitik', '/cookie-og-privatlivspolitik'),
+        { link: { type: 'custom' as const, label: 'Searchmind', url: 'https://www.searchmind.dk/', newTab: true } },
       ],
     },
   })

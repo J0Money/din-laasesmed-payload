@@ -1,9 +1,11 @@
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+import { ReadAlso } from '@/components/article/ReadAlso'
+import { RelatedBrands } from '@/components/article/RelatedBrands'
 import { ContactFormSidebar } from '@/components/ContactFormSidebar'
+import { RichText } from '@/components/RichText'
 import { mediaAlt, mediaDimensions, mediaUrl, SIZES } from '@/lib/media'
 import { getPayloadClient } from '@/lib/payload'
 import { ROUTES } from '@/lib/routes'
@@ -47,82 +49,85 @@ export async function generateMetadata({
   }
 }
 
+/**
+ * Opbygning og mål aflæst fra din-laasesmed.dk/artikler/* (1600px viewport):
+ * sløret hero-bånd 396px, indhold 896px + formular 400px med 48px mellemrum.
+ */
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const article = await getArticle(slug)
   if (!article) notFound()
 
   const category = typeof article.category === 'object' ? (article.category as Category) : null
-  const brands = (article.brands ?? []).filter(
-    (brand): brand is Brand => typeof brand === 'object',
-  )
+  const imageUrl = mediaUrl(article.mainImage, 'hero')
   const { width, height } = mediaDimensions(article.mainImage, 'hero')
 
+  const brands = (article.brands ?? []).filter((brand): brand is Brand => typeof brand === 'object')
+
   return (
-    <main className="bg-background py-16">
-      <div className="site-container grid gap-12 md:grid-cols-[1fr_260px]">
-        <article>
-          {category && (
-            <Link href={ROUTES.category(category.slug)} className="text-sm text-brand-500 hover:underline">
-              {category.name}
-            </Link>
-          )}
-
-          {/* Matcher din-laasesmed.dk: artiklens navn vises som overskrift før billedet,
-              mens "mainHeading" er den reelle H1 og vises efter billedet. */}
-          <p className="mt-2 font-heading text-3xl font-light text-ink-800">{article.name}</p>
-
-          {article.mainImage && (
+    <main>
+      <section className="relative bg-background py-20">
+        {/* Værdier fra originalens CSS: bånd 4:1 (2:1 på mobil), billede opacity .15 + saturate(200%) blur(14px). */}
+        <div aria-hidden className="absolute inset-x-0 top-0 aspect-[2/1] overflow-hidden bg-surface-muted md:aspect-[4/1]">
+          {imageUrl && (
             <img
-              src={mediaUrl(article.mainImage, 'hero')}
-              alt={mediaAlt(article.mainImage)}
-              width={width}
-              height={height}
-              loading="eager"
-              sizes={SIZES.hero}
-              className="mt-8 h-auto w-full rounded-xl object-cover"
+              src={imageUrl}
+              alt=""
+              className="h-full w-full object-cover opacity-15 [filter:saturate(200%)_blur(14px)]"
             />
           )}
-
-          <h1 className="mt-8 font-heading text-4xl font-light text-ink-800">{article.mainHeading}</h1>
-
-          <div className="mt-4 flex flex-wrap items-center gap-4">
-            <Link href={ROUTES.contact()} className="button-accent">
-              Kontakt os i dag
-            </Link>
-            <span className="text-text-body">Få et gratis servicetjek</span>
-          </div>
-
-          <div className="rich-text mt-8">
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            <RichText data={article.mainText as any} />
-          </div>
-
-          {brands.length > 0 && (
-            <div className="mt-12 border-t border-surface-muted pt-8">
-              <h2 className="text-sm font-semibold text-ink-900">Relevante mærker</h2>
-              <ul className="mt-3 flex flex-wrap gap-3">
-                {brands.map((brand) => (
-                  <li key={brand.id}>
-                    <Link
-                      href={ROUTES.brand(brand.slug)}
-                      className="rounded-full bg-surface-muted px-4 py-2 text-sm hover:bg-brand-500 hover:text-white"
-                    >
-                      {brand.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </article>
-
-        <div className="hidden md:block">
-          <div className="sticky top-8">
-            <ContactFormSidebar />
-          </div>
         </div>
-      </div>
+  
+        <div className="site-container relative z-10 lg:flex lg:items-start lg:justify-between lg:gap-12">
+          <article className="min-w-0 lg:shrink-0 lg:basis-[min(896px,calc(100%-297px))]">
+            {category && (
+              <Link
+                href={ROUTES.category(category.slug)}
+                className="block text-sm leading-[21px] font-medium text-brand-500"
+              >
+                {category.name}
+              </Link>
+            )}
+  
+            {/* På originalen er artiklens navn en h2 før billedet, og "mainHeading" den egentlige h1 efter. */}
+            <p className="text-trim mt-7 mb-[10px] font-heading text-[32px] leading-[48px] font-light text-ink-800">
+              {article.name}
+            </p>
+  
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt={mediaAlt(article.mainImage)}
+                width={width}
+                height={height}
+                loading="eager"
+                sizes={SIZES.hero}
+                className="mt-[42px] aspect-video w-full rounded-2xl object-cover shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
+              />
+            )}
+  
+            <h1 className="text-trim mt-[52px] mb-[10px] font-heading text-[40px] leading-[52px] font-light text-ink-800">
+              {article.mainHeading}
+            </h1>
+  
+            <div className="mt-[22px] flex flex-wrap items-center gap-4">
+              <Link href={ROUTES.contact()} className="button-accent">
+                Kontakt os i dag
+              </Link>
+              <span className="text-text-body">Få et gratis servicetjek</span>
+            </div>
+  
+            <RichText data={article.mainText} className="mt-12" />
+          </article>
+  
+          <aside className="mt-12 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1">
+            <ContactFormSidebar />
+          </aside>
+        </div>
+      </section>
+
+      {category && <ReadAlso articleId={article.id} category={category} />}
+      <RelatedBrands brands={brands} />
     </main>
   )
 }
