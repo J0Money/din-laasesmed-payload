@@ -27,3 +27,13 @@ export function resolveLinkHref(link: LinkData): string {
 
   return '#'
 }
+
+/** Kategori-slug for et link, hvis det peger på en kategori — bruges til at vælge det rigtige nav-ikon. */
+export function linkCategorySlug(link: LinkData): string | undefined {
+  if (!link || link.type !== 'reference') return undefined
+  const reference = link.reference
+  if (reference?.relationTo === 'categories' && typeof reference.value === 'object') {
+    return reference.value.slug
+  }
+  return undefined
+}

@@ -59,6 +59,22 @@ async function run() {
   await payload.updateGlobal({
     slug: 'header',
     data: {
+      utilityLinks: [
+        {
+          ...customLink('Afdelinger', '#'),
+          children: [
+            customLink('Aarhus afdeling', '/kontakt'),
+            customLink('Aalborg afdeling', '/artikler/lasesmed-aalborg'),
+          ],
+        },
+        { ...customLink('Om os', '/om-os'), children: [] },
+        { ...customLink('Mærker', '/brands'), children: [] },
+        { ...customLink('Formularer', '/formular'), children: [] },
+        { ...customLink('Nøgleformular', '/noegleformular'), children: [] },
+        { ...customLink('ISO 9001', '/iso-9001'), children: [] },
+        { ...customLink('Job', '/ledige-stillinger'), children: [] },
+        { ...categoryLink('Nyt', 'nyheder'), children: [] },
+      ],
       navItems: [
         {
           ...categoryLink('Mekanisk sikring', 'mekanisk-sikring'),
@@ -92,11 +108,6 @@ async function run() {
             customLink('Uforpligtende servicetjek', '/artikler/uforpligtende-servicetjek'),
           ],
         },
-        { ...customLink('Om os', '/om-os'), children: [] },
-        { ...customLink('Mærker', '/brands'), children: [] },
-        { ...categoryLink('Nyt', 'nyheder'), children: [] },
-        { ...customLink('ISO 9001', '/iso-9001'), children: [] },
-        { ...customLink('Job', '/ledige-stillinger'), children: [] },
       ],
       cta: customLink('Kontakt', '/kontakt'),
     },

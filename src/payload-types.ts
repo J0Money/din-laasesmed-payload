@@ -874,6 +874,64 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: string;
+  /**
+   * Den smalle, mørke linje øverst — fx Afdelinger, Om os, Mærker, Job.
+   */
+  utilityLinks?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          label: string;
+          /**
+           * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+           */
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'categories';
+                value: string | Category;
+              } | null);
+          /**
+           * Fx en ekstern adresse eller et tel:-link.
+           */
+          url?: string | null;
+          newTab?: boolean | null;
+        };
+        children?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                label: string;
+                /**
+                 * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+                 */
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: string | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'categories';
+                      value: string | Category;
+                    } | null);
+                /**
+                 * Fx en ekstern adresse eller et tel:-link.
+                 */
+                url?: string | null;
+                newTab?: boolean | null;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bruges til dropdown-menuer, fx under Mekanisk sikring.
+   */
   navItems?:
     | {
         link: {
@@ -897,9 +955,6 @@ export interface Header {
           url?: string | null;
           newTab?: boolean | null;
         };
-        /**
-         * Bruges til dropdown-menuer, fx under Mekanisk sikring.
-         */
         children?:
           | {
               link: {
@@ -1019,6 +1074,34 @@ export interface SiteSetting {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  utilityLinks?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              label?: T;
+              reference?: T;
+              url?: T;
+              newTab?: T;
+            };
+        children?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    label?: T;
+                    reference?: T;
+                    url?: T;
+                    newTab?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
   navItems?:
     | T
     | {
