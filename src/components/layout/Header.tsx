@@ -79,15 +79,16 @@ export async function Header() {
                 const categoryHref = resolveLinkHref(item.link)
 
                 return (
-                  <div key={item.id ?? index} className="group relative">
+                  <div key={item.id ?? index} className="group">
                     <Link href={categoryHref} className="flex items-center gap-3 py-[5px] leading-5 transition-colors duration-200 hover:text-brand-500">
                       {Icon && <Icon />}
                       {item.link?.label}
                     </Link>
 
-                    {/* Mega-menu, mål og lag aflæst fra din-laasesmed.dk (1600px): mørkt bånd i fuld bredde, 5-kolonners grid, ikon = artiklens eget billede. */}
+                    {/* Mega-menu, mål og lag aflæst fra din-laasesmed.dk (1600px): mørkt bånd i fuld bredde, 5-kolonners grid, ikon = artiklens eget billede.
+                        Positioneres relativt til <header> (øverste "relative"-forfader), ikke dette lille nav-punkt — ellers bliver båndet ikke fuld bredde. */}
                     {item.children && item.children.length > 0 && (
-                      <div className="absolute left-1/2 top-full z-30 hidden w-screen -translate-x-1/2 bg-[rgba(18,23,41,0.9)] py-10 font-sans group-hover:block">
+                      <div className="absolute left-0 right-0 top-full z-30 hidden bg-[rgba(18,23,41,0.9)] py-10 font-sans group-hover:block">
                         <div className="site-container">
                           <p className="mb-[10px] text-[19px] leading-[29px] font-medium text-[#96a1b7]">{item.link?.label}</p>
 
