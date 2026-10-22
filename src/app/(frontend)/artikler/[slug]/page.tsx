@@ -60,7 +60,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   return (
     <main className="bg-background py-16">
-      <div className="container grid gap-12 md:grid-cols-[1fr_320px]">
+      <div className="container grid gap-12 md:grid-cols-[1fr_260px]">
         <article>
           {category && (
             <Link href={ROUTES.category(category.slug)} className="text-sm text-brand-500 hover:underline">

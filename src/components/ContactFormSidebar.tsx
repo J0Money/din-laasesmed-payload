@@ -25,15 +25,15 @@ export function ContactFormSidebar() {
 
   if (submitted) {
     return (
-      <div className="rounded-2xl bg-surface-form p-6">
+      <div className="rounded-2xl bg-surface-form px-7 py-5">
         <p className="text-ink-800">Tak for din henvendelse — vi kontakter dig inden for 24 timer.</p>
       </div>
     )
   }
 
   return (
-    <div className="rounded-2xl bg-surface-form p-6">
-      <h2 className="font-heading text-2xl font-light text-ink-800">Brug for hjælp?</h2>
+    <div className="rounded-2xl bg-surface-form px-7 py-5">
+      <h2 className="font-heading text-3xl font-light text-ink-800">Brug for hjælp?</h2>
       <p className="mt-1 text-sm text-text-body">Vi kontakter dig inden for 24 timer</p>
 
       <form
