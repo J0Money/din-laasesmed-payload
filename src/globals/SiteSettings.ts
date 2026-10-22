@@ -46,6 +46,31 @@ export const SiteSettings: GlobalConfig = {
               type: 'email',
               label: 'E-mail',
             },
+            {
+              name: 'openingHours',
+              type: 'array',
+              label: 'Åbningstider',
+              fields: [
+                { name: 'label', type: 'text', required: true, label: 'Dage' },
+                { name: 'hours', type: 'text', required: true, label: 'Tidsrum' },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Afdelinger',
+          fields: [
+            {
+              name: 'departments',
+              type: 'array',
+              label: 'Butikker/afdelinger',
+              fields: [
+                { name: 'name', type: 'text', required: true, label: 'Navn' },
+                { name: 'address', type: 'text', required: true, label: 'Adresse' },
+                { name: 'phone', type: 'text', required: true, label: 'Telefon' },
+                { name: 'email', type: 'email', label: 'E-mail' },
+              ],
+            },
           ],
         },
         {

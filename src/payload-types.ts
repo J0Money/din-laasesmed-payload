@@ -1060,6 +1060,22 @@ export interface SiteSetting {
    */
   phone?: string | null;
   email?: string | null;
+  openingHours?:
+    | {
+        label: string;
+        hours: string;
+        id?: string | null;
+      }[]
+    | null;
+  departments?:
+    | {
+        name: string;
+        address: string;
+        phone: string;
+        email?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   facebook?: string | null;
   instagram?: string | null;
   linkedin?: string | null;
@@ -1181,6 +1197,22 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   address?: T;
   phone?: T;
   email?: T;
+  openingHours?:
+    | T
+    | {
+        label?: T;
+        hours?: T;
+        id?: T;
+      };
+  departments?:
+    | T
+    | {
+        name?: T;
+        address?: T;
+        phone?: T;
+        email?: T;
+        id?: T;
+      };
   facebook?: T;
   instagram?: T;
   linkedin?: T;

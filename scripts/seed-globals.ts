@@ -52,6 +52,25 @@ async function run() {
       address: 'Silkeborgvej 329, 8230 Åbyhøj',
       phone: '86 20 66 00',
       email: 'info@din-laasesmed.dk',
+      openingHours: [
+        { label: 'Mandag - torsdag', hours: '08.00 - 16.00' },
+        { label: 'Fredag', hours: '08.00 - 15.00' },
+        { label: 'Døgnvagt service', hours: '16.00 - 08.00' },
+      ],
+      departments: [
+        {
+          name: 'Butik i Aarhus',
+          address: 'Silkeborgvej 329, 8230 Åbyhøj',
+          phone: '86 20 66 00',
+          email: 'info@din-laasesmed.dk',
+        },
+        {
+          name: 'Butik i Aalborg',
+          address: 'Gasværksvej 44, 9000 Aalborg',
+          phone: '25 75 12 97',
+          email: 'info@din-laasesmed.dk',
+        },
+      ],
     },
   })
 
@@ -118,10 +137,10 @@ async function run() {
     slug: 'footer',
     data: {
       links: [
-        customLink('Om os', '/om-os'),
-        customLink('Mærker', '/brands'),
-        customLink('ISO 9001', '/iso-9001'),
-        customLink('Kontakt', '/kontakt'),
+        customLink('Find låsesmed', '/artikler/find-lasesmed'),
+        customLink('Brand Info', '/artikler/brand-info-side'),
+        customLink('Cookie- og privatlivspolitik', '/cookiepolitik'),
+        { link: { type: 'custom' as const, label: 'Searchmind', url: 'https://searchmind.tech', newTab: true } },
       ],
     },
   })
