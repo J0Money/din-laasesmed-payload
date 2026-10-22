@@ -13,6 +13,12 @@ export const SiteSettings: GlobalConfig = {
           label: 'Virksomhed',
           fields: [
             {
+              name: 'logo',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Logo',
+            },
+            {
               name: 'companyName',
               type: 'text',
               label: 'Virksomhedsnavn',

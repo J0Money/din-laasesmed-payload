@@ -996,6 +996,7 @@ export interface Footer {
  */
 export interface SiteSetting {
   id: string;
+  logo?: (string | null) | Media;
   companyName?: string | null;
   cvr?: string | null;
   address?: string | null;
@@ -1091,6 +1092,7 @@ export interface FooterSelect<T extends boolean = true> {
  * via the `definition` "siteSettings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
+  logo?: T;
   companyName?: T;
   cvr?: T;
   address?: T;
