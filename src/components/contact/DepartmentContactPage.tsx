@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { ContactFormSidebar } from '@/components/ContactFormSidebar'
+import { ArticleWithForm } from '@/components/ArticleWithForm'
 import { CertificateIcon, ClockIcon, MailIcon, ShopIcon } from '@/components/home/HomeIcons'
 import { ROUTES } from '@/lib/routes'
 
@@ -16,7 +16,7 @@ type ContactCard = {
 /**
  * Fælles skabelon for afdelingssiderne (/kontakt for Aarhus, /laasesmed-aalborg), mål aflæst fra
  * din-laasesmed.dk ved 1600px: 453px video-bånd, fire kontaktkort der overlapper båndet med 32px,
- * og en artikel (billede, overskrift, tekst) med "Brug for hjælp?"-formularen i siden.
+ * og en artikel (billede, overskrift, tekst) med "Brug for hjælp?"-formularen i siden (ArticleWithForm).
  */
 export function DepartmentContactPage({
   phone,
@@ -102,28 +102,9 @@ export function DepartmentContactPage({
         </ul>
       </div>
 
-      <section className="bg-background py-20">
-        <div className="site-container relative z-10 lg:flex lg:items-start lg:justify-center lg:gap-12">
-          <article className="flex min-w-0 flex-col gap-8 lg:shrink-0 lg:basis-[min(896px,calc(100%-297px))]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/kontakt.avif"
-              alt=""
-              className="aspect-video w-full rounded-2xl object-cover shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
-            />
-            <div className="flex flex-col items-start gap-12">
-              <h1 className="text-trim mt-5 mb-[10px] font-heading text-[40px] leading-[52px] font-light text-ink-800">
-                {heading}
-              </h1>
-              {children}
-            </div>
-          </article>
-
-          <aside className="mt-12 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1">
-            <ContactFormSidebar />
-          </aside>
-        </div>
-      </section>
+      <ArticleWithForm imageUrl="/images/kontakt.avif" heading={heading}>
+        {children}
+      </ArticleWithForm>
     </main>
   )
 }

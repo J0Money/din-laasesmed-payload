@@ -461,6 +461,8 @@ export interface Brand {
         id?: string | null;
       }[]
     | null;
+  titleTag?: string | null;
+  metaDescription?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -717,6 +719,8 @@ export interface BrandsSelect<T extends boolean = true> {
         text?: T;
         id?: T;
       };
+  titleTag?: T;
+  metaDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

@@ -82,5 +82,25 @@ export const Brands: CollectionConfig = {
         },
       ],
     },
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'SEO',
+          fields: [
+            {
+              name: 'titleTag',
+              type: 'text',
+              label: 'Title tag',
+            },
+            {
+              name: 'metaDescription',
+              type: 'textarea',
+              label: 'Meta description',
+            },
+          ],
+        },
+      ],
+    },
   ],
 }

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import { getPayloadClient } from '@/lib/payload'
 import { ROUTES } from '@/lib/routes'
-import type { Category } from '@/payload-types'
+import type { Article, Category } from '@/payload-types'
 
 /**
  * "Læs også" under artiklen: op til 6 andre artikler fra samme kategori,
@@ -46,31 +46,38 @@ export async function ReadAlso({ articleId, category }: { articleId: string; cat
           </h2>
         </div>
 
-        <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:w-[768px] lg:grid-cols-3">
-          {docs.map((article) => {
-            const thumb = mediaUrl(article.mainImage, 'thumbnail')
-            return (
-              <li key={article.id}>
-                <Link href={ROUTES.article(article.slug)} className="group flex items-center gap-3">
-                  {thumb && (
-                    <img
-                      src={thumb}
-                      alt={mediaAlt(article.mainImage)}
-                      width={64}
-                      height={43}
-                      loading="lazy"
-                      className="h-[43px] w-16 shrink-0 rounded-lg object-cover outline-[0.8px] outline-offset-[1.6px] outline-transparent outline-solid transition-[outline-color] duration-200 group-hover:outline-brand-500"
-                    />
-                  )}
-                  <span className="text-trim line-clamp-2 mt-[3px] mb-[10px] py-[3.2px] font-heading text-[15.2px] leading-[21.76px] text-ink-800">
-                    {article.name}
-                  </span>
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
+        <ArticlePreviewGrid articles={docs} />
       </div>
     </section>
+  )
+}
+
+/** 768px gitter med små artikel-previews (64px billede + titel), som i "Læs også" og på mærkesiderne. */
+export function ArticlePreviewGrid({ articles }: { articles: Article[] }) {
+  return (
+    <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:w-[768px] lg:grid-cols-3">
+      {articles.map((article) => {
+        const thumb = mediaUrl(article.mainImage, 'thumbnail')
+        return (
+          <li key={article.id}>
+            <Link href={ROUTES.article(article.slug)} className="group flex items-center gap-3">
+              {thumb && (
+                <img
+                  src={thumb}
+                  alt={mediaAlt(article.mainImage)}
+                  width={64}
+                  height={43}
+                  loading="lazy"
+                  className="h-[43px] w-16 shrink-0 rounded-lg object-cover outline-[0.8px] outline-offset-[1.6px] outline-transparent outline-solid transition-[outline-color] duration-200 group-hover:outline-brand-500"
+                />
+              )}
+              <span className="text-trim line-clamp-2 mt-[3px] mb-[10px] py-[3.2px] font-heading text-[15.2px] leading-[21.76px] text-ink-800">
+                {article.name}
+              </span>
+            </Link>
+          </li>
+        )
+      })}
+    </ul>
   )
 }
