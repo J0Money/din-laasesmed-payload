@@ -11,8 +11,6 @@ import { getPayloadClient } from '@/lib/payload'
 import { ROUTES } from '@/lib/routes'
 import type { Brand, Category } from '@/payload-types'
 
-export const revalidate = 60
-
 async function getArticle(slug: string) {
   const payload = await getPayloadClient()
   const result = await payload.find({
@@ -22,16 +20,6 @@ async function getArticle(slug: string) {
     limit: 1,
   })
   return result.docs[0]
-}
-
-export async function generateStaticParams() {
-  const payload = await getPayloadClient()
-  const result = await payload.find({
-    collection: 'articles',
-    where: { _status: { equals: 'published' } },
-    limit: 1000,
-  })
-  return result.docs.map((doc) => ({ slug: doc.slug }))
 }
 
 export async function generateMetadata({

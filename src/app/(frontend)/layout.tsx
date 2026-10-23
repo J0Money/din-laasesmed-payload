@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   description: 'Din Låsesmed i Aarhus — under opbygning.',
 }
 
+// Header/Footer henter fra databasen på hver side. Uden dette prøver Next.js at prerendere
+// sider ved build, hvilket fejler når databasen (Railways private netværk) ikke kan nås under build.
+export const dynamic = 'force-dynamic'
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="da" className={`${montserrat.variable} ${archivo.variable}`}>
