@@ -1130,10 +1130,17 @@ export interface Home {
     image?: (string | null) | Media;
     ctaLabel?: string | null;
   };
-  testimonial?: {
-    quote?: string | null;
-    author?: string | null;
-  };
+  /**
+   * Skifter automatisk hvert 5. sekund.
+   */
+  testimonials?:
+    | {
+        quote: string;
+        author: string;
+        id?: string | null;
+      }[]
+    | null;
+  statsImage?: (string | null) | Media;
   stats?:
     | {
         value: number;
@@ -1152,6 +1159,7 @@ export interface Home {
         label?: string | null;
         type?: ('logo' | 'photo') | null;
         bgColor?: string | null;
+        logoHeight?: number | null;
         id?: string | null;
       }[]
     | null;
@@ -1308,12 +1316,14 @@ export interface HomeSelect<T extends boolean = true> {
         image?: T;
         ctaLabel?: T;
       };
-  testimonial?:
+  testimonials?:
     | T
     | {
         quote?: T;
         author?: T;
+        id?: T;
       };
+  statsImage?: T;
   stats?:
     | T
     | {
@@ -1335,6 +1345,7 @@ export interface HomeSelect<T extends boolean = true> {
         label?: T;
         type?: T;
         bgColor?: T;
+        logoHeight?: T;
         id?: T;
       };
   updatedAt?: T;

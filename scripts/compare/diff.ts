@@ -1,5 +1,5 @@
-// Sammenligner to JSON-snapshots lavet med extract.js (local.json vs live.json)
-// og udskriver kun de elementer/felter der afviger. Kør: pnpm tsx scripts/compare/diff.ts
+// Sammenligner to JSON-snapshots (fx lavet med extract.js / extract-home.js) og udskriver kun det der afviger.
+// Kør: pnpm tsx scripts/compare/diff.ts [prefix]  — uden prefix: local.json/live.json, med "home": home-local.json/home-live.json
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -7,8 +7,9 @@ import { fileURLToPath } from 'node:url'
 const PX_TOLERANCE = 2
 
 const dir = dirname(fileURLToPath(import.meta.url))
-const local = JSON.parse(readFileSync(join(dir, 'local.json'), 'utf-8'))
-const live = JSON.parse(readFileSync(join(dir, 'live.json'), 'utf-8'))
+const prefix = process.argv[2] ? `${process.argv[2]}-` : ''
+const local = JSON.parse(readFileSync(join(dir, `${prefix}local.json`), 'utf-8'))
+const live = JSON.parse(readFileSync(join(dir, `${prefix}live.json`), 'utf-8'))
 
 function diffValue(path: string, a: unknown, b: unknown, out: string[]) {
   if (a === null || b === null) {

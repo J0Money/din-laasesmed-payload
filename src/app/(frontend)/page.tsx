@@ -1,7 +1,19 @@
 import Link from 'next/link'
 
-import { CertificateIcon, ClockIcon, HandshakeIcon, LockShieldIcon, StoreIcon } from '@/components/home/HomeIcons'
+import {
+  ButtonCheckIcon,
+  CertificateIcon,
+  ClockIcon,
+  HandshakeIcon,
+  LockShieldIcon,
+  PinIcon,
+  PlusCircleIcon,
+  StoreIcon,
+} from '@/components/home/HomeIcons'
+import { ParallaxImage } from '@/components/home/ParallaxImage'
 import { StatCounter } from '@/components/home/StatCounter'
+import { TestimonialSlider } from '@/components/home/TestimonialSlider'
+import { LockIcon, SignalIcon } from '@/components/layout/NavIcons'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import { getPayloadClient } from '@/lib/payload'
 import { ROUTES } from '@/lib/routes'
@@ -29,65 +41,85 @@ const FEATURES = [
   },
 ]
 
+/** Overskrift-par der går igen i alle sektioner: lille blå tagline + 40px let overskrift (h1 på originalen). */
+function SectionHeadline({
+  tagline,
+  title,
+  center = false,
+  leading = 'leading-[44px]',
+}: {
+  tagline: string
+  title: string
+  center?: boolean
+  leading?: string
+}) {
+  return (
+    <div className={`flex flex-col ${center ? 'items-center gap-3 text-center' : 'gap-2'}`}>
+      <p className="font-heading text-sm leading-[21px] text-brand-500">{tagline}</p>
+      <h2 className={`text-trim mt-5 mb-[10px] font-heading text-[40px] font-light text-ink-800 ${leading}`}>{title}</h2>
+    </div>
+  )
+}
+
+/** Knapper på forsiden har 16px tekst og ikon efter teksten, i modsætning til artiklernes 14px-knapper. */
+const HOME_BUTTON = 'h-auto gap-3 py-4 text-base'
+
+/**
+ * Mål aflæst fra din-laasesmed.dk ved 1600px viewport, sektion for sektion.
+ * Indhold der kan redigeres (billeder, tal, udtalelser, erhvervskunder) ligger i Home-globalen.
+ */
 export default async function HomePage() {
   const payload = await getPayloadClient()
   const home = await payload.findGlobal({ slug: 'home' })
 
-  const visualImageUrl = mediaUrl(home.visual?.image, 'ratio32')
+  // Originalfilen, ikke en Payload-størrelse: de faste størrelser beskærer portrætbilledet til landskab.
+  const visualImageUrl = mediaUrl(home.visual?.image)
+  const statsImageUrl = mediaUrl(home.statsImage, 'hero')
   const mekaniskImageUrl = mediaUrl(home.focusCards?.mekaniskImage)
   const elektroniskImageUrl = mediaUrl(home.focusCards?.elektroniskImage)
   const serviceImageUrl = mediaUrl(home.focusCards?.serviceImage)
 
   return (
     <main>
-      {/* Hero: mål fra din-laasesmed.dk — 640px højt, video fylder hele båndet, tekst centreret. */}
       <section className="relative h-[640px] overflow-hidden bg-ink-900">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover"
-        >
+        <video autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover">
           <source src="/videos/hero.webm" type="video/webm" />
           <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-black/25" />
 
-        <div className="site-container relative z-10 flex h-full flex-col items-center justify-center text-center">
-          <h1 className="flex flex-wrap items-center justify-center gap-3 font-heading text-[32px] leading-[1.1] font-light text-[#edf0f3] sm:gap-5 sm:text-[48px] sm:leading-[1]">
-            <span>Din Låsesmed</span>
+        <div className="site-container relative z-10 flex h-full flex-col items-center justify-center gap-6 text-center">
+          <h1 className="mt-5 mb-[10px] flex flex-wrap items-center justify-center gap-x-8 gap-y-2 font-heading text-[32px] leading-[1.2] font-light text-[#edf0f3] sm:text-[48px] sm:leading-[48px]">
+            <span className="text-trim">Din Låsesmed</span>
             <span className="h-3 w-3 shrink-0 rounded-full bg-[#edf0f3]" />
-            <span>Din tryghed</span>
+            <span className="text-trim">Din tryghed</span>
           </h1>
 
-          <div className="mt-6 flex items-center gap-4">
-            <Link href={ROUTES.contact()} className="button-accent gap-3">
-              <StoreIcon className="h-4 w-4" />
-              Gratis servicetjek
+          <div className="flex flex-wrap items-center justify-center gap-6">
+            <Link href={ROUTES.article('uforpligtende-servicetjek')} className={`button-accent ${HOME_BUTTON}`}>
+              <span className="text-trim">Gratis servicetjek</span>
+              <ButtonCheckIcon className="h-auto w-4" />
             </Link>
-            <Link href={ROUTES.contact()} className="button">
-              Kontakt os
+            <Link href={ROUTES.contact()} className={`button ${HOME_BUTTON}`}>
+              <span className="text-trim">Kontakt os</span>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Den rette løsning: eyebrow + overskrift + 2x2 features, med kvadratisk billede og CTA til højre. */}
-      <section className="site-container py-20">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          <div>
-            <p className="text-sm font-medium text-brand-500">Din lokale låsesmed siden 1992</p>
-            <h2 className="text-trim mt-3 mb-10 font-heading text-[40px] leading-[1.2] font-light text-ink-800">
-              Den rette løsning
-            </h2>
+      <section className="py-20">
+        {/* Billedet er en tredjedel af containeren (426.67px), teksten fylder resten og centreres lodret. */}
+        <div className="site-container grid grid-cols-1 gap-8 lg:grid-cols-[1fr_calc((100%-64px)/3)]">
+          <div className="flex flex-col justify-center gap-12">
+            <SectionHeadline tagline="Din lokale låsesmed siden 1992" title="Den rette løsning" leading="leading-[60px]" />
 
-            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
+            <div className="grid max-w-[768px] grid-cols-1 gap-6 sm:grid-cols-2">
               {FEATURES.map((feature) => (
-                <div key={feature.title} className="flex gap-3">
-                  <feature.icon className="mt-1 h-5 w-5 shrink-0 text-brand-500" />
+                <div key={feature.title} className="flex gap-5">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-500 text-[#edf0f3]">
+                    <feature.icon className="h-[19px] w-4" />
+                  </span>
                   <p className="text-text-body">
-                    <span className="font-medium text-ink-800">{feature.title}</span> {feature.text}
+                    <strong className="font-bold">{feature.title}</strong> {feature.text}
                   </p>
                 </div>
               ))}
@@ -97,15 +129,11 @@ export default async function HomePage() {
           {visualImageUrl && (
             <div className="relative aspect-square overflow-hidden rounded-2xl">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={visualImageUrl}
-                alt={mediaAlt(home.visual?.image)}
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-x-6 bottom-6">
-                <Link href={ROUTES.contact()} className="button-accent w-full gap-3">
-                  <StoreIcon className="h-4 w-4" />
-                  {home.visual?.ctaLabel || 'Besøg os i Aarhus'}
+              <img src={visualImageUrl} alt={mediaAlt(home.visual?.image)} className="absolute inset-0 h-full w-full object-cover" />
+              <div className="absolute inset-x-8 bottom-6">
+                <Link href={ROUTES.contact()} className={`button-accent w-full ${HOME_BUTTON} py-[18.4px]`}>
+                  <span className="text-trim">{home.visual?.ctaLabel || 'Besøg os i Aarhus'}</span>
+                  <StoreIcon className="h-auto w-4" />
                 </Link>
               </div>
             </div>
@@ -113,146 +141,153 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Kundeudtalelse (lys) + statistik-bånd (mørkt). */}
-      <section className="bg-surface-muted py-20">
-        <div className="site-container">
-          <p className="text-sm font-medium text-brand-500">Hvad siger vores kunder</p>
-          <h2 className="text-trim mt-3 mb-8 font-heading text-[40px] leading-[1.2] font-light text-ink-800">
-            Udtalelser
-          </h2>
-
-          {home.testimonial?.quote && (
-            <blockquote className="max-w-2xl">
-              <p className="text-trim font-heading text-2xl leading-snug font-light text-ink-800">
-                &quot;{home.testimonial.quote}&quot;
-              </p>
-              {home.testimonial.author && (
-                <footer className="mt-4 text-sm text-ink-muted">{home.testimonial.author}</footer>
-              )}
-            </blockquote>
-          )}
-        </div>
-      </section>
+      {home.testimonials && home.testimonials.length > 0 && (
+        <section className="bg-surface-muted py-20">
+          <div className="mx-auto flex w-full max-w-[1117px] flex-col items-start justify-center gap-10 px-4 lg:flex-row lg:gap-16 lg:px-0">
+            <div className="shrink-0">
+              <SectionHeadline tagline="Hvad siger vores kunder" title="Udtalelser" />
+            </div>
+            <TestimonialSlider testimonials={home.testimonials} />
+          </div>
+        </section>
+      )}
 
       {home.stats && home.stats.length > 0 && (
-        <section className="bg-ink-900 py-10">
-          <div className="site-container grid grid-cols-2 gap-8 text-center sm:grid-cols-4">
+        <section className="relative overflow-hidden border-b-[0.8px] border-[#e4ebf3] bg-ink-900">
+          {statsImageUrl && <ParallaxImage src={statsImageUrl} alt="" />}
+          <div className="absolute inset-0 z-[1] bg-ink-900 opacity-80" />
+
+          <div className="site-container relative z-10 grid grid-cols-2 gap-y-12 py-[112px] lg:flex lg:items-center lg:justify-around">
             {home.stats.map((stat) => (
-              <div key={stat.id ?? stat.label}>
-                <p className="font-heading text-2xl font-medium text-[#edf0f3]">
-                  <StatCounter value={stat.value} />
-                </p>
-                <p className="mt-1 text-sm text-[#e4e8ef]">{stat.label}</p>
+              <div key={stat.id ?? stat.label} className="flex flex-col items-center justify-center gap-3 text-center lg:w-60">
+                <div className="flex items-center justify-center gap-2 text-[#edf0f3]">
+                  <span className="font-heading text-[48px] leading-[48px] font-light">
+                    <StatCounter value={stat.value} />
+                  </span>
+                  <PlusCircleIcon />
+                </div>
+                <p className="text-trim text-sm leading-[21px] text-surface-muted">{stat.label}</p>
               </div>
             ))}
           </div>
         </section>
       )}
 
-      {/* Tre fokus-kort: Mekanisk sikring / servicetjek-CTA / Elektronisk sikring. */}
-      <section className="site-container py-20">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <Link
+      <section className="py-20">
+        <div className="site-container grid grid-cols-1 gap-8 lg:grid-cols-3">
+          <FocusImageCard
             href={ROUTES.category('mekanisk-sikring')}
-            className="group relative flex h-[480px] flex-col justify-start overflow-hidden rounded-2xl p-6"
-          >
-            {mekaniskImageUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={mekaniskImageUrl}
-                alt="Mekanisk sikring"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-            )}
-            <span className="relative flex items-center gap-2 self-start rounded-full bg-white px-4 py-2 text-sm font-medium text-ink-900 shadow-sm">
-              <LockShieldIcon className="h-4 w-4 text-brand-500" />
-              Mekanisk sikring
-            </span>
-          </Link>
+            imageUrl={mekaniskImageUrl}
+            label="Mekanisk sikring"
+            icon={<LockIcon className="h-5 w-5" />}
+          />
 
-          <div className="flex h-[480px] flex-col justify-between rounded-2xl bg-ink-900 p-8">
-            <div>
-              <h3 className="text-trim font-heading text-2xl leading-snug font-light text-[#edf0f3]">
+          <Link
+            href={ROUTES.contact()}
+            className="group flex h-[480px] flex-col items-start justify-between gap-10 overflow-hidden rounded-2xl bg-ink-900 pt-16 text-[#ced5e1]"
+          >
+            <div className="flex w-full flex-col gap-8 px-10">
+              <h3 className="text-trim mt-5 mb-[10px] text-center font-heading text-2xl leading-[26.4px] font-normal text-[#edf0f3]">
                 Få et uforpligtende servicetjek
               </h3>
-              <p className="mt-4 text-[#e4e8ef]">
+              <p className="text-center text-sm leading-[21px]">
                 Vores låsekonsulent kommer ud og vurderer dine nuværende løsninger, så du får tryghed og overblik
                 uden forpligtelser.
               </p>
-              <Link href={ROUTES.contact()} className="button-accent mt-6 gap-3">
-                Bestil service
-              </Link>
+              <div className="flex justify-center">
+                <span
+                  className={`button-accent ${HOME_BUTTON} group-hover:border-background group-hover:bg-background group-hover:text-ink-800`}
+                >
+                  <span className="text-trim">Bestil service</span>
+                  <ButtonCheckIcon className="h-auto w-4" />
+                </span>
+              </div>
             </div>
-
             {serviceImageUrl && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={serviceImageUrl} alt="" className="-mx-8 -mb-8 h-32 w-[calc(100%+64px)] object-cover" />
+              <img src={serviceImageUrl} alt="" className="h-[178px] w-full shrink-0 object-cover" />
             )}
-          </div>
-
-          <Link
-            href={ROUTES.category('elektronisk-sikring')}
-            className="group relative flex h-[480px] flex-col justify-start overflow-hidden rounded-2xl p-6"
-          >
-            {elektroniskImageUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={elektroniskImageUrl}
-                alt="Elektronisk sikring"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-            )}
-            <span className="relative flex items-center gap-2 self-start rounded-full bg-white px-4 py-2 text-sm font-medium text-ink-900 shadow-sm">
-              <ClockIcon className="h-4 w-4 text-brand-500" />
-              Elektronisk sikring
-            </span>
           </Link>
+
+          <FocusImageCard
+            href={ROUTES.category('elektronisk-sikring')}
+            imageUrl={elektroniskImageUrl}
+            label="Elektronisk sikring"
+            icon={<SignalIcon className="h-5 w-5" />}
+          />
         </div>
       </section>
 
-      {/* Erhvervskunder: 3-kolonne masonry med logoer og fotos. */}
       {home.businessCustomers && home.businessCustomers.length > 0 && (
-        <section className="site-container pb-24">
-          <p className="text-center text-sm font-medium text-brand-500">Fra havedøren til havudsigt</p>
-          <h2 className="text-trim mt-3 mb-10 text-center font-heading text-[40px] leading-[1.2] font-light text-ink-800">
-            Mød vores erhvervskunder
-          </h2>
+        <section className="bg-surface-muted py-20">
+          <div className="site-container flex flex-col gap-12">
+            <SectionHeadline tagline="Fra havedøren til havudsigt" title="Mød vores erhvervskunder" center />
 
-          <div className="columns-1 gap-8 sm:columns-2 lg:columns-3 [&>*]:mb-8">
-            {home.businessCustomers.map((customer) => {
-              const url = mediaUrl(customer.image)
-              if (!url) return null
+            <div className="columns-1 gap-8 sm:columns-2 lg:columns-3">
+              {home.businessCustomers.map((customer) => {
+                const url = mediaUrl(customer.image)
+                if (!url) return null
 
-              return (
-                <div
-                  key={customer.id ?? url}
-                  className="relative overflow-hidden rounded-2xl break-inside-avoid"
-                >
-                  {customer.type === 'logo' ? (
-                    <div
-                      className="flex aspect-[2/1] items-center justify-center p-10"
-                      style={{ backgroundColor: customer.bgColor || '#ffffff' }}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={url} alt={mediaAlt(customer.image)} className="max-h-full max-w-full object-contain" />
-                    </div>
-                  ) : (
-                    <div className="relative aspect-square">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={url} alt={mediaAlt(customer.image)} className="h-full w-full object-cover" />
-                      {customer.label && (
-                        <span className="absolute bottom-4 left-4 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-ink-900">
-                          {customer.label}
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )
-            })}
+                return (
+                  <div key={customer.id ?? url} className="mb-8 break-inside-avoid overflow-hidden rounded-2xl">
+                    {customer.type === 'logo' ? (
+                      <div
+                        className="flex aspect-[2/1] items-center justify-center"
+                        style={{ backgroundColor: customer.bgColor || '#ffffff' }}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={url}
+                          alt={mediaAlt(customer.image)}
+                          className="max-w-full object-contain"
+                          style={{ height: customer.logoHeight ?? 96 }}
+                        />
+                      </div>
+                    ) : (
+                      <div className="relative aspect-square">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={url} alt={mediaAlt(customer.image)} className="absolute inset-0 h-full w-full object-cover" />
+                        {customer.label && (
+                          <span className="absolute bottom-8 left-8 flex items-center gap-[9.6px] rounded-lg bg-[rgba(34,41,59,0.25)] px-4 py-3 text-[#edf0f3] backdrop-blur-[5px]">
+                            <PinIcon />
+                            <span className="font-heading text-xs leading-[18px]">{customer.label}</span>
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </section>
       )}
     </main>
+  )
+}
+
+function FocusImageCard({
+  href,
+  imageUrl,
+  label,
+  icon,
+}: {
+  href: string
+  imageUrl?: string
+  label: string
+  icon: React.ReactNode
+}) {
+  return (
+    <Link href={href} className="group relative block h-[480px] overflow-hidden rounded-2xl px-10 pt-10">
+      {imageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={imageUrl} alt={label} className="absolute inset-0 h-full w-full object-cover" />
+      )}
+      <span className="absolute inset-0 z-[1] bg-[rgba(34,41,59,0.25)]" />
+      <span className="relative z-10 inline-flex items-center gap-3 rounded-lg bg-background px-6 py-[13.6px] text-brand-500 shadow-[0_2px_8px_rgba(0,0,0,0.2)] transition-colors duration-200 group-hover:bg-ink-900 group-hover:text-white">
+        {icon}
+        <span className="text-trim font-heading text-sm leading-[15.4px]">{label}</span>
+      </span>
+    </Link>
   )
 }

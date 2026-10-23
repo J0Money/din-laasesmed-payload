@@ -31,7 +31,7 @@ export function StatCounter({ value }: { value: number }) {
         requestAnimationFrame(tick)
         observer.disconnect()
       },
-      { threshold: 0.5 },
+      { threshold: 0.2 },
     )
 
     observer.observe(el)

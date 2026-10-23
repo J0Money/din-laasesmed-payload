@@ -38,13 +38,14 @@ export async function Header() {
             </span>
           </div>
 
-          <nav className="hidden items-center gap-8 font-heading leading-5 tracking-[0.25px] md:flex">
+          <nav className="hidden items-center gap-8 self-stretch font-heading leading-5 tracking-[0.25px] md:flex">
             {(header.utilityLinks ?? []).map((item, index) =>
               item.children && item.children.length > 0 ? (
-                <div key={item.id ?? index} className="group relative">
+                // Hover-området fylder hele topbjælkens højde, så der ikke er et hul mellem tekst og dropdown.
+                <div key={item.id ?? index} className="group relative flex h-full items-center">
                   <span className="cursor-default">{item.link?.label}</span>
                   {/* Mål fra din-laasesmed.dk: mørk boks (samme farve som topbjælken), ikke hvid. */}
-                  <div className="absolute right-0 top-full z-30 hidden min-w-max flex-col gap-[6px] rounded-md bg-ink-800 px-3 py-[10px] text-[#ced5e1] group-hover:flex">
+                  <div className="invisible absolute right-0 top-full z-30 flex min-w-max flex-col gap-[6px] rounded-md bg-ink-800 px-3 py-[10px] text-[#ced5e1] opacity-0 transition-[opacity,visibility] duration-200 group-hover:visible group-hover:opacity-100">
                     {item.children.map((child, childIndex) => (
                       <Link key={child.id ?? childIndex} href={resolveLinkHref(child.link)} className="whitespace-nowrap hover:text-white">
                         {child.link?.label}
@@ -69,23 +70,25 @@ export async function Header() {
             <Logo className="h-auto w-[208px] overflow-visible" />
           </Link>
 
-          <div className="flex items-center gap-10">
-            <nav className="hidden items-center gap-10 font-heading text-[0.9rem] font-medium md:flex">
+          <div className="flex items-center gap-10 self-stretch">
+            <nav className="hidden items-center gap-10 self-stretch font-heading text-[0.9rem] font-medium md:flex">
               {(header.navItems ?? []).map((item, index) => {
                 const Icon = NAV_ICON_BY_CATEGORY_SLUG[linkCategorySlug(item.link) ?? '']
                 const categoryHref = resolveLinkHref(item.link)
 
                 return (
-                  <div key={item.id ?? index} className="group">
+                  <div key={item.id ?? index} className="group flex h-full items-center">
                     <Link href={categoryHref} className="flex items-center gap-3 py-[5px] leading-5 transition-colors duration-200 hover:text-brand-500">
                       {Icon && <Icon />}
                       {item.link?.label}
                     </Link>
 
                     {/* Mega-menu, mål og lag aflæst fra din-laasesmed.dk (1600px): mørkt bånd i fuld bredde, 5-kolonners grid, ikon = artiklens eget billede.
-                        Positioneres relativt til <header> (øverste "relative"-forfader), ikke dette lille nav-punkt — ellers bliver båndet ikke fuld bredde. */}
+                        Positioneres relativt til <header> (øverste "relative"-forfader), ikke dette lille nav-punkt — ellers bliver båndet ikke fuld bredde.
+                        Som originalen glider panelet ned og fader over 0,4 s. Visibility skifter først til sidst ved lukning,
+                        så man kan nå at flytte musen ned i panelet. -z-10 lægger det under nav-bjælkerne, mens det glider. */}
                     {item.children && item.children.length > 0 && (
-                      <div className="absolute left-0 right-0 top-full z-30 hidden bg-[rgba(18,23,41,0.9)] py-10 font-sans group-hover:block">
+                      <div className="invisible absolute inset-x-0 top-0 -z-10 bg-[rgba(18,23,41,0.9)] py-10 font-sans opacity-0 transition-[top,opacity,visibility] duration-[400ms] group-hover:visible group-hover:top-full group-hover:opacity-100">
                         <div className="site-container">
                           <p className="mb-[10px] text-[19px] leading-[29px] font-medium text-[#96a1b7]">{item.link?.label}</p>
 

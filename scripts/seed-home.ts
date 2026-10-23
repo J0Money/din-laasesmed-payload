@@ -21,9 +21,17 @@ async function run() {
     return String(doc.id)
   }
 
-  // Samme billede som allerede bruges på en medarbejder (Anders), genbruges her 1:1 som på originalen.
-  const visualImage = await payload.find({ collection: 'media', where: { filename: { contains: 'DSC07388' } }, limit: 1 })
-  const visualImageId = visualImage.docs[0] ? String(visualImage.docs[0].id) : undefined
+  // Forsidens eget portrætbillede (576x1024). Medarbejderfotoet af Anders er en beskåret 576x384-udgave og kan ikke genbruges.
+  const visualImageId = await mediaFromUrl(
+    'Anders daglig leder i Aarhus butikken.',
+    'https://cdn.prod.website-files.com/68219f1c6821c86ed6240d9e/682accd2a265259227614cce_DSC07388_576x1024.avif',
+    'anders-aarhus-butik.avif',
+    'image/avif',
+  )
+
+  // "Åben varevogn" er allerede migreret fra Webflow og genbruges som baggrund i statistik-båndet.
+  const statsImage = await payload.find({ collection: 'media', where: { filename: { contains: 'varevogn' } }, limit: 1 })
+  const statsImageId = statsImage.docs[0] ? String(statsImage.docs[0].id) : undefined
 
   const mekaniskImageId = await mediaFromUrl(
     'Mekanisk sikring — produktbillede',
@@ -44,20 +52,21 @@ async function run() {
     'image/avif',
   )
 
-  const customerSources: { alt: string; url: string; filename: string; type: 'logo' | 'photo'; label?: string; bgColor?: string }[] = [
+  const customerSources: { alt: string; url: string; filename: string; type: 'logo' | 'photo'; label?: string; bgColor?: string; logoHeight?: number }[] = [
     {
       alt: 'Trianglen logo',
       url: 'https://cdn.prod.website-files.com/68219f1c6821c86ed6240d9e/68249a1429275d5c2053b09a_trianglen.avif',
       filename: 'trianglen.avif',
       type: 'logo',
       bgColor: '#d88e6d',
+      logoHeight: 144,
     },
     {
       alt: 'Erhvervskunde i Aarhus',
       url: 'https://cdn.prod.website-files.com/68219f1c6821c86ed6240d9e/6826fc4fd396adf6d7a82e7c_0f34b3c96953bc68681730b78c99af82_AARhus.avif',
       filename: 'aarhus.avif',
       type: 'photo',
-      label: 'Aarhus',
+      label: 'AArhus',
     },
     {
       alt: 'Den Gamle By logo',
@@ -98,7 +107,7 @@ async function run() {
       url: 'https://cdn.prod.website-files.com/68219f1c6821c86ed6240d9e/6826fc4f89dd35c546d19ef0_Nobelparken_02.avif',
       filename: 'nobelparken.avif',
       type: 'photo',
-      label: 'Nobelparken',
+      label: 'NOBELPARKEN',
     },
     {
       alt: 'AarBus logo',
@@ -113,7 +122,7 @@ async function run() {
   for (const source of customerSources) {
     const mimetype = source.filename.endsWith('.webp') ? 'image/webp' : 'image/avif'
     const id = await mediaFromUrl(source.alt, source.url, source.filename, mimetype)
-    businessCustomers.push({ image: id, label: source.label, type: source.type, bgColor: source.bgColor })
+    businessCustomers.push({ image: id, label: source.label, type: source.type, bgColor: source.bgColor, logoHeight: source.logoHeight ?? 96 })
   }
 
   await payload.updateGlobal({
@@ -123,10 +132,24 @@ async function run() {
         image: visualImageId,
         ctaLabel: 'Besøg os i Aarhus',
       },
-      testimonial: {
-        quote: 'Vi sætter stor pris på Din Låsesmeds store faglighed og fleksible samarbejde.',
-        author: 'Bent Høyer Laursen fra Aarhus',
-      },
+      // Teksterne er 1:1 fra originalen, inkl. citationstegn og "Aarbus".
+      testimonials: [
+        {
+          quote: '"Vi sætter stor pris på Din Låsesmeds store faglighed og fleksible samarbejde."',
+          author: 'Bent Høyer Laursen fra Aarbus',
+        },
+        {
+          quote:
+            '"Din Låsesmed har gennem en årrække været en god og stabil samarbejdspartner i flere af vores boligafdelinger. De udfører altid et hurtigt og professionelt arbejde, som vi sætter stor pris på."',
+          author: 'Boligforeningen Århus Omegn',
+        },
+        {
+          quote:
+            'Vi har været meget tilfredse med vores samarbejde med Din Låsesmed. De leverer en pålidelig og professionel service og har vist stor fleksibilitet og faglighed i deres tilgang til opgaverne på vores kraftvarmeværk i Lisbjerg.',
+          author: 'Thorbjørn fra Energipark Lisbjerg',
+        },
+      ],
+      statsImage: statsImageId,
       stats: [
         { value: 10000, label: 'Kunder' },
         { value: 1600, label: 'Akut udkald' },
