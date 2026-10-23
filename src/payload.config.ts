@@ -15,6 +15,7 @@ import { Pages } from './collections/Pages'
 import { Users } from './collections/Users'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
+import { Home } from './globals/Home'
 import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -28,7 +29,7 @@ export default buildConfig({
     },
   },
   collections: [Pages, Articles, Categories, Brands, Employees, Users, Media],
-  globals: [Header, Footer, SiteSettings],
+  globals: [Header, Footer, SiteSettings, Home],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [...defaultFeatures, BlocksFeature({ blocks: [videoEmbedBlock] })],
   }),
