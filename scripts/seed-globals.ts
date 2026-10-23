@@ -112,7 +112,7 @@ async function run() {
           ...customLink('Afdelinger', '#'),
           children: [
             customLink('Aarhus afdeling', '/kontakt'),
-            customLink('Aalborg afdeling', '/artikler/lasesmed-aalborg'),
+            customLink('Aalborg afdeling', '/laasesmed-aalborg'),
           ],
         },
         { ...customLink('Om os', '/om-os'), children: [] },

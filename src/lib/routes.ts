@@ -9,6 +9,7 @@ export const ROUTES = {
   employee: (slug: string) => `/employees/${slug}`,
   page: (slug: string) => `/${slug}`,
   contact: () => '/kontakt',
+  contactAalborg: () => '/laasesmed-aalborg',
   notFound: () => '/404',
 } as const
 
@@ -24,6 +25,7 @@ export const RESERVED_SLUGS = [
   'brands',
   'employees',
   'kontakt',
+  'laasesmed-aalborg',
   'kvittering',
   '404',
 ]

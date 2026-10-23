@@ -5,6 +5,7 @@ import { mediaAlt, mediaUrl } from '@/lib/media'
 import { getPayloadClient } from '@/lib/payload'
 import { ROUTES } from '@/lib/routes'
 
+import { CallLink } from './CallLink'
 import { Logo } from './Logo'
 import { GridIcon, NAV_ICON_BY_CATEGORY_SLUG } from './NavIcons'
 
@@ -22,12 +23,7 @@ export async function Header() {
         <div className="site-container flex h-[38px] items-center justify-between text-[0.9rem]">
           <div className="flex items-center gap-8">
             {siteSettings.phone && (
-              <span>
-                Ring til{' '}
-                <a href={`tel:${siteSettings.phone.replace(/\s/g, '')}`}>
-                  {siteSettings.phone}
-                </a>
-              </span>
+              <CallLink phone={siteSettings.phone} aalborgPhone={siteSettings.departments?.[1]?.phone} />
             )}
             <span className="flex items-center gap-2 text-[#52a24d]">
               <span className="relative flex h-[7px] w-[7px]">
