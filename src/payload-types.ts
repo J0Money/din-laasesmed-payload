@@ -490,6 +490,11 @@ export interface Employee {
    */
   photo?: (string | null) | Media;
   showImage?: boolean | null;
+  showOnAbout?: boolean | null;
+  /**
+   * Lavest først inden for gruppen på Om os.
+   */
+  sortOrder?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -738,6 +743,8 @@ export interface EmployeesSelect<T extends boolean = true> {
   type?: T;
   photo?: T;
   showImage?: T;
+  showOnAbout?: T;
+  sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
 }

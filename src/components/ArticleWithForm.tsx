@@ -8,15 +8,17 @@ export function ArticleWithForm({
   imageUrl,
   imageAlt = '',
   heading,
+  className = '',
   children,
 }: {
   imageUrl?: string
   imageAlt?: string
   heading: string
+  className?: string
   children: React.ReactNode
 }) {
   return (
-    <section className="bg-background py-20">
+    <section className={`bg-background py-20 ${className}`}>
       <div className="site-container relative z-10 lg:flex lg:items-start lg:justify-center lg:gap-12">
         <article className="flex min-w-0 flex-col gap-8 lg:shrink-0 lg:basis-[min(896px,calc(100%-297px))]">
           {imageUrl && (

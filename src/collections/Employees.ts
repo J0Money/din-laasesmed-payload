@@ -5,7 +5,7 @@ export const Employees: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     group: 'Indhold',
-    defaultColumns: ['name', 'title', 'type', 'updatedAt'],
+    defaultColumns: ['name', 'title', 'type', 'sortOrder', 'showOnAbout'],
   },
   fields: [
     {
@@ -66,6 +66,20 @@ export const Employees: CollectionConfig = {
       type: 'checkbox',
       label: 'Vis billede',
       defaultValue: true,
+    },
+    {
+      name: 'showOnAbout',
+      type: 'checkbox',
+      label: 'Vis på Om os',
+      defaultValue: true,
+    },
+    {
+      name: 'sortOrder',
+      type: 'number',
+      label: 'Rækkefølge',
+      admin: {
+        description: 'Lavest først inden for gruppen på Om os.',
+      },
     },
   ],
 }

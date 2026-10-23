@@ -4,6 +4,8 @@ import { ArticleWithForm } from '@/components/ArticleWithForm'
 import { CertificateIcon, ClockIcon, MailIcon, ShopIcon } from '@/components/home/HomeIcons'
 import { ROUTES } from '@/lib/routes'
 
+import { ShopVideoHero } from './ShopVideoHero'
+
 type ContactCard = {
   icon: React.ComponentType<{ className?: string }>
   text: string
@@ -62,14 +64,7 @@ export function DepartmentContactPage({
 
   return (
     <main>
-      <div className="relative h-[453px] overflow-hidden bg-surface-muted">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/videos/butik-poster.avif" alt="Butik reception" className="absolute inset-0 h-full w-full object-cover" />
-        <video autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover">
-          <source src="/videos/butik.webm" type="video/webm" />
-          <source src="/videos/butik.mp4" type="video/mp4" />
-        </video>
-      </div>
+      <ShopVideoHero />
 
       <div className="relative z-10 -mt-8">
         <ul className="site-container grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
