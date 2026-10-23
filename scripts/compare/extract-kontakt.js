@@ -1,0 +1,70 @@
+// Kør på /kontakt (din-laasesmed.dk og localhost:3456) ved 1600px. Elementer findes via tekst.
+;(async () => {
+  for (let y = 0; y < document.body.scrollHeight; y += 400) {
+    window.scrollTo(0, y)
+    await new Promise((r) => setTimeout(r, 120))
+  }
+  window.scrollTo(0, 0)
+  await new Promise((r) => setTimeout(r, 2000))
+  document.querySelectorAll('[class*="fade"]').forEach((e) => {
+    e.style.opacity = 1
+    e.style.transform = 'none'
+  })
+
+  const docRect = (el) => {
+    const r = el.getBoundingClientRect()
+    return { x: Math.round(r.left), y: Math.round(r.top + scrollY), w: Math.round(r.width), h: Math.round(r.height) }
+  }
+  const pick = (el, props) => {
+    const s = getComputedStyle(el)
+    const o = {}
+    for (const p of props) o[p] = p === 'fontFamily' ? s[p].split(',')[0].replace(/"/g, '') : s[p]
+    return o
+  }
+  const TEXT = ['fontSize', 'lineHeight', 'fontWeight', 'fontFamily', 'color']
+  const BOX = ['backgroundColor', 'borderRadius', 'borderTopColor']
+  const m = (el, props = []) => (el ? { rect: docRect(el), ...pick(el, props) } : null)
+  const leaf = (text) =>
+    [...document.querySelectorAll('main *, .contact_cards *')].find(
+      (el) =>
+        ![...el.children].some((c) => c.textContent.trim()) &&
+        el.textContent.trim().startsWith(text) &&
+        el.getBoundingClientRect().width > 2,
+    )
+  const box = (el) => {
+    let n = el
+    while (n && getComputedStyle(n).backgroundColor === 'rgba(0, 0, 0, 0)') n = n.parentElement
+    return n
+  }
+  const ringText = leaf('Ring til os når')
+  const ringCta = leaf('86 20 66 00')
+  const routeCta = leaf('Rutevejledning')
+  const video = document.querySelector('video')
+
+  window.__kontaktMeasure = JSON.stringify(
+    {
+      hero: m(video),
+      card: m(box(ringText), [...BOX, 'boxShadow']),
+      cardText: m(ringText, TEXT),
+      cardIcon: m(ringText.previousElementSibling, BOX),
+      filledCta: m(box(ringCta), BOX),
+      filledCtaText: m(ringCta, TEXT),
+      outlineCta: m(routeCta?.closest('a'), BOX),
+      lastCardCta: m(leaf('ISO 9001')?.closest('a')),
+      // Artikelbilledet (896px), ikke hero-posteren der også kan ligge i <main>.
+      image: m(
+        [...document.querySelectorAll('main img')].find((i) => Math.abs(i.getBoundingClientRect().width - 896) < 10),
+        ['borderRadius'],
+      ),
+      heading: m(leaf('Kontakt Din Låsesmed'), TEXT),
+      text: m(
+        [...document.querySelectorAll('main p')].find((p) => p.textContent.trim().startsWith('Har du brug for hjælp til låse')),
+        TEXT,
+      ),
+      formHeading: m(leaf('Brug for hjælp?'), TEXT),
+      footerY: Math.round(document.querySelector('footer').getBoundingClientRect().top + scrollY),
+    },
+    null,
+    2,
+  )
+})()
