@@ -60,18 +60,18 @@ export function HomeIntro({ features, heading, image, link, tagline }: HomeIntro
   const imageUrl = mediaUrl(image)
 
   return (
-    <section className="py-20">
-      {/* Billedet er en tredjedel af containeren (426.67px), teksten fylder resten og centreres lodret. */}
-      <div className="site-container grid grid-cols-1 gap-8 lg:grid-cols-[1fr_calc((100%-64px)/3)]">
-        <div className="flex flex-col justify-center gap-12">
-          <SectionHeadline tagline={tagline} title={heading} leading="leading-[60px]" />
+    <section className="py-(--fluid-section)">
+      {/* Fra 992px er billedet en tredjedel af containeren, teksten fylder resten og centreres lodret; under 992px stables de. */}
+      <div className="site-container flex flex-col gap-(--fluid-gap-lg) min-[992px]:grid min-[992px]:grid-cols-[1fr_calc((100%-2*var(--fluid-gap))/3)] min-[992px]:gap-(--fluid-gap)">
+        <div className="flex flex-col justify-center gap-(--fluid-gap-md)">
+          <SectionHeadline tagline={tagline} title={heading} leading="leading-[1.5]" />
 
-          <div className="grid max-w-[768px] grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="grid max-w-[768px] grid-cols-1 gap-(--fluid-gap) min-[480px]:grid-cols-2 min-[992px]:gap-6">
             {(features ?? []).map((feature) => {
               const Icon = ICONS[feature.icon ?? 'lock']
               return (
                 <div key={feature.id} className="flex gap-5">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-500 text-[#edf0f3]">
+                  <span className="flex size-(--fluid-icon) shrink-0 items-center justify-center rounded-lg bg-brand-500 text-[#edf0f3]">
                     <Icon className="h-[19px] w-4" />
                   </span>
                   <p className="text-text-body">

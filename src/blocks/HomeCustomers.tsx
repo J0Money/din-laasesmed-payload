@@ -55,11 +55,11 @@ export function HomeCustomers({ heading, items, tagline }: HomeCustomersBlockPro
   if (!items?.length) return null
 
   return (
-    <section className="bg-surface-muted py-20">
+    <section className="bg-surface-muted py-(--fluid-section)">
       <div className="site-container flex flex-col gap-12">
         <SectionHeadline tagline={tagline} title={heading} center />
 
-        <div className="columns-1 gap-8 sm:columns-2 lg:columns-3">
+        <div className="columns-1 gap-8 min-[768px]:columns-2 min-[992px]:columns-3">
           {items.map((customer) => {
             const url = mediaUrl(customer.image)
             if (!url) return null
@@ -75,7 +75,7 @@ export function HomeCustomers({ heading, items, tagline }: HomeCustomersBlockPro
                     <img
                       src={url}
                       alt={mediaAlt(customer.image)}
-                      className="max-w-full object-contain"
+                      className="w-full object-contain"
                       style={{ height: customer.logoHeight ?? 96 }}
                     />
                   </div>

@@ -41,7 +41,8 @@ export function HomeHero({ buttons, leftText, rightText, videoMp4, videoWebm }: 
   const mp4 = typeof videoMp4 === 'object' ? videoMp4?.url : undefined
 
   return (
-    <section className="relative h-[640px] overflow-hidden bg-ink-900">
+    // Mål fra originalen: 640px fra 992px, ellers et billedformat der følger bredden (2:1, under 480px 3:2).
+    <section className="relative aspect-[3/2] overflow-hidden bg-ink-900 min-[480px]:aspect-[2/1] min-[992px]:aspect-auto min-[992px]:h-[640px]">
       {(webm || mp4) && (
         <video autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover">
           {webm && <source src={webm} type="video/webm" />}
@@ -50,9 +51,9 @@ export function HomeHero({ buttons, leftText, rightText, videoMp4, videoWebm }: 
       )}
 
       <div className="site-container relative z-10 flex h-full flex-col items-center justify-center gap-6 text-center">
-        <h1 className="mt-5 mb-[10px] flex flex-wrap items-center justify-center gap-x-8 gap-y-2 font-heading text-[32px] leading-[1.2] font-light text-[#edf0f3] sm:text-[48px] sm:leading-[48px]">
+        <h1 className="mt-5 mb-[10px] flex flex-wrap items-center justify-center gap-x-(--fluid-gap) gap-y-2 font-heading text-(length:--fluid-hero-h1) leading-none font-light text-[#edf0f3]">
           <span className="text-trim">{leftText}</span>
-          <span className="h-3 w-3 shrink-0 rounded-full bg-[#edf0f3]" />
+          <span className="hidden h-3 w-3 shrink-0 rounded-full bg-[#edf0f3] min-[768px]:block" />
           <span className="text-trim">{rightText}</span>
         </h1>
 

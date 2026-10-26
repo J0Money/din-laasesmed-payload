@@ -5,7 +5,6 @@ export const Media: CollectionConfig = {
   admin: {
     group: 'System',
   },
-  folders: true,
   access: {
     read: () => true,
   },

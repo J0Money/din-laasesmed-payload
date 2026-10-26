@@ -68,8 +68,9 @@ export const homeFocusCardsBlock: Block = {
 
 export function HomeFocusCards({ cards }: HomeFocusCardsBlockProps) {
   return (
-    <section className="py-20">
-      <div className="site-container grid grid-cols-1 gap-8 lg:grid-cols-3">
+    <section className="py-(--fluid-section)">
+      {/* Kortene er 8:9 i tre kolonner (fra 992px) og 2:1 når de stables. */}
+      <div className="site-container grid grid-cols-1 gap-(--fluid-gap) min-[992px]:grid-cols-3">
         {(cards ?? []).map((card) => {
           const href = resolveLinkHref(card.link)
           const imageUrl = mediaUrl(card.image)
@@ -79,9 +80,9 @@ export function HomeFocusCards({ cards }: HomeFocusCardsBlockProps) {
               <Link
                 key={card.id}
                 href={href}
-                className="group flex h-[480px] flex-col items-start justify-between gap-10 overflow-hidden rounded-2xl bg-ink-900 pt-16 text-[#ced5e1]"
+                className="group flex flex-col items-start justify-between rounded-2xl bg-ink-900 text-[#ced5e1] min-[992px]:aspect-[8/9] min-[992px]:gap-10 min-[992px]:pt-16"
               >
-                <div className="flex w-full flex-col gap-8 px-10">
+                <div className="flex w-full shrink-0 flex-col gap-(--fluid-gap) px-(--fluid-card-pad)">
                   <h3 className="text-trim mt-5 mb-[10px] text-center font-heading text-2xl leading-[26.4px] font-normal text-[#edf0f3]">
                     {card.heading}
                   </h3>
@@ -97,7 +98,7 @@ export function HomeFocusCards({ cards }: HomeFocusCardsBlockProps) {
                 </div>
                 {imageUrl && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={imageUrl} alt="" className="h-[178px] w-full shrink-0 object-cover" />
+                  <img src={imageUrl} alt="" className="h-(--fluid-dark-img) w-full rounded-b-2xl object-cover min-[992px]:h-auto min-[992px]:min-h-0 min-[992px]:flex-1" />
                 )}
               </Link>
             )
@@ -105,13 +106,13 @@ export function HomeFocusCards({ cards }: HomeFocusCardsBlockProps) {
 
           const Icon = card.icon === 'signal' ? SignalIcon : LockIcon
           return (
-            <Link key={card.id} href={href} className="group relative block h-[480px] overflow-hidden rounded-2xl px-10 pt-10">
+            <Link key={card.id} href={href} className="group relative block aspect-[2/1] overflow-hidden rounded-2xl px-10 pt-10 min-[992px]:aspect-[8/9]">
               {imageUrl && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={imageUrl} alt={mediaAlt(card.image) || card.link?.label || ''} className="absolute inset-0 h-full w-full object-cover" />
               )}
               <span className="absolute inset-0 z-[1] bg-[rgba(34,41,59,0.25)]" />
-              <span className="relative z-10 inline-flex items-center gap-3 rounded-lg bg-background px-6 py-[13.6px] text-brand-500 shadow-[0_2px_8px_rgba(0,0,0,0.2)] transition-colors duration-200 group-hover:bg-ink-900 group-hover:text-white">
+              <span className="relative z-10 inline-flex items-center gap-3 rounded-lg bg-background px-6 py-[13.6px] max-[767px]:pl-4 text-brand-500 shadow-[0_2px_8px_rgba(0,0,0,0.2)] transition-colors duration-200 group-hover:bg-ink-900 group-hover:text-white">
                 <Icon className="h-5 w-5" />
                 <span className="text-trim font-heading text-sm leading-[15.4px]">{card.link?.label}</span>
               </span>

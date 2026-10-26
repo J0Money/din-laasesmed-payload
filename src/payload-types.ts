@@ -79,16 +79,11 @@ export interface Config {
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
-    'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {
-    'payload-folders': {
-      documentsAndFolders: 'payload-folders' | 'media';
-    };
-  };
+  collectionsJoins: {};
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
@@ -102,7 +97,6 @@ export interface Config {
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
-    'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -346,7 +340,6 @@ export interface Media {
    * Beskrivelse af billedet, bruges af skærmlæsere og SEO. Må aldrig stå tom.
    */
   alt: string;
-  folder?: (string | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -392,32 +385,6 @@ export interface Media {
       filename?: string | null;
     };
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-folders".
- */
-export interface FolderInterface {
-  id: string;
-  name: string;
-  folder?: (string | null) | FolderInterface;
-  documentsAndFolders?: {
-    docs?: (
-      | {
-          relationTo?: 'payload-folders';
-          value: string | FolderInterface;
-        }
-      | {
-          relationTo?: 'media';
-          value: string | Media;
-        }
-    )[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  folderType?: 'media'[] | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1316,10 +1283,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'form-submissions';
         value: string | FormSubmission;
-      } | null)
-    | ({
-        relationTo: 'payload-folders';
-        value: string | FolderInterface;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1828,7 +1791,6 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
-  folder?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -2059,18 +2021,6 @@ export interface FormSubmissionsSelect<T extends boolean = true> {
 export interface PayloadKvSelect<T extends boolean = true> {
   key?: T;
   data?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-folders_select".
- */
-export interface PayloadFoldersSelect<T extends boolean = true> {
-  name?: T;
-  folder?: T;
-  documentsAndFolders?: T;
-  folderType?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

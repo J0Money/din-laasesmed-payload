@@ -7,6 +7,7 @@ import { ROUTES } from '@/lib/routes'
 
 import { CallLink } from './CallLink'
 import { Logo } from './Logo'
+import { MobileMenu } from './MobileMenu'
 import { GridIcon, NAV_ICON_BY_CATEGORY_SLUG } from './NavIcons'
 
 /** Mål aflæst fra din-laasesmed.dk: topbjælke 38px, hovednav 72px, logo 208px der hænger ud under nav-kanten. */
@@ -17,10 +18,23 @@ export async function Header() {
     payload.findGlobal({ slug: 'siteSettings' }),
   ])
 
+  // Skuffen under 992px har ét flat sæt links: topbjælkens links (dropdowns foldet ud) efter de tre kategorier.
+  const mobileMain = (header.navItems ?? []).map((item) => ({
+    href: resolveLinkHref(item.link),
+    iconSlug: linkCategorySlug(item.link) ?? undefined,
+    label: item.link?.label ?? '',
+  }))
+  const mobileLinks = (header.utilityLinks ?? []).flatMap((item) =>
+    item.children && item.children.length > 0
+      ? item.children.map((child) => ({ href: resolveLinkHref(child.link), label: child.link?.label ?? '' }))
+      : [{ href: resolveLinkHref(item.link), label: item.link?.label ?? '' }],
+  )
+  const mobileCta = header.cta?.link?.label ? { href: resolveLinkHref(header.cta.link), label: header.cta.link.label } : undefined
+
   return (
     <header className="relative z-20">
       <div className="bg-ink-900 text-[#ced5e1]">
-        <div className="site-container flex h-[38px] items-center justify-between text-[0.9rem]">
+        <div className="site-container flex h-[38px] items-center justify-between text-[0.9rem] md:max-[991px]:h-11">
           <div className="flex items-center gap-8">
             {siteSettings.phone && (
               <CallLink phone={siteSettings.phone} aalborgPhone={siteSettings.departments?.[1]?.phone} />
@@ -34,7 +48,7 @@ export async function Header() {
             </span>
           </div>
 
-          <nav className="hidden items-center gap-8 self-stretch font-heading leading-5 tracking-[0.25px] md:flex">
+          <nav className="hidden items-center gap-8 max-[991px]:gap-4 self-stretch font-heading leading-5 tracking-[0.25px] whitespace-nowrap md:flex">
             {(header.utilityLinks ?? []).map((item, index) =>
               item.children && item.children.length > 0 ? (
                 // Hover-området fylder hele topbjælkens højde, så der ikke er et hul mellem tekst og dropdown.
@@ -59,15 +73,17 @@ export async function Header() {
         </div>
       </div>
 
-      <div className="h-[72px] border-b-[0.8px] border-[#ced5e1] bg-surface-form text-text-body">
+      <div className="h-[52.2px] border-b-[0.8px] border-[#ced5e1] bg-surface-form text-text-body min-[992px]:h-[72px]">
         <div className="site-container flex h-full items-center justify-between">
-          {/* Linkboksen er 28px høj; SVG'en er 55px og må gerne hænge ud under nav'en som på originalen. */}
-          <Link href={ROUTES.home()} aria-label="Forside" className="block h-7 w-[208px] self-start mt-[21px] text-brand-500">
-            <Logo className="h-auto w-[208px] overflow-visible" />
+          {/* Linkboksen er 28px høj; SVG'en er 55px og må gerne hænge ud under nav'en som på originalen. Under 768px er logoet 192px. */}
+          <Link href={ROUTES.home()} aria-label="Forside" className="block h-7 w-[208px] self-start mt-[6.4px] text-brand-500 min-[992px]:mt-[21px] max-[767px]:w-[192px]">
+            <Logo className="h-auto w-full overflow-visible" />
           </Link>
 
           <div className="flex items-center gap-10 self-stretch">
-            <nav className="hidden items-center gap-10 self-stretch font-heading text-[0.9rem] font-medium md:flex">
+            <MobileMenu cta={mobileCta} links={mobileLinks} main={mobileMain} />
+
+            <nav className="hidden items-center gap-10 self-stretch font-heading text-[0.9rem] font-medium min-[992px]:flex">
               {(header.navItems ?? []).map((item, index) => {
                 const Icon = NAV_ICON_BY_CATEGORY_SLUG[linkCategorySlug(item.link) ?? '']
                 const categoryHref = resolveLinkHref(item.link)
@@ -84,7 +100,7 @@ export async function Header() {
                         Som originalen glider panelet ned og fader over 0,4 s. Visibility skifter først til sidst ved lukning,
                         så man kan nå at flytte musen ned i panelet. -z-10 lægger det under nav-bjælkerne, mens det glider. */}
                     {item.children && item.children.length > 0 && (
-                      <div className="invisible absolute inset-x-0 top-0 -z-10 bg-[rgba(18,23,41,0.9)] py-10 font-sans opacity-0 transition-[top,opacity,visibility] duration-[400ms] group-hover:visible group-hover:top-full group-hover:opacity-100">
+                      <div className="invisible absolute inset-x-0 top-0 -z-10 overflow-x-clip bg-[rgba(18,23,41,0.9)] py-10 font-sans opacity-0 transition-[top,opacity,visibility] duration-[400ms] group-hover:visible group-hover:top-full group-hover:opacity-100">
                         <div className="site-container">
                           <p className="mb-[10px] text-[19px] leading-[29px] font-medium text-[#96a1b7]">{item.link?.label}</p>
 
@@ -125,7 +141,7 @@ export async function Header() {
             </nav>
 
             {header.cta?.link?.label && (
-              <Link href={resolveLinkHref(header.cta.link)} className="button">
+              <Link href={resolveLinkHref(header.cta.link)} className="button max-[991px]:hidden">
                 {header.cta.link.label}
               </Link>
             )}

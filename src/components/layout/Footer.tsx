@@ -64,8 +64,9 @@ export async function Footer() {
 
   return (
     <footer>
-      <div className="bg-ink-800 py-28 text-[#f2f5f9]">
-        <div className="site-container flex flex-col gap-20 lg:flex-row">
+      {/* Mål fra originalen (320-1440px): luft og afstande skalerer jævnt; sitemap'et ryger ned på egen række under 992px. */}
+      <div className="bg-ink-800 py-[clamp(64px,calc(64px+48*(100vw-320px)/1120),112px)] text-[#f2f5f9]">
+        <div className="site-container flex flex-wrap gap-20">
           {/* De to første kolonner er indholds-brede som på originalen (ikke faste bredder). */}
           <div className="flex shrink-0 flex-col gap-6">
             <FooterHeading>Brug for hjælp?</FooterHeading>
@@ -134,7 +135,7 @@ export async function Footer() {
             ))}
           </div>
 
-          <div className="flex flex-1 flex-col gap-12 md:flex-row">
+          <div className="flex basis-full flex-1 flex-col gap-[clamp(36px,calc(36px+12*(100vw-320px)/1120),48px)] min-[480px]:flex-row min-[992px]:basis-0 min-[992px]:min-w-[495px]">
             {categoriesWithArticles.map(({ category, articles }) => {
               const Icon = NAV_ICON_BY_CATEGORY_SLUG[category.slug]
               return (
@@ -158,21 +159,21 @@ export async function Footer() {
       </div>
 
       <div className="bg-ink-900 py-8 text-xs leading-[18px] text-ink-muted">
-        <div className="site-container flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-          <div className="flex gap-12">
+        <div className="site-container flex flex-col items-center gap-3 min-[768px]:flex-row min-[768px]:gap-[clamp(28px,calc(28px+4*(100vw-320px)/1120),32px)]">
+          <div className="flex flex-col items-center gap-3 min-[768px]:flex-1 min-[768px]:flex-row min-[768px]:gap-12">
             <p>
               {siteSettings.companyName || 'Din Låsesmed A/S'} © {new Date().getFullYear()}
             </p>
             {siteSettings.cvr && <p>CVR: {siteSettings.cvr}</p>}
           </div>
-          <nav className="flex flex-wrap gap-8">
+          <nav className="contents">
             {(footer.links ?? []).map((item, index) => (
               <Link
                 key={item.id ?? index}
                 href={resolveLinkHref(item.link)}
                 target={item.link?.newTab ? '_blank' : undefined}
                 rel={item.link?.newTab ? 'noopener noreferrer' : undefined}
-                className="hover:text-brand-500 hover:underline"
+                className="shrink-0 whitespace-nowrap hover:text-brand-500 hover:underline"
               >
                 {item.link?.label}
               </Link>

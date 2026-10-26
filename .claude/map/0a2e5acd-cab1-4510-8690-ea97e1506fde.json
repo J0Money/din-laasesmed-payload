@@ -1,0 +1,44 @@
+{
+  "schema": "searchmind.session-state/v2",
+  "session_id": "0a2e5acd-cab1-4510-8690-ea97e1506fde",
+  "updated_at": "2026-10-26T12:17:23.911Z",
+  "intent_at": "",
+  "confirmed": {
+    "goal": "",
+    "current_focus": "",
+    "next_step": "",
+    "completed": [],
+    "open_tasks": [],
+    "decisions": [],
+    "questions": [],
+    "active_files": [
+      "src/blocks/HomeFocusCards.tsx",
+      "src/styles/globals.css",
+      "src/components/home/TestimonialSlider.tsx",
+      "src/blocks/HomeCustomers.tsx",
+      "src/blocks/HomeIntro.tsx",
+      "src/blocks/HomeStats.tsx",
+      "src/blocks/HomeTestimonials.tsx",
+      "src/blocks/HomeHero.tsx",
+      "src/components/home/SectionHeadline.tsx",
+      "src/components/layout/Footer.tsx",
+      "src/components/layout/Header.tsx",
+      "src/components/layout/MobileMenu.tsx"
+    ],
+    "references": [
+      "http://localhost:3456/",
+      "https://din-laasesmed.dk/"
+    ]
+  },
+  "suggested": {
+    "goal": "",
+    "current_focus": "",
+    "next_step": "",
+    "completed": [],
+    "open_tasks": [],
+    "decisions": [],
+    "questions": [],
+    "active_files": [],
+    "references": []
+  }
+}

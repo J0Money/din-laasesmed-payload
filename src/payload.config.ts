@@ -34,6 +34,7 @@ export default buildConfig({
   },
   collections: [Pages, Articles, Categories, Brands, Employees, Jobs, Users, Media, Videos],
   globals: [Header, Footer, SiteSettings],
+  folders: false,
   plugins: [
     // Formularer sættes sammen i admin (felter, e-mail til os, bekræftelse); indsendelser gemmes i form-submissions.
     formBuilderPlugin({

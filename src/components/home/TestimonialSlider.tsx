@@ -20,22 +20,22 @@ export function TestimonialSlider({ testimonials }: { testimonials: Testimonial[
   }, [active, testimonials.length])
 
   return (
-    <div className="relative w-full max-w-[800px]">
+    <div className="relative w-[800px] shrink-0 max-[991px]:pb-(--fluid-gap-lg)">
       {/* Alle slides ligger i samme grid-celle, så højden altid er den højeste slides. */}
       <div className="grid">
         {testimonials.map((testimonial, index) => (
           <div
             key={testimonial.id ?? index}
             aria-hidden={index !== active}
-            className="col-start-1 row-start-1 flex items-start gap-24 transition-opacity ease-in-out"
+            className="col-start-1 row-start-1 flex items-start gap-(--fluid-slide-gap) transition-opacity ease-in-out"
             style={{
               opacity: index === active ? 1 : 0,
               transitionDuration: `${FADE_MS}ms`,
               transitionDelay: index === active ? `${FADE_MS}ms` : '0ms',
             }}
           >
-            <div className="flex max-w-[648px] flex-1 flex-col gap-6">
-              <p className="text-trim font-heading text-2xl leading-8 text-ink-800">{testimonial.quote}</p>
+            <div className="flex w-[min(648px,100cqw)] shrink-0 flex-col gap-6">
+              <p className="text-trim font-heading text-[22px] leading-[30px] text-ink-800 min-[480px]:text-2xl min-[480px]:leading-8">{testimonial.quote}</p>
               <p className="self-start font-heading text-sm leading-[21px] font-medium text-[#69748c] italic">
                 {testimonial.author}
               </p>
@@ -46,7 +46,7 @@ export function TestimonialSlider({ testimonials }: { testimonials: Testimonial[
       </div>
 
       {testimonials.length > 1 && (
-        <div className="absolute top-[72px] right-0 flex">
+        <div className="absolute bottom-0 left-0 flex min-[768px]:left-1/2 min-[768px]:-translate-x-1/2 min-[992px]:top-[72px] min-[992px]:right-0 min-[992px]:bottom-auto min-[992px]:left-auto min-[992px]:translate-x-0">
           {testimonials.map((testimonial, index) => (
             <button
               key={testimonial.id ?? index}

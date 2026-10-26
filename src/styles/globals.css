@@ -20,6 +20,30 @@
   --color-text-body: #4b556a;
 }
 
+/*
+ * Originalen skalerer typografi og afstande jævnt mellem 320 og 1440px: clamp(min, min + (max-min) * (100vw - 320px) / 1120, max).
+ * De værdier forsiden bruger, samlet her så blokkene kan skrive fx py-(--fluid-section).
+ */
+:root {
+  --fluid-section: clamp(48px, calc(48px + 32 * (100vw - 320px) / 1120), 80px);
+  --fluid-pad: clamp(64px, calc(64px + 48 * (100vw - 320px) / 1120), 112px);
+  --fluid-h2: clamp(32px, calc(32px + 8 * (100vw - 320px) / 1120), 40px);
+  --fluid-gap: clamp(28px, calc(28px + 4 * (100vw - 320px) / 1120), 32px);
+  --fluid-gap-md: clamp(36px, calc(36px + 12 * (100vw - 320px) / 1120), 48px);
+  --fluid-gap-lg: clamp(40px, calc(40px + 24 * (100vw - 320px) / 1120), 64px);
+  --fluid-card-pad: clamp(32px, calc(32px + 8 * (100vw - 320px) / 1120), 40px);
+  --fluid-dark-img: clamp(72px, calc(72px + 31 * (100vw - 320px) / 1120), 103px);
+  --fluid-icon: clamp(32px, calc(32px + 8 * (100vw - 320px) / 1120), 40px);
+  --fluid-slide-gap: clamp(56px, calc(56px + 40 * (100vw - 320px) / 1120), 96px);
+  --fluid-hero-h1: clamp(28px, calc(28px + 4 * (100vw - 320px) / 1120), 32px);
+}
+
+@media (min-width: 480px) {
+  :root {
+    --fluid-hero-h1: clamp(36px, calc(36px + 12 * (100vw - 320px) / 1120), 48px);
+  }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -57,7 +81,8 @@
 @layer components {
   /* Mål 1:1 fra din-laasesmed.dk: u-container har max-width 1344px og ingen padding. */
   .site-container {
-    @apply mx-auto w-full max-w-[1344px] px-4 sm:px-6 lg:px-0;
+    /* Mål fra originalen: 94,33% af bredden (max 1344px), under 480px dog 17,6px luft i hver side. */
+    @apply mx-auto w-[94.33%] max-w-[1344px] max-[479px]:w-[calc(100%-35.2px)];
   }
 
   /* Hover fra originalens CSS: alle knapper skifter til slate-800 (#22293b) over 0.2s. */

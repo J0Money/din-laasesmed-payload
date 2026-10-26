@@ -29,12 +29,15 @@ export function HomeTestimonials({ heading, items, tagline }: HomeTestimonialsBl
   if (!items?.length) return null
 
   return (
-    <section className="bg-surface-muted py-20">
-      <div className="mx-auto flex w-full max-w-[1117px] flex-col items-start justify-center gap-10 px-4 lg:flex-row lg:gap-16 lg:px-0">
-        <div className="shrink-0">
-          <SectionHeadline tagline={tagline} title={heading} />
+    // Som originalen er slideren en fast 800px bred boks, der rager ud over den smalle container; overflow-x-clip skjuler resten.
+    <section className="overflow-x-clip bg-surface-muted py-[60px] min-[768px]:py-(--fluid-section)">
+      <div className="site-container">
+        <div className="@container mx-auto flex w-[calc(83.33%-2.7px)] flex-col items-start gap-(--fluid-gap-lg) min-[992px]:flex-row">
+          <div className="shrink-0">
+            <SectionHeadline tagline={tagline} title={heading} />
+          </div>
+          <TestimonialSlider testimonials={items} />
         </div>
-        <TestimonialSlider testimonials={items} />
       </div>
     </section>
   )

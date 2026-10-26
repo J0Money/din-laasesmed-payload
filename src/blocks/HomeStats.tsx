@@ -36,9 +36,9 @@ export function HomeStats({ image, items }: HomeStatsBlockProps) {
       {imageUrl && <ParallaxImage src={imageUrl} alt="" />}
       <div className="absolute inset-0 z-[1] bg-ink-900 opacity-80" />
 
-      <div className="site-container relative z-10 grid grid-cols-2 gap-y-12 py-[112px] lg:flex lg:items-center lg:justify-around">
+      <div className="site-container relative z-10 flex flex-col items-center gap-(--fluid-gap-md) py-[60px] min-[768px]:grid min-[768px]:grid-cols-2 min-[768px]:gap-(--fluid-gap-lg) min-[768px]:py-(--fluid-pad) min-[992px]:flex min-[992px]:flex-row min-[992px]:items-center min-[992px]:justify-around">
         {items.map((stat) => (
-          <div key={stat.id} className="flex flex-col items-center justify-center gap-3 text-center lg:w-60">
+          <div key={stat.id} className="flex w-1/2 flex-col items-center justify-center gap-3 text-center min-[768px]:w-auto min-[992px]:w-60">
             <div className="flex items-center justify-center gap-2 text-[#edf0f3]">
               <span className="font-heading text-[48px] leading-[48px] font-light">
                 <StatCounter value={stat.value} />
