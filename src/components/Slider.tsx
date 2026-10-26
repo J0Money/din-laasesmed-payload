@@ -16,9 +16,19 @@ function ArrowIcon({ reversed = false }: { reversed?: boolean }) {
 /**
  * Som originalens Swiper-slidere ("Alle mærker", "Vores historie"): overskrift med pile øverst til højre,
  * ét kort pr. klik (kortets bredde + mellemrum), 300 ms, stopper ved sidste kort.
- * Børnene er slidernes <li>-elementer.
+ * Børnene er slidernes <li>-elementer. Uden `gap` læses mellemrummet fra `trackClassName`, så det kan skifte med bredden.
  */
-export function Slider({ title, gap, children }: { title: string; gap: number; children: React.ReactNode }) {
+export function Slider({
+  title,
+  gap,
+  trackClassName = '',
+  children,
+}: {
+  title: string
+  gap?: number
+  trackClassName?: string
+  children: React.ReactNode
+}) {
   const viewportRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLUListElement>(null)
   const [offset, setOffset] = useState(0)
@@ -31,7 +41,8 @@ export function Slider({ title, gap, children }: { title: string; gap: number; c
       const track = trackRef.current
       const overflow = (track?.scrollWidth ?? 0) - (viewportRef.current?.clientWidth ?? 0)
       setMaxOffset(Math.max(overflow, 0))
-      setStep(((track?.firstElementChild as HTMLElement | null)?.offsetWidth ?? 0) + gap)
+      const columnGap = track ? parseFloat(getComputedStyle(track).columnGap) || 0 : 0
+      setStep(((track?.firstElementChild as HTMLElement | null)?.getBoundingClientRect().width ?? 0) + columnGap)
     }
     measure()
     window.addEventListener('resize', measure)
@@ -70,7 +81,7 @@ export function Slider({ title, gap, children }: { title: string; gap: number; c
       <div ref={viewportRef} className="overflow-hidden">
         <ul
           ref={trackRef}
-          className="flex transition-transform duration-300 ease-out"
+          className={`flex transition-transform duration-300 ease-out ${trackClassName}`}
           style={{ gap, transform: `translate3d(${-clamped}px, 0, 0)` }}
         >
           {children}
