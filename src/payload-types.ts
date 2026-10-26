@@ -2522,6 +2522,19 @@ export interface VideoEmbedBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HtmlEmbedBlock".
+ */
+export interface HtmlEmbedBlock {
+  /**
+   * Indsættes uændret på siden, fx en <table> med en <style> foran. Kun til avancerede redaktører.
+   */
+  html: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'htmlEmbed';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "auth".
  */
 export interface Auth {

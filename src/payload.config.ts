@@ -6,6 +6,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
+import { htmlEmbedBlock } from './blocks/richtext/HtmlEmbed'
 import { videoEmbedBlock } from './blocks/richtext/VideoEmbed'
 import { Articles } from './collections/Articles'
 import { Brands } from './collections/Brands'
@@ -50,7 +51,7 @@ export default buildConfig({
     }),
   ],
   editor: lexicalEditor({
-    features: ({ defaultFeatures }) => [...defaultFeatures, BlocksFeature({ blocks: [videoEmbedBlock] })],
+    features: ({ defaultFeatures }) => [...defaultFeatures, BlocksFeature({ blocks: [videoEmbedBlock, htmlEmbedBlock] })],
   }),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

@@ -22,8 +22,37 @@ export function extractVideos(html: string): { html: string; videos: Video[] } {
   return { html: replaced, videos }
 }
 
+// Webflows "Embed" (div.w-embed): HTML-kode i selve teksten, fx en tabel med <style>. Konverteren flader den ud til afsnit.
+const EMBED = /<div[^>]*class="[^"]*\bw-embed\b[^"]*"[^>]*>([\s\S]*?)<\/div>/g
+const EMBED_MARKER = (index: number) => `@@WEBFLOW_EMBED_${index}@@`
+
+export function extractEmbeds(html: string): { embeds: string[]; html: string } {
+  const embeds: string[] = []
+  const replaced = html.replace(EMBED, (_, inner: string) => {
+    embeds.push(inner.trim())
+    return `<p>${EMBED_MARKER(embeds.length - 1)}</p>`
+  })
+  return { embeds, html: replaced }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type LexicalNode = { children?: LexicalNode[]; text?: string; type: string; [key: string]: any }
+
+export function injectEmbedBlocks<T extends { root: LexicalNode }>(state: T, embeds: string[]): T {
+  if (!embeds.length) return state
+  state.root.children = (state.root.children ?? []).map((node) => {
+    const text = node.type === 'paragraph' ? (node.children ?? []).map((c) => c.text ?? '').join('') : ''
+    const index = text.match(/^@@WEBFLOW_EMBED_(\d+)@@$/)?.[1]
+    if (index === undefined) return node
+    return {
+      type: 'block',
+      version: 2,
+      format: '',
+      fields: { id: randomBytes(12).toString('hex'), blockName: '', blockType: 'htmlEmbed', html: embeds[Number(index)] },
+    }
+  })
+  return state
+}
 
 export function injectVideoBlocks<T extends { root: LexicalNode }>(state: T, videos: Video[]): T {
   if (!videos.length) return state

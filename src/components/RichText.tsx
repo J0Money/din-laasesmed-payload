@@ -7,6 +7,10 @@ type VideoEmbedFields = { title?: null | string; url: string }
 const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
   ...defaultConverters,
   blocks: {
+    // Redaktørens egen HTML (fx en tabel med stil), indsat uændret.
+    htmlEmbed: ({ node }: { node: { fields: { html: string } } }) => (
+      <div className="rich-text-embed" dangerouslySetInnerHTML={{ __html: node.fields.html }} />
+    ),
     videoEmbed: ({ node }: { node: { fields: VideoEmbedFields } }) => {
       const id = youtubeId(node.fields.url)
       if (!id) return null
