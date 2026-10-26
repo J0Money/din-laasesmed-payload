@@ -26,7 +26,7 @@ export const textBlock: Block = {
             },
           ],
         },
-        layoutTab(),
+        layoutTab('text'),
       ],
     },
   ],
@@ -34,15 +34,11 @@ export const textBlock: Block = {
 
 export function Text({
   content,
-  spacingAfter,
-  spacingBefore,
   mutedBackground,
   blockClass,
 }: TextBlockProps) {
   return (
     <BlockWrapper
-      spacingBefore={spacingBefore}
-      spacingAfter={spacingAfter}
       mutedBackground={mutedBackground}
       blockClass={blockClass}
     >

@@ -3,6 +3,8 @@ import type { Block } from 'payload'
 import { getPayloadClient } from '@/lib/payload'
 import type { JobListBlock as JobListBlockProps } from '@/payload-types'
 
+import { contentWithSpacingTabs } from './fields/layout'
+
 /**
  * Jobliste (Webflow: Section / Overview / Jobs): udgivne stillinger, nyeste først. Rykkes 32px op under
  * intro-båndet. Er der ingen, vises en grå besked. Originalens liste er tom og siger "Der er ingen artikler."
@@ -12,14 +14,14 @@ export const jobListBlock: Block = {
   slug: 'jobList',
   interfaceName: 'JobListBlock',
   labels: { singular: 'Jobliste', plural: 'Joblister' },
-  fields: [
+  fields: contentWithSpacingTabs('jobList', [
     {
       name: 'emptyText',
       type: 'text',
       label: 'Tekst når der ingen stillinger er',
       defaultValue: 'Der er ingen ledige stillinger lige nu.',
     },
-  ],
+  ]),
 }
 
 export async function JobList({ emptyText }: JobListBlockProps) {

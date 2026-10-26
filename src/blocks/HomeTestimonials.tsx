@@ -4,12 +4,14 @@ import { SectionHeadline } from '@/components/home/SectionHeadline'
 import { TestimonialSlider } from '@/components/home/TestimonialSlider'
 import type { HomeTestimonialsBlock as HomeTestimonialsBlockProps } from '@/payload-types'
 
+import { contentWithSpacingTabs } from './fields/layout'
+
 /** Kundeudtalelser (Webflow: Section / Testimonials): skifter automatisk hvert 5. sekund. */
 export const homeTestimonialsBlock: Block = {
   slug: 'homeTestimonials',
   interfaceName: 'HomeTestimonialsBlock',
   labels: { singular: 'Kundeudtalelser', plural: 'Kundeudtalelser' },
-  fields: [
+  fields: contentWithSpacingTabs('homeTestimonials', [
     { name: 'tagline', type: 'text', required: true, label: 'Tagline', defaultValue: 'Hvad siger vores kunder' },
     { name: 'heading', type: 'text', required: true, label: 'Overskrift', defaultValue: 'Udtalelser' },
     {
@@ -22,7 +24,7 @@ export const homeTestimonialsBlock: Block = {
         { name: 'author', type: 'text', required: true, label: 'Kunde' },
       ],
     },
-  ],
+  ]),
 }
 
 export function HomeTestimonials({ heading, items, tagline }: HomeTestimonialsBlockProps) {

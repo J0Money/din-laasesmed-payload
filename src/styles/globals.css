@@ -26,6 +26,8 @@
  */
 :root {
   --fluid-section: clamp(48px, calc(48px + 32 * (100vw - 320px) / 1120), 80px);
+  /* Webflow section-space "large" (10rem); the mobile end is scaled like small and main, not measured. */
+  --fluid-section-lg: clamp(96px, calc(96px + 64 * (100vw - 320px) / 1120), 160px);
   --fluid-pad: clamp(64px, calc(64px + 48 * (100vw - 320px) / 1120), 112px);
   --fluid-h2: clamp(32px, calc(32px + 8 * (100vw - 320px) / 1120), 40px);
   --fluid-gap: clamp(28px, calc(28px + 4 * (100vw - 320px) / 1120), 32px);

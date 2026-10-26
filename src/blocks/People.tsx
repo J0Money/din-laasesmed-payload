@@ -5,12 +5,14 @@ import { HelpCard } from '@/components/about/HelpCard'
 import { getPayloadClient } from '@/lib/payload'
 import type { PeopleBlock as PeopleBlockProps } from '@/payload-types'
 
+import { contentWithSpacingTabs } from './fields/layout'
+
 /** Medarbejdere i grupper (Webflow: Section / People). Hvem der vises og i hvilken rækkefølge styres på medarbejderne. */
 export const peopleBlock: Block = {
   slug: 'people',
   interfaceName: 'PeopleBlock',
   labels: { singular: 'Medarbejdere', plural: 'Medarbejdere' },
-  fields: [
+  fields: contentWithSpacingTabs('people', [
     {
       name: 'groups',
       type: 'array',
@@ -42,7 +44,7 @@ export const peopleBlock: Block = {
         },
       ],
     },
-  ],
+  ]),
 }
 
 export async function People({ groups }: PeopleBlockProps) {

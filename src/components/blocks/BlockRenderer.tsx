@@ -1,6 +1,10 @@
+import { Fragment } from 'react'
+import type React from 'react'
+
 import { ArticleWithForm } from '@/blocks/ArticleWithForm'
 import { BrandGrid } from '@/blocks/BrandGrid'
 import { ContactCards } from '@/blocks/ContactCards'
+import { spacingClasses } from '@/blocks/fields/spacing'
 import { FormPage } from '@/blocks/FormPage'
 import { HomeCustomers } from '@/blocks/HomeCustomers'
 import { HomeFocusCards } from '@/blocks/HomeFocusCards'
@@ -22,54 +26,67 @@ import type { Page } from '@/payload-types'
 type LayoutBlocks = NonNullable<Page['layout']>
 type LayoutBlock = LayoutBlocks[number]
 
+function renderBlock(block: LayoutBlock): React.ReactNode {
+  switch (block.blockType) {
+    case 'homeHero':
+      return <HomeHero {...block} />
+    case 'homeIntro':
+      return <HomeIntro {...block} />
+    case 'homeTestimonials':
+      return <HomeTestimonials {...block} />
+    case 'homeStats':
+      return <HomeStats {...block} />
+    case 'homeFocusCards':
+      return <HomeFocusCards {...block} />
+    case 'homeCustomers':
+      return <HomeCustomers {...block} />
+    case 'videoHero':
+      return <VideoHero {...block} />
+    case 'overviewIntro':
+      return <OverviewIntro {...block} />
+    case 'contactCards':
+      return <ContactCards {...block} />
+    case 'articleWithForm':
+      return <ArticleWithForm {...block} />
+    case 'parallaxBand':
+      return <ParallaxBand {...block} />
+    case 'people':
+      return <People {...block} />
+    case 'imageSlider':
+      return <ImageSlider {...block} />
+    case 'brandGrid':
+      return <BrandGrid />
+    case 'formPage':
+      return <FormPage {...block} />
+    case 'jobList':
+      return <JobList {...block} />
+    case 'thanksMessage':
+      return <ThanksMessage {...block} />
+    case 'text':
+      return <Text {...block} />
+    case 'textWithImage':
+      return <TextWithImage {...block} />
+    default:
+      return null
+  }
+}
+
 export function BlockRenderer({ blocks }: { blocks: LayoutBlocks | null | undefined }) {
   if (!blocks?.length) return null
 
   return (
     <>
-      {blocks.map((block: LayoutBlock) => {
-        switch (block.blockType) {
-          case 'homeHero':
-            return <HomeHero key={block.id} {...block} />
-          case 'homeIntro':
-            return <HomeIntro key={block.id} {...block} />
-          case 'homeTestimonials':
-            return <HomeTestimonials key={block.id} {...block} />
-          case 'homeStats':
-            return <HomeStats key={block.id} {...block} />
-          case 'homeFocusCards':
-            return <HomeFocusCards key={block.id} {...block} />
-          case 'homeCustomers':
-            return <HomeCustomers key={block.id} {...block} />
-          case 'videoHero':
-            return <VideoHero key={block.id} {...block} />
-          case 'overviewIntro':
-            return <OverviewIntro key={block.id} {...block} />
-          case 'contactCards':
-            return <ContactCards key={block.id} {...block} />
-          case 'articleWithForm':
-            return <ArticleWithForm key={block.id} {...block} />
-          case 'parallaxBand':
-            return <ParallaxBand key={block.id} {...block} />
-          case 'people':
-            return <People key={block.id} {...block} />
-          case 'imageSlider':
-            return <ImageSlider key={block.id} {...block} />
-          case 'brandGrid':
-            return <BrandGrid key={block.id} />
-          case 'formPage':
-            return <FormPage key={block.id} {...block} />
-          case 'jobList':
-            return <JobList key={block.id} {...block} />
-          case 'thanksMessage':
-            return <ThanksMessage key={block.id} {...block} />
-          case 'text':
-            return <Text key={block.id} {...block} />
-          case 'textWithImage':
-            return <TextWithImage key={block.id} {...block} />
-          default:
-            return null
-        }
+      {blocks.map((block, index) => {
+        const key = block.id ?? index
+        const spacing =
+          'spacingBefore' in block ? spacingClasses(block.blockType, block.spacingBefore, block.spacingAfter) : ''
+        // Blocks on their own padding render unwrapped, exactly as before the spacing fields existed.
+        if (!spacing) return <Fragment key={key}>{renderBlock(block)}</Fragment>
+        return (
+          <div key={key} className={`contents ${spacing}`}>
+            {renderBlock(block)}
+          </div>
+        )
       })}
     </>
   )

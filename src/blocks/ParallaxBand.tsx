@@ -5,12 +5,14 @@ import { ParallaxImage } from '@/components/home/ParallaxImage'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import type { ParallaxBandBlock as ParallaxBandBlockProps } from '@/payload-types'
 
+import { contentWithSpacingTabs } from './fields/layout'
+
 /** Motto-bånd med parallax-billede (Webflow: Section / Parallax element), fx "Din Låsesmed • Din tryghed". */
 export const parallaxBandBlock: Block = {
   slug: 'parallaxBand',
   interfaceName: 'ParallaxBandBlock',
   labels: { singular: 'Parallax-bånd', plural: 'Parallax-bånd' },
-  fields: [
+  fields: contentWithSpacingTabs('parallaxBand', [
     {
       name: 'image',
       type: 'upload',
@@ -30,7 +32,7 @@ export const parallaxBandBlock: Block = {
       required: true,
       label: 'Tekst til højre',
     },
-  ],
+  ]),
 }
 
 /*

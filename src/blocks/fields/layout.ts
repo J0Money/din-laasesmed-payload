@@ -1,33 +1,41 @@
 import type { Field, Tab } from 'payload'
 
-import { type SpacingSize, spacingFields } from './spacing'
+import { spacingFields } from './spacing'
 import { surfaceField } from './surface'
-
-type LayoutTabOptions = {
-  afterDefault?: SpacingSize
-  beforeDefault?: SpacingSize
-}
 
 /**
  * Standard layout-fane: spacing (før/efter) + dæmpet baggrund + en avanceret
- * CSS-klasse. Bruges af de fleste blocks som sidste fane.
+ * CSS-klasse. Til de generelle blokke, der ikke selv har en fast flade.
  */
-export function layoutTab(options: LayoutTabOptions = {}): Tab {
+export function layoutTab(blockType: string): Tab {
   return {
     label: 'Layout',
-    fields: [...spacingFields(options), surfaceField(), blockClassField()],
+    fields: [...spacingFields(blockType), surfaceField(), blockClassField()],
   }
 }
 
 /**
- * Kun spacing, intet muted-felt — til inset-bånd der altid har deres egen
- * faste flade (fx search, crossSell).
+ * Kun spacing, intet muted-felt. Til blokke der altid tegner deres egen
+ * faste flade, som originalens sektioner.
  */
-export function layoutTabSpacingOnly(options: LayoutTabOptions = {}): Tab {
+export function layoutTabSpacingOnly(blockType: string): Tab {
   return {
     label: 'Layout',
-    fields: [...spacingFields(options)],
+    fields: [...spacingFields(blockType)],
   }
+}
+
+/**
+ * Lægger en blocks egne felter i fanen "Indhold" og spacing i fanen "Layout".
+ * Fanerne er unavngivne, så felterne ligger stadig på blokkens rod i databasen.
+ */
+export function contentWithSpacingTabs(blockType: string, fields: Field[]): Field[] {
+  return [
+    {
+      type: 'tabs',
+      tabs: [{ label: 'Indhold', fields }, layoutTabSpacingOnly(blockType)],
+    },
+  ]
 }
 
 /**

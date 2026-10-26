@@ -3,6 +3,8 @@ import type { Block } from 'payload'
 import { RichText } from '@/components/RichText'
 import type { OverviewIntroBlock as OverviewIntroBlockProps } from '@/payload-types'
 
+import { contentWithSpacingTabs } from './fields/layout'
+
 /**
  * Grå intro-bånd (Webflow: Section / Overview / Intro): tagline og navn til venstre, overskrift og tekst til højre.
  * Bruges på mærkeoversigten og Ledige stillinger; kategorisiderne har det som skabelon i koden.
@@ -12,7 +14,7 @@ export const overviewIntroBlock: Block = {
   slug: 'overviewIntro',
   interfaceName: 'OverviewIntroBlock',
   labels: { singular: 'Intro-bånd', plural: 'Intro-bånd' },
-  fields: [
+  fields: contentWithSpacingTabs('overviewIntro', [
     {
       name: 'tagline',
       type: 'text',
@@ -38,7 +40,7 @@ export const overviewIntroBlock: Block = {
       type: 'richText',
       label: 'Tekst',
     },
-  ],
+  ]),
 }
 
 export function OverviewIntro({ content, heading, tagline, title }: OverviewIntroBlockProps) {

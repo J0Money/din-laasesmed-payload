@@ -4,12 +4,14 @@ import { RichText } from '@/components/RichText'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import type { ThanksMessageBlock as ThanksMessageBlockProps } from '@/payload-types'
 
+import { contentWithSpacingTabs } from './fields/layout'
+
 /** Kvittering efter en formular (Webflow: Section / Thanks for message): billede, stor overskrift og kort tekst, alt centreret i 896px. */
 export const thanksMessageBlock: Block = {
   slug: 'thanksMessage',
   interfaceName: 'ThanksMessageBlock',
   labels: { singular: 'Tak-besked', plural: 'Tak-beskeder' },
-  fields: [
+  fields: contentWithSpacingTabs('thanksMessage', [
     {
       name: 'image',
       type: 'upload',
@@ -27,7 +29,7 @@ export const thanksMessageBlock: Block = {
       type: 'richText',
       label: 'Tekst',
     },
-  ],
+  ]),
 }
 
 export function ThanksMessage({ content, heading, image }: ThanksMessageBlockProps) {

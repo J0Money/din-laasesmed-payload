@@ -4,12 +4,14 @@ import { Slider } from '@/components/Slider'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import type { ImageSliderBlock as ImageSliderBlockProps } from '@/payload-types'
 
+import { contentWithSpacingTabs } from './fields/layout'
+
 /** Billed-slider (Webflow: history_slider), fx "Vores historie": to billeder ad gangen på desktop, ét på mobil. */
 export const imageSliderBlock: Block = {
   slug: 'imageSlider',
   interfaceName: 'ImageSliderBlock',
   labels: { singular: 'Billed-slider', plural: 'Billed-slidere' },
-  fields: [
+  fields: contentWithSpacingTabs('imageSlider', [
     {
       name: 'title',
       type: 'text',
@@ -31,7 +33,7 @@ export const imageSliderBlock: Block = {
         },
       ],
     },
-  ],
+  ]),
 }
 
 export function ImageSlider({ images, title }: ImageSliderBlockProps) {

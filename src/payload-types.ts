@@ -491,6 +491,14 @@ export interface HomeIntroBlock {
     url?: string | null;
     newTab?: boolean | null;
   };
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'homeIntro';
@@ -509,6 +517,14 @@ export interface HomeTestimonialsBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('standard' | 'none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('standard' | 'none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'homeTestimonials';
@@ -570,6 +586,14 @@ export interface HomeFocusCardsBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'homeFocusCards';
@@ -591,6 +615,14 @@ export interface HomeCustomersBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'homeCustomers';
@@ -642,6 +674,14 @@ export interface OverviewIntroBlock {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'overviewIntro';
@@ -728,6 +768,14 @@ export interface ArticleWithFormBlock {
    * Rykker sektionen 7rem op over det forrige bånd, som på Om os.
    */
   overlapPrevious?: boolean | null;
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'articleWithForm';
@@ -932,6 +980,14 @@ export interface ParallaxBandBlock {
   image: string | Media;
   leftText: string;
   rightText: string;
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'parallaxBand';
@@ -949,6 +1005,14 @@ export interface PeopleBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('standard' | 'none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'people';
@@ -965,6 +1029,14 @@ export interface ImageSliderBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'imageSlider';
@@ -974,6 +1046,14 @@ export interface ImageSliderBlock {
  * via the `definition` "BrandGridBlock".
  */
 export interface BrandGridBlock {
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('standard' | 'none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'brandGrid';
@@ -984,6 +1064,14 @@ export interface BrandGridBlock {
  */
 export interface JobListBlock {
   emptyText?: string | null;
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('standard' | 'none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'jobList';
@@ -995,6 +1083,14 @@ export interface JobListBlock {
 export interface FormPageBlock {
   heading: string;
   form: string | Form;
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'formPage';
@@ -1021,6 +1117,14 @@ export interface ThanksMessageBlock {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  /**
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   */
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'thanksMessage';
@@ -1046,13 +1150,13 @@ export interface TextBlock {
     [k: string]: unknown;
   };
   /**
-   * Afstand til sektionen ovenfor.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('lg' | 'md' | 'none' | 'sm') | null;
+  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
   /**
-   * Afstand til sektionen nedenfor.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('lg' | 'md' | 'none' | 'sm') | null;
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   /**
    * Giver sektionen en dæmpet grå baggrund i stedet for standardbaggrunden — brug til at skabe visuel adskillelse mellem sektioner.
    */
@@ -1088,13 +1192,13 @@ export interface TextWithImageBlock {
     [k: string]: unknown;
   };
   /**
-   * Afstand til sektionen ovenfor.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('lg' | 'md' | 'none' | 'sm') | null;
+  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
   /**
-   * Afstand til sektionen nedenfor.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('lg' | 'md' | 'none' | 'sm') | null;
+  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
   /**
    * Giver sektionen en dæmpet grå baggrund i stedet for standardbaggrunden — brug til at skabe visuel adskillelse mellem sektioner.
    */
@@ -1419,6 +1523,8 @@ export interface HomeIntroBlockSelect<T extends boolean = true> {
         url?: T;
         newTab?: T;
       };
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }
@@ -1436,6 +1542,8 @@ export interface HomeTestimonialsBlockSelect<T extends boolean = true> {
         author?: T;
         id?: T;
       };
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }
@@ -1479,6 +1587,8 @@ export interface HomeFocusCardsBlockSelect<T extends boolean = true> {
         text?: T;
         id?: T;
       };
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }
@@ -1499,6 +1609,8 @@ export interface HomeCustomersBlockSelect<T extends boolean = true> {
         logoHeight?: T;
         id?: T;
       };
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }
@@ -1522,6 +1634,8 @@ export interface OverviewIntroBlockSelect<T extends boolean = true> {
   title?: T;
   heading?: T;
   content?: T;
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }
@@ -1561,6 +1675,8 @@ export interface ArticleWithFormBlockSelect<T extends boolean = true> {
   content?: T;
   form?: T;
   overlapPrevious?: T;
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }
@@ -1572,6 +1688,8 @@ export interface ParallaxBandBlockSelect<T extends boolean = true> {
   image?: T;
   leftText?: T;
   rightText?: T;
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }
@@ -1588,6 +1706,8 @@ export interface PeopleBlockSelect<T extends boolean = true> {
         showHelpCard?: T;
         id?: T;
       };
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }
@@ -1603,6 +1723,8 @@ export interface ImageSliderBlockSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }
@@ -1611,6 +1733,8 @@ export interface ImageSliderBlockSelect<T extends boolean = true> {
  * via the `definition` "BrandGridBlock_select".
  */
 export interface BrandGridBlockSelect<T extends boolean = true> {
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }
@@ -1620,6 +1744,8 @@ export interface BrandGridBlockSelect<T extends boolean = true> {
  */
 export interface JobListBlockSelect<T extends boolean = true> {
   emptyText?: T;
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }
@@ -1630,6 +1756,8 @@ export interface JobListBlockSelect<T extends boolean = true> {
 export interface FormPageBlockSelect<T extends boolean = true> {
   heading?: T;
   form?: T;
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }
@@ -1641,6 +1769,8 @@ export interface ThanksMessageBlockSelect<T extends boolean = true> {
   image?: T;
   heading?: T;
   content?: T;
+  spacingBefore?: T;
+  spacingAfter?: T;
   id?: T;
   blockName?: T;
 }

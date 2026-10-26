@@ -5,12 +5,14 @@ import { mediaAlt, mediaUrl } from '@/lib/media'
 import { getPayloadClient } from '@/lib/payload'
 import { ROUTES } from '@/lib/routes'
 
+import { contentWithSpacingTabs } from './fields/layout'
+
 /** Mærkeoversigt (Webflow: Section / Overview): alle udgivne mærker som logokort. Kræver ingen indstillinger. */
 export const brandGridBlock: Block = {
   slug: 'brandGrid',
   interfaceName: 'BrandGridBlock',
   labels: { singular: 'Mærkeoversigt', plural: 'Mærkeoversigt' },
-  fields: [
+  fields: contentWithSpacingTabs('brandGrid', [
     {
       name: 'note',
       type: 'ui',
@@ -20,7 +22,7 @@ export const brandGridBlock: Block = {
         },
       },
     },
-  ],
+  ]),
 }
 
 /**

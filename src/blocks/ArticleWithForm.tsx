@@ -5,6 +5,8 @@ import { RichText } from '@/components/RichText'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import type { ArticleWithFormBlock as ArticleWithFormBlockProps } from '@/payload-types'
 
+import { contentWithSpacingTabs } from './fields/layout'
+
 /**
  * Artikel med formular (Webflow: Section / Default content): billede, overskrift og tekst i 896px,
  * "Brug for hjælp?"-formularen ved siden af. Den mest brugte sektion på de faste sider.
@@ -13,7 +15,7 @@ export const articleWithFormBlock: Block = {
   slug: 'articleWithForm',
   interfaceName: 'ArticleWithFormBlock',
   labels: { singular: 'Artikel med formular', plural: 'Artikel med formular' },
-  fields: [
+  fields: contentWithSpacingTabs('articleWithForm', [
     {
       name: 'image',
       type: 'upload',
@@ -47,7 +49,7 @@ export const articleWithFormBlock: Block = {
       defaultValue: false,
       admin: { description: 'Rykker sektionen 7rem op over det forrige bånd, som på Om os.' },
     },
-  ],
+  ]),
 }
 
 export function ArticleWithForm({ content, form, heading, image, overlapPrevious }: ArticleWithFormBlockProps) {

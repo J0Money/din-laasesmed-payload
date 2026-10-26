@@ -45,7 +45,7 @@ export const textWithImageBlock: Block = {
             },
           ],
         },
-        layoutTab(),
+        layoutTab('textWithImage'),
       ],
     },
   ],
@@ -55,8 +55,6 @@ export function TextWithImage({
   content,
   image,
   imagePosition,
-  spacingAfter,
-  spacingBefore,
   mutedBackground,
   blockClass,
 }: TextWithImageBlockProps) {
@@ -64,8 +62,6 @@ export function TextWithImage({
 
   return (
     <BlockWrapper
-      spacingBefore={spacingBefore}
-      spacingAfter={spacingAfter}
       mutedBackground={mutedBackground}
       blockClass={blockClass}
     >

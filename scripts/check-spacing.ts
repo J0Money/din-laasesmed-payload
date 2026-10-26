@@ -1,54 +1,59 @@
-import { SPACING_AFTER_CLASSES, SPACING_BEFORE_CLASSES, type SpacingSize } from '../src/blocks/fields/spacing'
+// Fails loudly when the spacing scale or the block list drift apart.
+// Run: pnpm check:spacing
+import type { Block, Field } from 'payload'
 
-const SIZES: SpacingSize[] = ['none', 'sm', 'md', 'lg']
+// The config must load first: blocks import the Payload client, which imports the config, which imports the blocks.
+import '../src/payload.config'
+import { allBlocks } from '../src/blocks'
+import {
+  BLOCK_SPACING,
+  SPACING_AFTER_CLASSES,
+  SPACING_BEFORE_CLASSES,
+  type SpacingSize,
+  spacingClasses,
+} from '../src/blocks/fields/spacing'
 
-function classToPx(tailwindClass: string): number {
-  const match = tailwindClass.match(/-(\d+)$/)
-  if (!match) throw new Error(`Kan ikke aflæse spacing-tal fra klassen "${tailwindClass}"`)
-  return Number(match[1]) * 4
-}
+/** Blocks that draw their own vertical space as part of the design and have no spacing tab. */
+const NO_SPACING = ['homeHero', 'videoHero', 'homeStats', 'contactCards']
 
-let hasError = false
+const SIZES: SpacingSize[] = ['standard', 'none', 'small', 'main', 'large']
+const errors: string[] = []
 
-console.log('Spacing-skala (før/efter):\n')
+const hasSpacingField = (fields: Field[]): boolean =>
+  fields.some((field) =>
+    ('name' in field && field.name === 'spacingBefore') ||
+    ('tabs' in field && field.tabs.some((tab) => hasSpacingField(tab.fields))) ||
+    ('fields' in field && field.type !== 'array' && hasSpacingField(field.fields)),
+  )
 
 for (const size of SIZES) {
   const before = SPACING_BEFORE_CLASSES[size]
   const after = SPACING_AFTER_CLASSES[size]
-
-  if (!before || !after) {
-    console.error(`✗ Størrelsen "${size}" mangler en klasse i spacing.ts`)
-    hasError = true
-    continue
-  }
-
-  const beforePx = classToPx(before)
-  const afterPx = classToPx(after)
-
-  if (beforePx !== afterPx) {
-    console.error(
-      `✗ "${size}" er ikke symmetrisk: før = ${beforePx}px (${before}), efter = ${afterPx}px (${after})`,
-    )
-    hasError = true
-    continue
-  }
-
-  console.log(`  ${size.padEnd(4)} → ${before} / ${after}  (${beforePx}px)`)
+  if (size === 'standard' ? before || after : !before.includes('pt-') || !after.includes('pb-'))
+    errors.push(`"${size}" har forkerte klasser: "${before}" / "${after}"`)
+  else console.log(`  ${size.padEnd(8)} ${before || '(blokkens egen luft)'} / ${after || '(blokkens egen luft)'}`)
 }
 
-// Skalaen skal stige — en fejl her betyder typisk en tastefejl i spacing.ts.
-for (let i = 1; i < SIZES.length; i++) {
-  const prev = classToPx(SPACING_BEFORE_CLASSES[SIZES[i - 1]])
-  const current = classToPx(SPACING_BEFORE_CLASSES[SIZES[i]])
-  if (SIZES[i] !== 'none' && current <= prev) {
-    console.error(`✗ Skalaen stiger ikke korrekt mellem "${SIZES[i - 1]}" og "${SIZES[i]}"`)
-    hasError = true
+for (const block of allBlocks as Block[]) {
+  const listed = block.slug in BLOCK_SPACING
+  const field = hasSpacingField(block.fields)
+  if (NO_SPACING.includes(block.slug)) {
+    if (listed || field) errors.push(`${block.slug} står i NO_SPACING men har spacing`)
+  } else if (!listed || !field) {
+    errors.push(`${block.slug} mangler ${listed ? 'spacing-fanen' : 'en linje i BLOCK_SPACING'}`)
+  } else {
+    // The block's own choices, and an empty value from before the fields existed, must render with no override.
+    const own = BLOCK_SPACING[block.slug]
+    if (spacingClasses(block.slug, own.before, own.after) || spacingClasses(block.slug, null, null))
+      errors.push(`${block.slug} får overstyret sin egen luft`)
   }
 }
+for (const slug of Object.keys(BLOCK_SPACING))
+  if (!(allBlocks as Block[]).some((block) => block.slug === slug)) errors.push(`BLOCK_SPACING har "${slug}", som ikke er en blok`)
 
-if (hasError) {
+if (errors.length) {
+  for (const error of errors) console.error(`✗ ${error}`)
   console.error('\nSpacing-tjek fejlede.')
   process.exit(1)
 }
-
 console.log('\nSpacing-tjek bestået.')

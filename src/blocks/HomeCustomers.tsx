@@ -5,12 +5,14 @@ import { SectionHeadline } from '@/components/home/SectionHeadline'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import type { HomeCustomersBlock as HomeCustomersBlockProps } from '@/payload-types'
 
+import { contentWithSpacingTabs } from './fields/layout'
+
 /** Erhvervskunder (Webflow: Section / Masonry): logoer på farvede flader og fotos med stedsnavn i tre kolonner. */
 export const homeCustomersBlock: Block = {
   slug: 'homeCustomers',
   interfaceName: 'HomeCustomersBlock',
   labels: { singular: 'Erhvervskunder', plural: 'Erhvervskunder' },
-  fields: [
+  fields: contentWithSpacingTabs('homeCustomers', [
     { name: 'tagline', type: 'text', required: true, label: 'Tagline', defaultValue: 'Fra havedøren til havudsigt' },
     { name: 'heading', type: 'text', required: true, label: 'Overskrift', defaultValue: 'Mød vores erhvervskunder' },
     {
@@ -48,7 +50,7 @@ export const homeCustomersBlock: Block = {
         },
       ],
     },
-  ],
+  ]),
 }
 
 export function HomeCustomers({ heading, items, tagline }: HomeCustomersBlockProps) {

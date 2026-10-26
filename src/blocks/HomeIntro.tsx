@@ -8,6 +8,8 @@ import { resolveLinkHref } from '@/lib/link'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import type { HomeIntroBlock as HomeIntroBlockProps } from '@/payload-types'
 
+import { contentWithSpacingTabs } from './fields/layout'
+
 const ICONS = {
   lock: LockShieldIcon,
   clock: ClockIcon,
@@ -20,7 +22,7 @@ export const homeIntroBlock: Block = {
   slug: 'homeIntro',
   interfaceName: 'HomeIntroBlock',
   labels: { singular: 'Forside-intro', plural: 'Forside-intro' },
-  fields: [
+  fields: contentWithSpacingTabs('homeIntro', [
     { name: 'tagline', type: 'text', required: true, label: 'Tagline', defaultValue: 'Din lokale låsesmed siden 1992' },
     { name: 'heading', type: 'text', required: true, label: 'Overskrift', defaultValue: 'Den rette løsning' },
     {
@@ -53,7 +55,7 @@ export const homeIntroBlock: Block = {
       admin: { description: 'Vises i kvadrat. Brug originalfilen, ikke en beskåret udgave.' },
     },
     linkField,
-  ],
+  ]),
 }
 
 export function HomeIntro({ features, heading, image, link, tagline }: HomeIntroBlockProps) {

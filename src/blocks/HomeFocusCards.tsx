@@ -9,6 +9,8 @@ import { resolveLinkHref } from '@/lib/link'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import type { HomeFocusCardsBlock as HomeFocusCardsBlockProps } from '@/payload-types'
 
+import { contentWithSpacingTabs } from './fields/layout'
+
 /**
  * Fokuskort (Webflow: Section / Quick links): tre 480px kort side om side. Billedkort har et badge med ikon og navn
  * øverst; servicekortet er mørkt med overskrift, tekst, knap og et billede nederst.
@@ -17,7 +19,7 @@ export const homeFocusCardsBlock: Block = {
   slug: 'homeFocusCards',
   interfaceName: 'HomeFocusCardsBlock',
   labels: { singular: 'Fokuskort', plural: 'Fokuskort' },
-  fields: [
+  fields: contentWithSpacingTabs('homeFocusCards', [
     {
       name: 'cards',
       type: 'array',
@@ -63,7 +65,7 @@ export const homeFocusCardsBlock: Block = {
         },
       ],
     },
-  ],
+  ]),
 }
 
 export function HomeFocusCards({ cards }: HomeFocusCardsBlockProps) {
