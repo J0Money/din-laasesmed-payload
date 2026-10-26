@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 import { BlockRenderer } from '@/components/blocks/BlockRenderer'
 import { getPayloadClient } from '@/lib/payload'
+import { HOME_PAGE_SLUG } from '@/lib/routes'
 
 async function getPage(slug: string) {
   const payload = await getPayloadClient()
@@ -26,6 +27,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function StaticPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
+  // Forsiden vises på "/", ikke på sin egen adresse.
+  if (slug === HOME_PAGE_SLUG) redirect('/')
   const page = await getPage(slug)
   if (!page) notFound()
 

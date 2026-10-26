@@ -3,6 +3,12 @@ import type { Block } from 'payload'
 import { articleWithFormBlock } from './ArticleWithForm'
 import { brandGridBlock } from './BrandGrid'
 import { contactCardsBlock } from './ContactCards'
+import { homeCustomersBlock } from './HomeCustomers'
+import { homeFocusCardsBlock } from './HomeFocusCards'
+import { homeHeroBlock } from './HomeHero'
+import { homeIntroBlock } from './HomeIntro'
+import { homeStatsBlock } from './HomeStats'
+import { homeTestimonialsBlock } from './HomeTestimonials'
 import { imageSliderBlock } from './ImageSlider'
 import { jobListBlock } from './JobList'
 import { overviewIntroBlock } from './OverviewIntro'
@@ -15,6 +21,12 @@ import { textWithImageBlock } from './TextWithImage'
 import { videoHeroBlock } from './VideoHero'
 
 const blocks: Block[] = [
+  homeHeroBlock,
+  homeIntroBlock,
+  homeTestimonialsBlock,
+  homeStatsBlock,
+  homeFocusCardsBlock,
+  homeCustomersBlock,
   videoHeroBlock,
   overviewIntroBlock,
   contactCardsBlock,

@@ -1,5 +1,8 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 
+import { BlockRenderer } from '@/components/blocks/BlockRenderer'
+import { HOME_BUTTON, SectionHeadline } from '@/components/home/SectionHeadline'
 import {
   ButtonCheckIcon,
   CertificateIcon,
@@ -16,7 +19,7 @@ import { TestimonialSlider } from '@/components/home/TestimonialSlider'
 import { LockIcon, SignalIcon } from '@/components/layout/NavIcons'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import { getPayloadClient } from '@/lib/payload'
-import { ROUTES } from '@/lib/routes'
+import { HOME_PAGE_SLUG, ROUTES } from '@/lib/routes'
 
 const FEATURES = [
   {
@@ -41,34 +44,37 @@ const FEATURES = [
   },
 ]
 
-/** Overskrift-par der går igen i alle sektioner: lille blå tagline + 40px let overskrift (h1 på originalen). */
-function SectionHeadline({
-  tagline,
-  title,
-  center = false,
-  leading = 'leading-[44px]',
-}: {
-  tagline: string
-  title: string
-  center?: boolean
-  leading?: string
-}) {
-  return (
-    <div className={`flex flex-col ${center ? 'items-center gap-3 text-center' : 'gap-2'}`}>
-      <p className="font-heading text-sm leading-[21px] text-brand-500">{tagline}</p>
-      <h2 className={`text-trim mt-5 mb-[10px] font-heading text-[40px] font-light text-ink-800 ${leading}`}>{title}</h2>
-    </div>
-  )
+async function getHomePage() {
+  const payload = await getPayloadClient()
+  const result = await payload.find({
+    collection: 'pages',
+    where: { slug: { equals: HOME_PAGE_SLUG }, _status: { equals: 'published' } },
+    limit: 1,
+  })
+  return result.docs[0]
 }
 
-/** Knapper på forsiden har 16px tekst og ikon efter teksten, i modsætning til artiklernes 14px-knapper. */
-const HOME_BUTTON = 'h-auto gap-3 py-4 text-base'
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getHomePage()
+  if (!page) return {}
+  return { title: page.titleTag || page.title, description: page.metaDescription || undefined }
+}
 
 /**
  * Mål aflæst fra din-laasesmed.dk ved 1600px viewport, sektion for sektion.
- * Indhold der kan redigeres (billeder, tal, udtalelser, erhvervskunder) ligger i Home-globalen.
+ * Findes der en udgivet Payload-side med slug "forside", vises den (bygget af blokke). Ellers bruges den faste
+ * forside herunder, hvis indhold ligger i Home-globalen. Den faste forside fjernes, når siden er flyttet over.
  */
 export default async function HomePage() {
+  const homePage = await getHomePage()
+  if (homePage) {
+    return (
+      <main>
+        <BlockRenderer blocks={homePage.layout} />
+      </main>
+    )
+  }
+
   const payload = await getPayloadClient()
   const home = await payload.findGlobal({ slug: 'home' })
 

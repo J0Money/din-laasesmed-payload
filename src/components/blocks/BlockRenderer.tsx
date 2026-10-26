@@ -1,6 +1,12 @@
 import { ArticleWithForm } from '@/blocks/ArticleWithForm'
 import { BrandGrid } from '@/blocks/BrandGrid'
 import { ContactCards } from '@/blocks/ContactCards'
+import { HomeCustomers } from '@/blocks/HomeCustomers'
+import { HomeFocusCards } from '@/blocks/HomeFocusCards'
+import { HomeHero } from '@/blocks/HomeHero'
+import { HomeIntro } from '@/blocks/HomeIntro'
+import { HomeStats } from '@/blocks/HomeStats'
+import { HomeTestimonials } from '@/blocks/HomeTestimonials'
 import { ImageSlider } from '@/blocks/ImageSlider'
 import { JobList } from '@/blocks/JobList'
 import { OverviewIntro } from '@/blocks/OverviewIntro'
@@ -22,6 +28,18 @@ export function BlockRenderer({ blocks }: { blocks: LayoutBlocks | null | undefi
     <>
       {blocks.map((block: LayoutBlock) => {
         switch (block.blockType) {
+          case 'homeHero':
+            return <HomeHero key={block.id} {...block} />
+          case 'homeIntro':
+            return <HomeIntro key={block.id} {...block} />
+          case 'homeTestimonials':
+            return <HomeTestimonials key={block.id} {...block} />
+          case 'homeStats':
+            return <HomeStats key={block.id} {...block} />
+          case 'homeFocusCards':
+            return <HomeFocusCards key={block.id} {...block} />
+          case 'homeCustomers':
+            return <HomeCustomers key={block.id} {...block} />
           case 'videoHero':
             return <VideoHero key={block.id} {...block} />
           case 'overviewIntro':

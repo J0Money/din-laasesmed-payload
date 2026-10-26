@@ -13,6 +13,9 @@ export const ROUTES = {
   notFound: () => '/404',
 } as const
 
+/** Slug på den Payload-side, der vises som forsiden på "/". Findes den ikke, bruges den faste forside. */
+export const HOME_PAGE_SLUG = 'forside'
+
 /**
  * Slugs der ikke må bruges som en Pages-slug, fordi de allerede er reserveret
  * af en af de faste ruter ovenfor.

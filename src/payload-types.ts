@@ -164,10 +164,16 @@ export interface Page {
    */
   parent?: (string | null) | Page;
   /**
-   * Vælg mellem: Video-bånd, Intro-bånd, Kontaktkort, Artikel med formular, Parallax-bånd, Medarbejdere, Billed-slider, Mærkeoversigt, Jobliste, Tak-besked, Tekst, Tekst med billede.
+   * Vælg mellem: Forside-hero, Forside-intro, Kundeudtalelser, Tal-bånd, Fokuskort, Erhvervskunder, Video-bånd, Intro-bånd, Kontaktkort, Artikel med formular, Parallax-bånd, Medarbejdere, Billed-slider, Mærkeoversigt, Jobliste, Tak-besked, Tekst, Tekst med billede.
    */
   layout?:
     | (
+        | HomeHeroBlock
+        | HomeIntroBlock
+        | HomeTestimonialsBlock
+        | HomeStatsBlock
+        | HomeFocusCardsBlock
+        | HomeCustomersBlock
         | VideoHeroBlock
         | OverviewIntroBlock
         | ContactCardsBlock
@@ -190,21 +196,146 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "VideoHeroBlock".
+ * via the `definition` "HomeHeroBlock".
  */
-export interface VideoHeroBlock {
-  /**
-   * Vises, mens videoen loader, og hvis den ikke kan afspilles.
-   */
-  poster: string | Media;
+export interface HomeHeroBlock {
   videoWebm?: (string | null) | Video;
-  /**
-   * Bruges, hvis browseren ikke kan afspille WebM (bl.a. Safari).
-   */
   videoMp4?: (string | null) | Video;
+  leftText: string;
+  rightText: string;
+  buttons?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          label: string;
+          /**
+           * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+           */
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'categories';
+                value: string | Category;
+              } | null)
+            | ({
+                relationTo: 'articles';
+                value: string | Article;
+              } | null);
+          /**
+           * Fx en ekstern adresse eller et tel:-link.
+           */
+          url?: string | null;
+          newTab?: boolean | null;
+        };
+        /**
+         * Ellers en blå knap.
+         */
+        accent?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'videoHero';
+  blockType: 'homeHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos".
+ */
+export interface Video {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  name: string;
+  /**
+   * Bruges i URL'en: /overview/<slug>
+   */
+  slug: string;
+  mainHeading: string;
+  mainText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  titleTag?: string | null;
+  metaDescription?: string | null;
+  sitemapIndexing?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: string;
+  name: string;
+  /**
+   * Bruges i URL'en: /artikler/<slug>
+   */
+  slug: string;
+  /**
+   * Lad stå tom for artikler uden kategori, fx lokationssider som "Låsesmed Aalborg".
+   */
+  category?: (string | null) | Category;
+  mainImage?: (string | null) | Media;
+  mainHeading: string;
+  mainText: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Styrer rækkefølgen i "Læs også" (nyeste først).
+   */
+  publishedAt?: string | null;
+  brands?: (string | Brand)[] | null;
+  titleTag?: string | null;
+  metaDescription?: string | null;
+  sitemapIndexing?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -291,21 +422,230 @@ export interface FolderInterface {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "videos".
+ * via the `definition` "brands".
  */
-export interface Video {
+export interface Brand {
   id: string;
+  name: string;
+  /**
+   * Bruges i URL'en: /brands/<slug>
+   */
+  slug: string;
+  logo?: (string | null) | Media;
+  mainImage?: (string | null) | Media;
+  mainAlt?: string | null;
+  mainHeading: string;
+  mainText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Op til 4 foldbare sektioner nederst på siden (titel, billede, tekst).
+   */
+  accordion?:
+    | {
+        title?: string | null;
+        image?: (string | null) | Media;
+        text?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  titleTag?: string | null;
+  metaDescription?: string | null;
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeIntroBlock".
+ */
+export interface HomeIntroBlock {
+  tagline: string;
+  heading: string;
+  features?:
+    | {
+        icon?: ('lock' | 'clock' | 'certificate' | 'handshake') | null;
+        title: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Vises i kvadrat. Brug originalfilen, ikke en beskåret udgave.
+   */
+  image?: (string | null) | Media;
+  link: {
+    type?: ('reference' | 'custom') | null;
+    label: string;
+    /**
+     * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+     */
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: string | Page;
+        } | null)
+      | ({
+          relationTo: 'categories';
+          value: string | Category;
+        } | null)
+      | ({
+          relationTo: 'articles';
+          value: string | Article;
+        } | null);
+    /**
+     * Fx en ekstern adresse eller et tel:-link.
+     */
+    url?: string | null;
+    newTab?: boolean | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homeIntro';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeTestimonialsBlock".
+ */
+export interface HomeTestimonialsBlock {
+  tagline: string;
+  heading: string;
+  items?:
+    | {
+        quote: string;
+        author: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homeTestimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeStatsBlock".
+ */
+export interface HomeStatsBlock {
+  image?: (string | null) | Media;
+  items?:
+    | {
+        value: number;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homeStats';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeFocusCardsBlock".
+ */
+export interface HomeFocusCardsBlock {
+  cards?:
+    | {
+        type?: ('image' | 'service') | null;
+        image?: (string | null) | Media;
+        link: {
+          type?: ('reference' | 'custom') | null;
+          label: string;
+          /**
+           * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+           */
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'categories';
+                value: string | Category;
+              } | null)
+            | ({
+                relationTo: 'articles';
+                value: string | Article;
+              } | null);
+          /**
+           * Fx en ekstern adresse eller et tel:-link.
+           */
+          url?: string | null;
+          newTab?: boolean | null;
+        };
+        icon?: ('lock' | 'signal') | null;
+        heading?: string | null;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homeFocusCards';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeCustomersBlock".
+ */
+export interface HomeCustomersBlock {
+  tagline: string;
+  heading: string;
+  items?:
+    | {
+        image: string | Media;
+        label?: string | null;
+        type?: ('logo' | 'photo') | null;
+        bgColor?: string | null;
+        logoHeight?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homeCustomers';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoHeroBlock".
+ */
+export interface VideoHeroBlock {
+  /**
+   * Vises, mens videoen loader, og hvis den ikke kan afspilles.
+   */
+  poster: string | Media;
+  videoWebm?: (string | null) | Video;
+  /**
+   * Bruges, hvis browseren ikke kan afspille WebM (bl.a. Safari).
+   */
+  videoMp4?: (string | null) | Video;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoHero';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -384,145 +724,6 @@ export interface ContactCardsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'contactCards';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: string;
-  name: string;
-  /**
-   * Bruges i URL'en: /overview/<slug>
-   */
-  slug: string;
-  mainHeading: string;
-  mainText?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  titleTag?: string | null;
-  metaDescription?: string | null;
-  sitemapIndexing?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "articles".
- */
-export interface Article {
-  id: string;
-  name: string;
-  /**
-   * Bruges i URL'en: /artikler/<slug>
-   */
-  slug: string;
-  /**
-   * Lad stå tom for artikler uden kategori, fx lokationssider som "Låsesmed Aalborg".
-   */
-  category?: (string | null) | Category;
-  mainImage?: (string | null) | Media;
-  mainHeading: string;
-  mainText: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  /**
-   * Styrer rækkefølgen i "Læs også" (nyeste først).
-   */
-  publishedAt?: string | null;
-  brands?: (string | Brand)[] | null;
-  titleTag?: string | null;
-  metaDescription?: string | null;
-  sitemapIndexing?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "brands".
- */
-export interface Brand {
-  id: string;
-  name: string;
-  /**
-   * Bruges i URL'en: /brands/<slug>
-   */
-  slug: string;
-  logo?: (string | null) | Media;
-  mainImage?: (string | null) | Media;
-  mainAlt?: string | null;
-  mainHeading: string;
-  mainText?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Op til 4 foldbare sektioner nederst på siden (titel, billede, tekst).
-   */
-  accordion?:
-    | {
-        title?: string | null;
-        image?: (string | null) | Media;
-        text?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        id?: string | null;
-      }[]
-    | null;
-  titleTag?: string | null;
-  metaDescription?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1119,6 +1320,12 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        homeHero?: T | HomeHeroBlockSelect<T>;
+        homeIntro?: T | HomeIntroBlockSelect<T>;
+        homeTestimonials?: T | HomeTestimonialsBlockSelect<T>;
+        homeStats?: T | HomeStatsBlockSelect<T>;
+        homeFocusCards?: T | HomeFocusCardsBlockSelect<T>;
+        homeCustomers?: T | HomeCustomersBlockSelect<T>;
         videoHero?: T | VideoHeroBlockSelect<T>;
         overviewIntro?: T | OverviewIntroBlockSelect<T>;
         contactCards?: T | ContactCardsBlockSelect<T>;
@@ -1137,6 +1344,141 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeHeroBlock_select".
+ */
+export interface HomeHeroBlockSelect<T extends boolean = true> {
+  videoWebm?: T;
+  videoMp4?: T;
+  leftText?: T;
+  rightText?: T;
+  buttons?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              label?: T;
+              reference?: T;
+              url?: T;
+              newTab?: T;
+            };
+        accent?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeIntroBlock_select".
+ */
+export interface HomeIntroBlockSelect<T extends boolean = true> {
+  tagline?: T;
+  heading?: T;
+  features?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  image?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        label?: T;
+        reference?: T;
+        url?: T;
+        newTab?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeTestimonialsBlock_select".
+ */
+export interface HomeTestimonialsBlockSelect<T extends boolean = true> {
+  tagline?: T;
+  heading?: T;
+  items?:
+    | T
+    | {
+        quote?: T;
+        author?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeStatsBlock_select".
+ */
+export interface HomeStatsBlockSelect<T extends boolean = true> {
+  image?: T;
+  items?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeFocusCardsBlock_select".
+ */
+export interface HomeFocusCardsBlockSelect<T extends boolean = true> {
+  cards?:
+    | T
+    | {
+        type?: T;
+        image?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              label?: T;
+              reference?: T;
+              url?: T;
+              newTab?: T;
+            };
+        icon?: T;
+        heading?: T;
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomeCustomersBlock_select".
+ */
+export interface HomeCustomersBlockSelect<T extends boolean = true> {
+  tagline?: T;
+  heading?: T;
+  items?:
+    | T
+    | {
+        image?: T;
+        label?: T;
+        type?: T;
+        bgColor?: T;
+        logoHeight?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
