@@ -12,6 +12,7 @@ export function ArticleWithForm({
   className = '',
   form,
   formFirst = false,
+  overlapPrevious = false,
   children,
 }: {
   imageUrl?: string
@@ -21,10 +22,15 @@ export function ArticleWithForm({
   form?: Form | null | string
   /** Under 992px står formularen før artiklen (som på originalens mærkesider). */
   formFirst?: boolean
+  /** Sektionen rykkes op over blokken før (videobåndet), og kun den del under båndet får baggrund. */
+  overlapPrevious?: boolean
   children: React.ReactNode
 }) {
   return (
-    <section className={`bg-background py-(--fluid-section) ${className}`}>
+    <section
+      className={`py-(--fluid-section) ${overlapPrevious ? 'relative -mt-(--overlap) [--overlap:calc(92px+0.0458*(100vw-375px))] min-[992px]:[--overlap:calc(var(--fluid-section)+27px)]' : 'bg-background'} ${className}`}
+    >
+      {overlapPrevious && <div aria-hidden className="absolute inset-x-0 top-(--overlap) bottom-0 bg-background" />}
       <div className={`site-container relative z-10 lg:flex lg:items-start lg:justify-center lg:gap-12 ${formFirst ? 'max-[991px]:flex max-[991px]:flex-col' : ''}`}>
         <article className="flex min-w-0 flex-col gap-8 lg:shrink-0 lg:basis-[min(896px,calc(100%-297px))]">
           {imageUrl && (
