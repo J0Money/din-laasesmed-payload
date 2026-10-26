@@ -224,6 +224,8 @@ export function DynamicForm({
               value={String(values[name] ?? '')}
               onChange={(event) => set(name, event.target.value)}
               className={inputClass}
+              // Autofill-udvidelser (adgangskodeadministratorer) tilføjer stil på felterne, før React er indlæst.
+              suppressHydrationWarning
             />
           </label>
         )
