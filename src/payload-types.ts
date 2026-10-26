@@ -72,8 +72,12 @@ export interface Config {
     categories: Category;
     brands: Brand;
     employees: Employee;
+    jobs: Job;
     users: User;
     media: Media;
+    videos: Video;
+    forms: Form;
+    'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
@@ -91,8 +95,12 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     brands: BrandsSelect<false> | BrandsSelect<true>;
     employees: EmployeesSelect<false> | EmployeesSelect<true>;
+    jobs: JobsSelect<false> | JobsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    videos: VideosSelect<false> | VideosSelect<true>;
+    forms: FormsSelect<false> | FormsSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -156,94 +164,47 @@ export interface Page {
    */
   parent?: (string | null) | Page;
   /**
-   * Vælg mellem: Tekst, Tekst med billede.
+   * Vælg mellem: Video-bånd, Intro-bånd, Kontaktkort, Artikel med formular, Parallax-bånd, Medarbejdere, Billed-slider, Mærkeoversigt, Jobliste, Tak-besked, Tekst, Tekst med billede.
    */
-  layout?: (TextBlock | TextWithImageBlock)[] | null;
+  layout?:
+    | (
+        | VideoHeroBlock
+        | OverviewIntroBlock
+        | ContactCardsBlock
+        | ArticleWithFormBlock
+        | ParallaxBandBlock
+        | PeopleBlock
+        | ImageSliderBlock
+        | BrandGridBlock
+        | JobListBlock
+        | ThanksMessageBlock
+        | TextBlock
+        | TextWithImageBlock
+      )[]
+    | null;
+  titleTag?: string | null;
+  metaDescription?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TextBlock".
+ * via the `definition` "VideoHeroBlock".
  */
-export interface TextBlock {
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
+export interface VideoHeroBlock {
   /**
-   * Afstand til sektionen ovenfor.
+   * Vises, mens videoen loader, og hvis den ikke kan afspilles.
    */
-  spacingBefore?: ('lg' | 'md' | 'none' | 'sm') | null;
+  poster: string | Media;
+  videoWebm?: (string | null) | Video;
   /**
-   * Afstand til sektionen nedenfor.
+   * Bruges, hvis browseren ikke kan afspille WebM (bl.a. Safari).
    */
-  spacingAfter?: ('lg' | 'md' | 'none' | 'sm') | null;
-  /**
-   * Giver sektionen en dæmpet grå baggrund i stedet for standardbaggrunden — brug til at skabe visuel adskillelse mellem sektioner.
-   */
-  mutedBackground?: boolean | null;
-  /**
-   * Valgfrit — bruges kun til særlige layout-behov, ikke til almindelig indholdsredigering.
-   */
-  blockClass?: string | null;
+  videoMp4?: (string | null) | Video;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'text';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TextWithImageBlock".
- */
-export interface TextWithImageBlock {
-  image: string | Media;
-  imagePosition?: ('left' | 'right') | null;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  /**
-   * Afstand til sektionen ovenfor.
-   */
-  spacingBefore?: ('lg' | 'md' | 'none' | 'sm') | null;
-  /**
-   * Afstand til sektionen nedenfor.
-   */
-  spacingAfter?: ('lg' | 'md' | 'none' | 'sm') | null;
-  /**
-   * Giver sektionen en dæmpet grå baggrund i stedet for standardbaggrunden — brug til at skabe visuel adskillelse mellem sektioner.
-   */
-  mutedBackground?: boolean | null;
-  /**
-   * Valgfrit — bruges kun til særlige layout-behov, ikke til almindelig indholdsredigering.
-   */
-  blockClass?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'textWithImage';
+  blockType: 'videoHero';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -330,6 +291,136 @@ export interface FolderInterface {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos".
+ */
+export interface Video {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OverviewIntroBlock".
+ */
+export interface OverviewIntroBlock {
+  /**
+   * Lille blå tekst øverst til venstre, fx "Vi forhandler".
+   */
+  tagline: string;
+  /**
+   * Stor tekst til venstre, fx "Se alle mærker".
+   */
+  title: string;
+  heading: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'overviewIntro';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactCardsBlock".
+ */
+export interface ContactCardsBlock {
+  cards?:
+    | {
+        icon?: ('phone' | 'shop' | 'mail' | 'certificate') | null;
+        text: string;
+        link: {
+          type?: ('reference' | 'custom') | null;
+          label: string;
+          /**
+           * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+           */
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'categories';
+                value: string | Category;
+              } | null)
+            | ({
+                relationTo: 'articles';
+                value: string | Article;
+              } | null);
+          /**
+           * Fx en ekstern adresse eller et tel:-link.
+           */
+          url?: string | null;
+          newTab?: boolean | null;
+        };
+        /**
+         * Blå knap i stedet for en knap med kant.
+         */
+        filled?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contactCards';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  name: string;
+  /**
+   * Bruges i URL'en: /overview/<slug>
+   */
+  slug: string;
+  mainHeading: string;
+  mainText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  titleTag?: string | null;
+  metaDescription?: string | null;
+  sitemapIndexing?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "articles".
  */
 export interface Article {
@@ -365,40 +456,6 @@ export interface Article {
    */
   publishedAt?: string | null;
   brands?: (string | Brand)[] | null;
-  titleTag?: string | null;
-  metaDescription?: string | null;
-  sitemapIndexing?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: string;
-  name: string;
-  /**
-   * Bruges i URL'en: /overview/<slug>
-   */
-  slug: string;
-  mainHeading: string;
-  mainText?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
   titleTag?: string | null;
   metaDescription?: string | null;
   sitemapIndexing?: boolean | null;
@@ -469,6 +526,211 @@ export interface Brand {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleWithFormBlock".
+ */
+export interface ArticleWithFormBlock {
+  /**
+   * Vises i 16:9 over overskriften. Kan udelades.
+   */
+  image?: (string | null) | Media;
+  heading: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Rykker sektionen 7rem op over det forrige bånd, som på Om os.
+   */
+  overlapPrevious?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'articleWithForm';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ParallaxBandBlock".
+ */
+export interface ParallaxBandBlock {
+  image: string | Media;
+  leftText: string;
+  rightText: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'parallaxBand';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PeopleBlock".
+ */
+export interface PeopleBlock {
+  groups?:
+    | {
+        heading: string;
+        group: 'administration' | 'montoerer' | 'aalborg';
+        showHelpCard?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'people';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageSliderBlock".
+ */
+export interface ImageSliderBlock {
+  title: string;
+  images?:
+    | {
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageSlider';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BrandGridBlock".
+ */
+export interface BrandGridBlock {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'brandGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "JobListBlock".
+ */
+export interface JobListBlock {
+  emptyText?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'jobList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ThanksMessageBlock".
+ */
+export interface ThanksMessageBlock {
+  image?: (string | null) | Media;
+  heading: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'thanksMessage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextBlock".
+ */
+export interface TextBlock {
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Afstand til sektionen ovenfor.
+   */
+  spacingBefore?: ('lg' | 'md' | 'none' | 'sm') | null;
+  /**
+   * Afstand til sektionen nedenfor.
+   */
+  spacingAfter?: ('lg' | 'md' | 'none' | 'sm') | null;
+  /**
+   * Giver sektionen en dæmpet grå baggrund i stedet for standardbaggrunden — brug til at skabe visuel adskillelse mellem sektioner.
+   */
+  mutedBackground?: boolean | null;
+  /**
+   * Valgfrit — bruges kun til særlige layout-behov, ikke til almindelig indholdsredigering.
+   */
+  blockClass?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'text';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextWithImageBlock".
+ */
+export interface TextWithImageBlock {
+  image: string | Media;
+  imagePosition?: ('left' | 'right') | null;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Afstand til sektionen ovenfor.
+   */
+  spacingBefore?: ('lg' | 'md' | 'none' | 'sm') | null;
+  /**
+   * Afstand til sektionen nedenfor.
+   */
+  spacingAfter?: ('lg' | 'md' | 'none' | 'sm') | null;
+  /**
+   * Giver sektionen en dæmpet grå baggrund i stedet for standardbaggrunden — brug til at skabe visuel adskillelse mellem sektioner.
+   */
+  mutedBackground?: boolean | null;
+  /**
+   * Valgfrit — bruges kun til særlige layout-behov, ikke til almindelig indholdsredigering.
+   */
+  blockClass?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'textWithImage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "employees".
  */
 export interface Employee {
@@ -500,6 +762,45 @@ export interface Employee {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs".
+ */
+export interface Job {
+  id: string;
+  title: string;
+  /**
+   * F.eks.: Aarhus eller Aalborg.
+   */
+  location?: string | null;
+  summary?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Lad stå tom for at bruge virksomhedens e-mail.
+   */
+  applyEmail?: string | null;
+  /**
+   * Nyeste stilling vises først.
+   */
+  publishedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -523,6 +824,175 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms".
+ */
+export interface Form {
+  id: string;
+  title: string;
+  fields?:
+    | (
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'checkbox';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'email';
+          }
+        | {
+            message?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'message';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'number';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            placeholder?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'select';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'text';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'textarea';
+          }
+      )[]
+    | null;
+  submitButtonLabel?: string | null;
+  confirmationType?: ('message' | 'redirect') | null;
+  confirmationMessage?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  redirect?: {
+    type?: ('reference' | 'custom') | null;
+    reference?: {
+      relationTo: 'pages';
+      value: string | Page;
+    } | null;
+    url?: string | null;
+  };
+  emails?:
+    | {
+        emailTo?: string | null;
+        cc?: string | null;
+        bcc?: string | null;
+        replyTo?: string | null;
+        emailFrom?: string | null;
+        subject: string;
+        message?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions".
+ */
+export interface FormSubmission {
+  id: string;
+  form: string | Form;
+  submissionData?:
+    | {
+        field: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -569,12 +1039,28 @@ export interface PayloadLockedDocument {
         value: string | Employee;
       } | null)
     | ({
+        relationTo: 'jobs';
+        value: string | Job;
+      } | null)
+    | ({
         relationTo: 'users';
         value: string | User;
       } | null)
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'videos';
+        value: string | Video;
+      } | null)
+    | ({
+        relationTo: 'forms';
+        value: string | Form;
+      } | null)
+    | ({
+        relationTo: 'form-submissions';
+        value: string | FormSubmission;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -633,12 +1119,154 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
+        videoHero?: T | VideoHeroBlockSelect<T>;
+        overviewIntro?: T | OverviewIntroBlockSelect<T>;
+        contactCards?: T | ContactCardsBlockSelect<T>;
+        articleWithForm?: T | ArticleWithFormBlockSelect<T>;
+        parallaxBand?: T | ParallaxBandBlockSelect<T>;
+        people?: T | PeopleBlockSelect<T>;
+        imageSlider?: T | ImageSliderBlockSelect<T>;
+        brandGrid?: T | BrandGridBlockSelect<T>;
+        jobList?: T | JobListBlockSelect<T>;
+        thanksMessage?: T | ThanksMessageBlockSelect<T>;
         text?: T | TextBlockSelect<T>;
         textWithImage?: T | TextWithImageBlockSelect<T>;
       };
+  titleTag?: T;
+  metaDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoHeroBlock_select".
+ */
+export interface VideoHeroBlockSelect<T extends boolean = true> {
+  poster?: T;
+  videoWebm?: T;
+  videoMp4?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OverviewIntroBlock_select".
+ */
+export interface OverviewIntroBlockSelect<T extends boolean = true> {
+  tagline?: T;
+  title?: T;
+  heading?: T;
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactCardsBlock_select".
+ */
+export interface ContactCardsBlockSelect<T extends boolean = true> {
+  cards?:
+    | T
+    | {
+        icon?: T;
+        text?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              label?: T;
+              reference?: T;
+              url?: T;
+              newTab?: T;
+            };
+        filled?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleWithFormBlock_select".
+ */
+export interface ArticleWithFormBlockSelect<T extends boolean = true> {
+  image?: T;
+  heading?: T;
+  content?: T;
+  overlapPrevious?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ParallaxBandBlock_select".
+ */
+export interface ParallaxBandBlockSelect<T extends boolean = true> {
+  image?: T;
+  leftText?: T;
+  rightText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PeopleBlock_select".
+ */
+export interface PeopleBlockSelect<T extends boolean = true> {
+  groups?:
+    | T
+    | {
+        heading?: T;
+        group?: T;
+        showHelpCard?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageSliderBlock_select".
+ */
+export interface ImageSliderBlockSelect<T extends boolean = true> {
+  title?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BrandGridBlock_select".
+ */
+export interface BrandGridBlockSelect<T extends boolean = true> {
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "JobListBlock_select".
+ */
+export interface JobListBlockSelect<T extends boolean = true> {
+  emptyText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ThanksMessageBlock_select".
+ */
+export interface ThanksMessageBlockSelect<T extends boolean = true> {
+  image?: T;
+  heading?: T;
+  content?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -750,6 +1378,21 @@ export interface EmployeesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs_select".
+ */
+export interface JobsSelect<T extends boolean = true> {
+  title?: T;
+  location?: T;
+  summary?: T;
+  description?: T;
+  applyEmail?: T;
+  publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -833,6 +1476,154 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos_select".
+ */
+export interface VideosSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms_select".
+ */
+export interface FormsSelect<T extends boolean = true> {
+  title?: T;
+  fields?:
+    | T
+    | {
+        checkbox?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              defaultValue?: T;
+              id?: T;
+              blockName?: T;
+            };
+        email?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        message?:
+          | T
+          | {
+              message?: T;
+              id?: T;
+              blockName?: T;
+            };
+        number?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        select?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              placeholder?: T;
+              options?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        text?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        textarea?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  submitButtonLabel?: T;
+  confirmationType?: T;
+  confirmationMessage?: T;
+  redirect?:
+    | T
+    | {
+        type?: T;
+        reference?: T;
+        url?: T;
+      };
+  emails?:
+    | T
+    | {
+        emailTo?: T;
+        cc?: T;
+        bcc?: T;
+        replyTo?: T;
+        emailFrom?: T;
+        subject?: T;
+        message?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions_select".
+ */
+export interface FormSubmissionsSelect<T extends boolean = true> {
+  form?: T;
+  submissionData?:
+    | T
+    | {
+        field?: T;
+        value?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

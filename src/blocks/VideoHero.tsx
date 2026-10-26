@@ -1,0 +1,56 @@
+import type { Block } from 'payload'
+
+import { mediaAlt, mediaUrl } from '@/lib/media'
+import type { VideoHeroBlock as VideoHeroBlockProps } from '@/payload-types'
+
+/** 453px videobånd (Webflow: Section / Video hero) øverst på kontakt-, Aalborg-, Om os- og Tranbjerg-siden. */
+export const videoHeroBlock: Block = {
+  slug: 'videoHero',
+  interfaceName: 'VideoHeroBlock',
+  labels: { singular: 'Video-bånd', plural: 'Video-bånd' },
+  fields: [
+    {
+      name: 'poster',
+      type: 'upload',
+      relationTo: 'media',
+      required: true,
+      label: 'Plakatbillede',
+      admin: { description: 'Vises, mens videoen loader, og hvis den ikke kan afspilles.' },
+    },
+    {
+      name: 'videoWebm',
+      type: 'upload',
+      relationTo: 'videos',
+      label: 'Video (WebM)',
+    },
+    {
+      name: 'videoMp4',
+      type: 'upload',
+      relationTo: 'videos',
+      label: 'Video (MP4)',
+      admin: { description: 'Bruges, hvis browseren ikke kan afspille WebM (bl.a. Safari).' },
+    },
+  ],
+}
+
+export function VideoHero({ poster, videoMp4, videoWebm }: VideoHeroBlockProps) {
+  const webm = typeof videoWebm === 'object' ? videoWebm?.url : undefined
+  const mp4 = typeof videoMp4 === 'object' ? videoMp4?.url : undefined
+
+  return (
+    <div className="relative h-[453px] overflow-hidden bg-surface-muted">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={mediaUrl(poster)}
+        alt={mediaAlt(poster)}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      {(webm || mp4) && (
+        <video autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover">
+          {webm && <source src={webm} type="video/webm" />}
+          {mp4 && <source src={mp4} type="video/mp4" />}
+        </video>
+      )}
+    </div>
+  )
+}

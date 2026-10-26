@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { BlockRenderer } from '@/components/blocks/BlockRenderer'
@@ -11,6 +12,16 @@ async function getPage(slug: string) {
     limit: 1,
   })
   return result.docs[0]
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const page = await getPage(slug)
+  if (!page) return {}
+  return {
+    title: page.titleTag || page.title,
+    description: page.metaDescription || undefined,
+  }
 }
 
 export default async function StaticPage({ params }: { params: Promise<{ slug: string }> }) {

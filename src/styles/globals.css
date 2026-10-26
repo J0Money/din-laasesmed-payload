@@ -85,6 +85,10 @@
     @apply text-trim mb-[10px] flow-root;
   }
 
+  .rich-text h1 {
+    @apply text-trim mt-12 mb-8 font-heading text-[48px] leading-[62.4px] font-light tracking-[-0.03em] text-ink-800;
+  }
+
   .rich-text h2 {
     @apply text-trim mt-12 mb-8 font-heading text-[40px] leading-[52px] font-light tracking-[-0.03em] text-ink-800;
   }
