@@ -162,7 +162,7 @@ export interface Page {
    */
   parent?: (string | null) | Page;
   /**
-   * Vælg mellem: Forside-hero, Forside-intro, Kundeudtalelser, Tal-bånd, Fokuskort, Erhvervskunder, Video-bånd, Intro-bånd, Kontaktkort, Artikel med formular, Parallax-bånd, Medarbejdere, Billed-slider, Mærkeoversigt, Jobliste, Tak-besked, Tekst, Tekst med billede.
+   * Vælg mellem: Forside-hero, Forside-intro, Kundeudtalelser, Tal-bånd, Fokuskort, Erhvervskunder, Video-bånd, Intro-bånd, Kontaktkort, Artikel med formular, Parallax-bånd, Medarbejdere, Billed-slider, Mærkeoversigt, Jobliste, Formular-side, Tak-besked, Tekst, Tekst med billede.
    */
   layout?:
     | (
@@ -181,6 +181,7 @@ export interface Page {
         | ImageSliderBlock
         | BrandGridBlock
         | JobListBlock
+        | FormPageBlock
         | ThanksMessageBlock
         | TextBlock
         | TextWithImageBlock
@@ -749,12 +750,208 @@ export interface ArticleWithFormBlock {
     [k: string]: unknown;
   };
   /**
+   * Lad stå tom for at bruge standardformularen fra Site Settings (fanen Formularer).
+   */
+  form?: (string | null) | Form;
+  /**
    * Rykker sektionen 7rem op over det forrige bånd, som på Om os.
    */
   overlapPrevious?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'articleWithForm';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms".
+ */
+export interface Form {
+  id: string;
+  title: string;
+  fields?:
+    | (
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: boolean | null;
+            mediumLabel?: boolean | null;
+            /**
+             * Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.
+             */
+            showWhen?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'checkbox';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            placeholder?: string | null;
+            mediumLabel?: boolean | null;
+            /**
+             * Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.
+             */
+            showWhen?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'email';
+          }
+        | {
+            message?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'message';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: number | null;
+            required?: boolean | null;
+            placeholder?: string | null;
+            mediumLabel?: boolean | null;
+            /**
+             * Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.
+             */
+            showWhen?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'number';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            placeholder?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            mediumLabel?: boolean | null;
+            /**
+             * Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.
+             */
+            showWhen?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'select';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            placeholder?: string | null;
+            mediumLabel?: boolean | null;
+            /**
+             * Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.
+             */
+            showWhen?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'text';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            placeholder?: string | null;
+            mediumLabel?: boolean | null;
+            /**
+             * Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.
+             */
+            showWhen?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'textarea';
+          }
+      )[]
+    | null;
+  submitButtonLabel?: string | null;
+  confirmationType?: ('message' | 'redirect') | null;
+  confirmationMessage?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  redirect?: {
+    type?: ('reference' | 'custom') | null;
+    reference?: {
+      relationTo: 'pages';
+      value: string | Page;
+    } | null;
+    url?: string | null;
+  };
+  emails?:
+    | {
+        emailTo?: string | null;
+        cc?: string | null;
+        bcc?: string | null;
+        replyTo?: string | null;
+        emailFrom?: string | null;
+        subject: string;
+        message?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bruges, når formularen vises som kort ved siden af en artikel.
+   */
+  heading?: string | null;
+  subheading?: string | null;
+  errorMessage?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -819,6 +1016,17 @@ export interface JobListBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'jobList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormPageBlock".
+ */
+export interface FormPageBlock {
+  heading: string;
+  form: string | Form;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'formPage';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1026,158 +1234,6 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "forms".
- */
-export interface Form {
-  id: string;
-  title: string;
-  fields?:
-    | (
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            defaultValue?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'checkbox';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'email';
-          }
-        | {
-            message?: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            } | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'message';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'number';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            placeholder?: string | null;
-            options?:
-              | {
-                  label: string;
-                  value: string;
-                  id?: string | null;
-                }[]
-              | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'select';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'text';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'textarea';
-          }
-      )[]
-    | null;
-  submitButtonLabel?: string | null;
-  confirmationType?: ('message' | 'redirect') | null;
-  confirmationMessage?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  redirect?: {
-    type?: ('reference' | 'custom') | null;
-    reference?: {
-      relationTo: 'pages';
-      value: string | Page;
-    } | null;
-    url?: string | null;
-  };
-  emails?:
-    | {
-        emailTo?: string | null;
-        cc?: string | null;
-        bcc?: string | null;
-        replyTo?: string | null;
-        emailFrom?: string | null;
-        subject: string;
-        message?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
@@ -1333,6 +1389,7 @@ export interface PagesSelect<T extends boolean = true> {
         imageSlider?: T | ImageSliderBlockSelect<T>;
         brandGrid?: T | BrandGridBlockSelect<T>;
         jobList?: T | JobListBlockSelect<T>;
+        formPage?: T | FormPageBlockSelect<T>;
         thanksMessage?: T | ThanksMessageBlockSelect<T>;
         text?: T | TextBlockSelect<T>;
         textWithImage?: T | TextWithImageBlockSelect<T>;
@@ -1534,6 +1591,7 @@ export interface ArticleWithFormBlockSelect<T extends boolean = true> {
   image?: T;
   heading?: T;
   content?: T;
+  form?: T;
   overlapPrevious?: T;
   id?: T;
   blockName?: T;
@@ -1594,6 +1652,16 @@ export interface BrandGridBlockSelect<T extends boolean = true> {
  */
 export interface JobListBlockSelect<T extends boolean = true> {
   emptyText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormPageBlock_select".
+ */
+export interface FormPageBlockSelect<T extends boolean = true> {
+  heading?: T;
+  form?: T;
   id?: T;
   blockName?: T;
 }
@@ -1851,6 +1919,8 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               required?: T;
               defaultValue?: T;
+              mediumLabel?: T;
+              showWhen?: T;
               id?: T;
               blockName?: T;
             };
@@ -1861,6 +1931,9 @@ export interface FormsSelect<T extends boolean = true> {
               label?: T;
               width?: T;
               required?: T;
+              placeholder?: T;
+              mediumLabel?: T;
+              showWhen?: T;
               id?: T;
               blockName?: T;
             };
@@ -1879,6 +1952,9 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              placeholder?: T;
+              mediumLabel?: T;
+              showWhen?: T;
               id?: T;
               blockName?: T;
             };
@@ -1898,6 +1974,8 @@ export interface FormsSelect<T extends boolean = true> {
                     id?: T;
                   };
               required?: T;
+              mediumLabel?: T;
+              showWhen?: T;
               id?: T;
               blockName?: T;
             };
@@ -1909,6 +1987,9 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              placeholder?: T;
+              mediumLabel?: T;
+              showWhen?: T;
               id?: T;
               blockName?: T;
             };
@@ -1920,6 +2001,9 @@ export interface FormsSelect<T extends boolean = true> {
               width?: T;
               defaultValue?: T;
               required?: T;
+              placeholder?: T;
+              mediumLabel?: T;
+              showWhen?: T;
               id?: T;
               blockName?: T;
             };
@@ -1946,6 +2030,9 @@ export interface FormsSelect<T extends boolean = true> {
         message?: T;
         id?: T;
       };
+  heading?: T;
+  subheading?: T;
+  errorMessage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2253,6 +2340,10 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Vises ved siden af artikler, mærker og i blokken "Artikel med formular", medmindre blokken vælger en anden.
+   */
+  ctaForm?: (string | null) | Form;
   facebook?: string | null;
   instagram?: string | null;
   linkedin?: string | null;
@@ -2391,6 +2482,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         email?: T;
         id?: T;
       };
+  ctaForm?: T;
   facebook?: T;
   instagram?: T;
   linkedin?: T;

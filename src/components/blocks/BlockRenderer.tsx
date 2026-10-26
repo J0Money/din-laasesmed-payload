@@ -1,6 +1,7 @@
 import { ArticleWithForm } from '@/blocks/ArticleWithForm'
 import { BrandGrid } from '@/blocks/BrandGrid'
 import { ContactCards } from '@/blocks/ContactCards'
+import { FormPage } from '@/blocks/FormPage'
 import { HomeCustomers } from '@/blocks/HomeCustomers'
 import { HomeFocusCards } from '@/blocks/HomeFocusCards'
 import { HomeHero } from '@/blocks/HomeHero'
@@ -56,6 +57,8 @@ export function BlockRenderer({ blocks }: { blocks: LayoutBlocks | null | undefi
             return <ImageSlider key={block.id} {...block} />
           case 'brandGrid':
             return <BrandGrid key={block.id} />
+          case 'formPage':
+            return <FormPage key={block.id} {...block} />
           case 'jobList':
             return <JobList key={block.id} {...block} />
           case 'thanksMessage':

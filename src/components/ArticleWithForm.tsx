@@ -1,4 +1,5 @@
 import { ContactFormSidebar } from '@/components/ContactFormSidebar'
+import type { Form } from '@/payload-types'
 
 /**
  * Artikel med "Brug for hjælp?"-formularen i siden, som på originalens kontakt- og mærkesider (1600px):
@@ -9,12 +10,14 @@ export function ArticleWithForm({
   imageAlt = '',
   heading,
   className = '',
+  form,
   children,
 }: {
   imageUrl?: string
   imageAlt?: string
   heading: string
   className?: string
+  form?: Form | null | string
   children: React.ReactNode
 }) {
   return (
@@ -38,7 +41,7 @@ export function ArticleWithForm({
         </article>
 
         <aside className="mt-12 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1">
-          <ContactFormSidebar />
+          <ContactFormSidebar form={form} />
         </aside>
       </div>
     </section>

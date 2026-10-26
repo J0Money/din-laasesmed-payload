@@ -18,6 +18,7 @@ import { Users } from './collections/Users'
 import { Videos } from './collections/Videos'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
+import { extendFormFields } from './lib/formBuilder'
 import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -40,6 +41,7 @@ export default buildConfig({
       formOverrides: {
         labels: { singular: 'Formular', plural: 'Formularer' },
         admin: { group: 'Formularer' },
+        fields: extendFormFields,
       },
       formSubmissionOverrides: {
         labels: { singular: 'Indsendelse', plural: 'Indsendelser' },

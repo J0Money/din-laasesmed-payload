@@ -3,6 +3,7 @@ import type { Block } from 'payload'
 import { articleWithFormBlock } from './ArticleWithForm'
 import { brandGridBlock } from './BrandGrid'
 import { contactCardsBlock } from './ContactCards'
+import { formPageBlock } from './FormPage'
 import { homeCustomersBlock } from './HomeCustomers'
 import { homeFocusCardsBlock } from './HomeFocusCards'
 import { homeHeroBlock } from './HomeHero'
@@ -36,6 +37,7 @@ const blocks: Block[] = [
   imageSliderBlock,
   brandGridBlock,
   jobListBlock,
+  formPageBlock,
   thanksMessageBlock,
   textBlock,
   textWithImageBlock,

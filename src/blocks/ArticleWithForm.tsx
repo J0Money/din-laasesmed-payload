@@ -34,6 +34,13 @@ export const articleWithFormBlock: Block = {
       label: 'Tekst',
     },
     {
+      name: 'form',
+      type: 'relationship',
+      relationTo: 'forms',
+      label: 'Formular',
+      admin: { description: 'Lad stå tom for at bruge standardformularen fra Site Settings (fanen Formularer).' },
+    },
+    {
       name: 'overlapPrevious',
       type: 'checkbox',
       label: 'Overlap det forrige bånd',
@@ -43,9 +50,10 @@ export const articleWithFormBlock: Block = {
   ],
 }
 
-export function ArticleWithForm({ content, heading, image, overlapPrevious }: ArticleWithFormBlockProps) {
+export function ArticleWithForm({ content, form, heading, image, overlapPrevious }: ArticleWithFormBlockProps) {
   return (
     <ArticleWithFormLayout
+      form={form}
       imageUrl={mediaUrl(image)}
       imageAlt={mediaAlt(image)}
       heading={heading}

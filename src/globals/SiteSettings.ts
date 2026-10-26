@@ -81,6 +81,21 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
+          label: 'Formularer',
+          fields: [
+            {
+              name: 'ctaForm',
+              type: 'relationship',
+              relationTo: 'forms',
+              label: '"Brug for hjælp?"-formular',
+              admin: {
+                description:
+                  'Vises ved siden af artikler, mærker og i blokken "Artikel med formular", medmindre blokken vælger en anden.',
+              },
+            },
+          ],
+        },
+        {
           label: 'Sociale medier',
           fields: [
             {
