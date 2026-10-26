@@ -32,8 +32,9 @@ export function HomeTestimonials({ heading, items, tagline }: HomeTestimonialsBl
 
   return (
     // Som originalen er slideren en fast 800px bred boks, der rager ud over den smalle container; overflow-x-clip skjuler resten.
-    <section className="overflow-x-clip bg-surface-muted py-[60px] min-[768px]:py-(--fluid-section)">
-      <div className="site-container">
+    <section className="overflow-x-clip bg-surface-muted py-(--fluid-section)">
+      {/* Originalen har 60px luft under 768px. Det, der er ud over Small, ligger her, så sektionens luft følger skalaen. */}
+      <div className="site-container max-[767px]:py-[max(0px,calc(60px-var(--fluid-section)))]">
         <div className="@container mx-auto flex w-[calc(83.33%-2.7px)] flex-col items-start gap-(--fluid-gap-lg) min-[992px]:flex-row">
           <div className="shrink-0">
             <SectionHeadline tagline={tagline} title={heading} />

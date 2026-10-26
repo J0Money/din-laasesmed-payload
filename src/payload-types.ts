@@ -492,13 +492,13 @@ export interface HomeIntroBlock {
     newTab?: boolean | null;
   };
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'homeIntro';
@@ -518,13 +518,13 @@ export interface HomeTestimonialsBlock {
       }[]
     | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('standard' | 'none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('standard' | 'none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'homeTestimonials';
@@ -587,13 +587,13 @@ export interface HomeFocusCardsBlock {
       }[]
     | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'homeFocusCards';
@@ -616,13 +616,13 @@ export interface HomeCustomersBlock {
       }[]
     | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'homeCustomers';
@@ -675,13 +675,13 @@ export interface OverviewIntroBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'overviewIntro';
@@ -769,13 +769,13 @@ export interface ArticleWithFormBlock {
    */
   overlapPrevious?: boolean | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'articleWithForm';
@@ -981,13 +981,13 @@ export interface ParallaxBandBlock {
   leftText: string;
   rightText: string;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'parallaxBand';
@@ -1006,13 +1006,13 @@ export interface PeopleBlock {
       }[]
     | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('standard' | 'none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'people';
@@ -1030,13 +1030,13 @@ export interface ImageSliderBlock {
       }[]
     | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'imageSlider';
@@ -1047,13 +1047,13 @@ export interface ImageSliderBlock {
  */
 export interface BrandGridBlock {
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('standard' | 'none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'brandGrid';
@@ -1065,13 +1065,13 @@ export interface BrandGridBlock {
 export interface JobListBlock {
   emptyText?: string | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('standard' | 'none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'jobList';
@@ -1084,13 +1084,13 @@ export interface FormPageBlock {
   heading: string;
   form: string | Form;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'formPage';
@@ -1118,13 +1118,13 @@ export interface ThanksMessageBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'thanksMessage';
@@ -1150,13 +1150,13 @@ export interface TextBlock {
     [k: string]: unknown;
   };
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
    * Giver sektionen en dæmpet grå baggrund i stedet for standardbaggrunden — brug til at skabe visuel adskillelse mellem sektioner.
    */
@@ -1192,13 +1192,13 @@ export interface TextWithImageBlock {
     [k: string]: unknown;
   };
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingBefore?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Main 112px og Large 160px på store skærme, mindre på mobil.
+   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
    */
-  spacingAfter?: ('none' | 'small' | 'main' | 'large') | null;
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
    * Giver sektionen en dæmpet grå baggrund i stedet for standardbaggrunden — brug til at skabe visuel adskillelse mellem sektioner.
    */

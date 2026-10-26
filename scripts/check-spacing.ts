@@ -16,7 +16,7 @@ import {
 /** Blocks that draw their own vertical space as part of the design and have no spacing tab. */
 const NO_SPACING = ['homeHero', 'videoHero', 'homeStats', 'contactCards']
 
-const SIZES: SpacingSize[] = ['standard', 'none', 'small', 'main', 'large']
+const SIZES: SpacingSize[] = ['none', 'small', 'medium', 'large']
 const errors: string[] = []
 
 const hasSpacingField = (fields: Field[]): boolean =>
@@ -29,9 +29,9 @@ const hasSpacingField = (fields: Field[]): boolean =>
 for (const size of SIZES) {
   const before = SPACING_BEFORE_CLASSES[size]
   const after = SPACING_AFTER_CLASSES[size]
-  if (size === 'standard' ? before || after : !before.includes('pt-') || !after.includes('pb-'))
+  if (!before.includes('pt-') || !after.includes('pb-'))
     errors.push(`"${size}" har forkerte klasser: "${before}" / "${after}"`)
-  else console.log(`  ${size.padEnd(8)} ${before || '(blokkens egen luft)'} / ${after || '(blokkens egen luft)'}`)
+  else console.log(`  ${size.padEnd(8)} ${before} / ${after}`)
 }
 
 for (const block of allBlocks as Block[]) {

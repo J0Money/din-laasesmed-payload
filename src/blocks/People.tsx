@@ -61,8 +61,9 @@ export async function People({ groups }: PeopleBlockProps) {
   ])
 
   return (
-    <section className="pt-[calc(var(--fluid-section)+20px)] pb-(--fluid-section)">
-      <div className="site-container flex flex-col gap-12">
+    <section className="py-(--fluid-section)">
+      {/* Originalen har 20px mere end Small over medarbejderne. De ligger her, så sektionens luft følger skalaen. */}
+      <div className="site-container flex flex-col gap-12 pt-5">
         {(groups ?? []).map((group) => {
           const members = employees.docs.filter((employee) => employee.type === group.group)
           if (!members.length) return null
