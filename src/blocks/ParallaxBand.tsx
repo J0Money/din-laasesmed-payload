@@ -48,7 +48,7 @@ export function ParallaxBand({ image, leftText, rightText }: ParallaxBandBlockPr
             {index > 0 && (
               <span aria-hidden className="mt-[15px] hidden h-3 w-3 shrink-0 rounded-full bg-[#edf0f3] md:block" />
             )}
-            <p className="text-trim mt-5 mb-[10px] font-heading text-[clamp(28px,calc(28px+4*(100vw-320px)/1120),32px)] leading-none font-light whitespace-nowrap text-[#edf0f3] min-[480px]:text-[clamp(36px,calc(36px+12*(100vw-320px)/1120),48px)]">
+            <p className="text-trim mt-5 mb-[10px] font-heading text-[clamp(28px,calc(28px+4*(100vw-320px)/1120),32px)] leading-none font-light text-[#edf0f3] min-[480px]:whitespace-nowrap min-[480px]:text-[clamp(36px,calc(36px+12*(100vw-320px)/1120),48px)]">
               {text}
             </p>
           </Fragment>

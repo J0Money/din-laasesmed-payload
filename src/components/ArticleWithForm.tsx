@@ -11,6 +11,7 @@ export function ArticleWithForm({
   heading,
   className = '',
   form,
+  formFirst = false,
   children,
 }: {
   imageUrl?: string
@@ -18,11 +19,13 @@ export function ArticleWithForm({
   heading: string
   className?: string
   form?: Form | null | string
+  /** Under 992px står formularen før artiklen (som på originalens mærkesider). */
+  formFirst?: boolean
   children: React.ReactNode
 }) {
   return (
     <section className={`bg-background py-(--fluid-section) ${className}`}>
-      <div className="site-container relative z-10 lg:flex lg:items-start lg:justify-center lg:gap-12">
+      <div className={`site-container relative z-10 lg:flex lg:items-start lg:justify-center lg:gap-12 ${formFirst ? 'max-[991px]:flex max-[991px]:flex-col' : ''}`}>
         <article className="flex min-w-0 flex-col gap-8 lg:shrink-0 lg:basis-[min(896px,calc(100%-297px))]">
           {imageUrl && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -40,7 +43,7 @@ export function ArticleWithForm({
           </div>
         </article>
 
-        <aside className="mt-7 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1">
+        <aside className={`${formFirst ? 'max-[991px]:order-first max-[991px]:mt-0 max-[991px]:mb-1' : ''} mt-7 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1`}>
           <ContactFormSidebar form={form} />
         </aside>
       </div>

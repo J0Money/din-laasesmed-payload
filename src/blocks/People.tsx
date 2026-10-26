@@ -59,7 +59,7 @@ export async function People({ groups }: PeopleBlockProps) {
   ])
 
   return (
-    <section className="py-(--fluid-section)">
+    <section className="pt-[calc(var(--fluid-section)+20px)] pb-(--fluid-section)">
       <div className="site-container flex flex-col gap-12">
         {(groups ?? []).map((group) => {
           const members = employees.docs.filter((employee) => employee.type === group.group)
