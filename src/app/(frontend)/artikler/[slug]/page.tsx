@@ -54,9 +54,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   return (
     <main>
-      <section className="relative bg-background py-20">
-        {/* Værdier fra originalens CSS: bånd 4:1 (2:1 på mobil), billede opacity .15 + saturate(200%) blur(14px). */}
-        <div aria-hidden className="absolute inset-x-0 top-0 aspect-[2/1] overflow-hidden bg-surface-muted md:aspect-[4/1]">
+      <section className="relative bg-background py-(--fluid-section)">
+        {/* Værdier fra originalens CSS: bånd 4:1 (under 480px 47px nede), billede opacity .15 + saturate(200%) blur(14px). */}
+        <div aria-hidden className="absolute inset-x-0 top-0 aspect-[4/1] overflow-hidden bg-surface-muted max-[479px]:top-[47px]">
           {imageUrl && (
             <img
               src={imageUrl}
@@ -78,7 +78,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             )}
   
             {/* På originalen er artiklens navn en h2 før billedet, og "mainHeading" den egentlige h1 efter. */}
-            <p className="text-trim mt-7 mb-[10px] font-heading text-[32px] leading-[48px] font-light text-ink-800">
+            <p className="text-trim mt-7 mb-[10px] font-heading text-(length:--fluid-article-name) leading-[1.5] font-light text-ink-800">
               {article.name}
             </p>
   
@@ -90,25 +90,25 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 height={height}
                 loading="eager"
                 sizes={SIZES.hero}
-                className="mt-[42px] aspect-video w-full rounded-2xl object-cover shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
+                className="mt-[62px] aspect-video w-full rounded-2xl object-cover shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
               />
             )}
   
-            <h1 className="text-trim mt-[72px] mb-[10px] font-heading text-[40px] leading-[52px] font-light text-ink-800">
+            <h1 className="text-trim mt-[52px] mb-[10px] font-heading text-(length:--fluid-h2) leading-[1.3] font-light text-ink-800">
               {article.mainHeading}
             </h1>
   
-            <div className="mt-[22px] flex flex-wrap items-center gap-4">
-              <Link href={ROUTES.contact()} className="button-accent">
+            <div className="mt-[22px] flex flex-wrap items-center gap-4 max-[479px]:flex-nowrap max-[479px]:items-stretch">
+              <Link href={ROUTES.contact()} className="button-accent max-[479px]:h-[62px] max-[479px]:shrink-0">
                 Kontakt os i dag
               </Link>
               <span className="text-text-body">Få et gratis servicetjek</span>
             </div>
   
-            <RichText data={article.mainText} className="mt-12" />
+            <RichText data={article.mainText} className="mt-12 [&>:first-child]:mt-0" />
           </article>
   
-          <aside className="mt-12 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1">
+          <aside className="mt-7 lg:sticky lg:top-8 lg:mt-5 lg:max-w-[400px] lg:flex-1">
             <ContactFormSidebar />
           </aside>
         </div>

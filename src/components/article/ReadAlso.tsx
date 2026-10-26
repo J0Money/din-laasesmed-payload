@@ -27,11 +27,11 @@ export async function ReadAlso({ articleId, category }: { articleId: string; cat
 
   return (
     <section>
-      <div className="site-container flex flex-col gap-12 py-20 lg:flex-row lg:justify-between">
+      <div className="site-container flex flex-col gap-12 py-(--fluid-section) lg:flex-row lg:justify-between">
         <div className="shrink-0">
           <Link
             href={ROUTES.category(category.slug)}
-            className="flex items-center gap-3 text-sm leading-[21px] font-medium text-brand-500"
+            className="flex items-center gap-3 text-base leading-6 font-medium text-brand-500"
           >
             <svg viewBox="0 0 18 15" fill="none" className="w-4 shrink-0" aria-hidden>
               <path
@@ -41,7 +41,7 @@ export async function ReadAlso({ articleId, category }: { articleId: string; cat
             </svg>
             Tilbage til oversigten
           </Link>
-          <h2 className="text-trim mt-7 font-heading text-[32px] leading-[48px] font-light text-ink-800">
+          <h2 className="text-trim mt-7 font-heading text-(length:--fluid-article-name) leading-[1.5] font-light text-ink-800">
             Læs også
           </h2>
         </div>

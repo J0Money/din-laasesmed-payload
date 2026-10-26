@@ -30,7 +30,7 @@ function redirectTarget(form: Form): string | undefined {
 }
 
 const CARD_INPUT =
-  'mt-1 h-10 w-full rounded-md border-[0.8px] border-[#ced5e1] bg-[#f9fafb] px-3 text-sm text-ink-800 outline-none placeholder:text-text-body/60 hover:border-ink-muted focus:border-brand-500'
+  'mt-1 h-(--fluid-icon) w-full rounded-md border-[0.8px] border-[#ced5e1] bg-[#f9fafb] px-3 text-sm text-ink-800 outline-none placeholder:text-text-body/60 hover:border-ink-muted focus:border-brand-500'
 const PAGE_INPUT =
   'h-10 w-full rounded-md border border-[#ced5e1] bg-[#f9fafb] px-3 text-sm text-ink-800 outline-none placeholder:text-text-body/60 hover:border-ink-muted focus:border-brand-500'
 
