@@ -97,17 +97,21 @@
     @apply text-trim mt-12 mb-8 font-heading text-[32px] leading-[41.6px] font-light tracking-[-0.03em] text-ink-800;
   }
 
+  .rich-text h5 {
+    @apply text-trim mt-12 mb-6 font-heading text-xl leading-[26px] font-light text-ink-800;
+  }
+
   .rich-text h4 {
     @apply text-trim mt-8 mb-4 font-heading text-2xl font-light text-ink-800;
   }
 
   /* Originalen er flex-kolonne med 14.4px gap, så li-marginerne ikke kollapser. */
   .rich-text ul {
-    @apply my-6 flex list-disc flex-col gap-[14.4px] pl-[19.2px];
+    @apply my-6 flex list-disc flex-col items-start gap-[14.4px] pl-[19.2px];
   }
 
   .rich-text ol {
-    @apply my-6 flex list-decimal flex-col gap-[14.4px] pl-[19.2px];
+    @apply my-6 flex list-decimal flex-col items-start gap-[14.4px] pl-[19.2px];
   }
 
   .rich-text li {
