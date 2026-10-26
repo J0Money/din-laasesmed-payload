@@ -85,10 +85,12 @@
 }
 
 @layer components {
-  /* Mål 1:1 fra din-laasesmed.dk: u-container har max-width 1344px og ingen padding. */
+  /*
+   * Originalens u-container (Lumos): max-width er min(1440px, 100vw) minus --site--margin i hver side,
+   * hvor --site--margin er clamp(1rem, 0.4286rem + 2.857vw, 3rem). Det giver 1344px ved 1440 og op.
+   */
   .site-container {
-    /* Mål fra originalen: 94,33% af bredden (max 1344px), under 480px dog 17,6px luft i hver side. */
-    @apply mx-auto w-[94.33%] max-w-[1344px] max-[479px]:w-[calc(100%-35.2px)];
+    @apply mx-auto w-full max-w-[calc(min(1440px,100vw)-2*clamp(1rem,0.42857rem+2.857vw,3rem))];
   }
 
   /* Hover fra originalens CSS: alle knapper skifter til slate-800 (#22293b) over 0.2s. */

@@ -20,9 +20,8 @@ export function RelatedBrands({ brands, title = 'Relaterede mærker' }: { brands
   }))
 
   return (
-    // Originalens slider ligger i Webflows u-container: flydende sidemargin 18→50px og maks. 1344px indhold.
-    <section className="overflow-hidden bg-surface-muted px-[clamp(18px,calc(18px+32*(100vw-320px)/1120),50px)] py-(--fluid-section)">
-      <div className="mx-auto max-w-[1344px]">
+    <section className="overflow-hidden bg-surface-muted py-(--fluid-section)">
+      <div className="site-container">
         <BrandSlider title={title} slides={slides} />
       </div>
     </section>
