@@ -73,8 +73,8 @@ export default async function BrandPage({ params }: { params: Promise<{ slug: st
 
       <section className="overflow-x-clip bg-background">
         <div className="site-container">
-          <div className="flex flex-col gap-12 border-y border-[#ced5e1] py-(--fluid-section) max-[991px]:pb-[calc(var(--fluid-section)+45px)] max-[767px]:pt-[calc(var(--fluid-section)+56px)] lg:flex-row lg:items-start lg:justify-between">
-            <div className="w-48 shrink-0 max-[767px]:hidden">
+          <div className="flex flex-col gap-12 border-y border-[#ced5e1] py-(--fluid-section) max-[991px]:pb-[calc(var(--fluid-section)+45px)] max-[767px]:gap-3 max-[767px]:pt-[calc(var(--fluid-section)+20px)] lg:flex-row lg:items-start lg:justify-between">
+            <div className="w-48 shrink-0">
               {logoUrl && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={logoUrl} alt={mediaAlt(brand.logo)} className="h-auto w-full" />

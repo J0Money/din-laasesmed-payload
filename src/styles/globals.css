@@ -35,6 +35,7 @@
   --fluid-gap-lg: clamp(40px, calc(40px + 24 * (100vw - 320px) / 1120), 64px);
   --fluid-card-pad: clamp(32px, calc(32px + 8 * (100vw - 320px) / 1120), 40px);
   --fluid-article-name: clamp(28px, calc(28px + 4 * (100vw - 320px) / 1120), 32px);
+  --fluid-h3: clamp(28px, calc(28px + 4 * (100vw - 320px) / 1120), 32px);
   --fluid-form-pad: clamp(24px, calc(24px + 4 * (100vw - 320px) / 1120), 28px);
   --fluid-dark-img: clamp(72px, calc(72px + 31 * (100vw - 320px) / 1120), 103px);
   --fluid-icon: clamp(32px, calc(32px + 8 * (100vw - 320px) / 1120), 40px);
@@ -124,7 +125,7 @@
   }
 
   .rich-text h3 {
-    @apply text-trim mt-12 mb-8 font-heading text-[32px] leading-[41.6px] font-light tracking-[-0.03em] text-ink-800;
+    @apply text-trim mt-(--fluid-gap-md) mb-(--fluid-gap) font-heading text-(length:--fluid-h3) leading-[1.3] font-light tracking-[-0.03em] text-ink-800;
   }
 
   .rich-text h5 {
