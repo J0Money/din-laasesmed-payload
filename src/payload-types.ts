@@ -115,13 +115,11 @@ export interface Config {
     header: Header;
     footer: Footer;
     siteSettings: SiteSetting;
-    home: Home;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     siteSettings: SiteSettingsSelect<false> | SiteSettingsSelect<true>;
-    home: HomeSelect<false> | HomeSelect<true>;
   };
   locale: null;
   widgets: {
@@ -2266,52 +2264,6 @@ export interface SiteSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home".
- */
-export interface Home {
-  id: string;
-  visual?: {
-    image?: (string | null) | Media;
-    ctaLabel?: string | null;
-  };
-  /**
-   * Skifter automatisk hvert 5. sekund.
-   */
-  testimonials?:
-    | {
-        quote: string;
-        author: string;
-        id?: string | null;
-      }[]
-    | null;
-  statsImage?: (string | null) | Media;
-  stats?:
-    | {
-        value: number;
-        label: string;
-        id?: string | null;
-      }[]
-    | null;
-  focusCards?: {
-    mekaniskImage?: (string | null) | Media;
-    elektroniskImage?: (string | null) | Media;
-    serviceImage?: (string | null) | Media;
-  };
-  businessCustomers?:
-    | {
-        image: string | Media;
-        label?: string | null;
-        type?: ('logo' | 'photo') | null;
-        bgColor?: string | null;
-        logoHeight?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2445,53 +2397,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   defaultTitleTag?: T;
   defaultMetaDescription?: T;
   ogImage?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home_select".
- */
-export interface HomeSelect<T extends boolean = true> {
-  visual?:
-    | T
-    | {
-        image?: T;
-        ctaLabel?: T;
-      };
-  testimonials?:
-    | T
-    | {
-        quote?: T;
-        author?: T;
-        id?: T;
-      };
-  statsImage?: T;
-  stats?:
-    | T
-    | {
-        value?: T;
-        label?: T;
-        id?: T;
-      };
-  focusCards?:
-    | T
-    | {
-        mekaniskImage?: T;
-        elektroniskImage?: T;
-        serviceImage?: T;
-      };
-  businessCustomers?:
-    | T
-    | {
-        image?: T;
-        label?: T;
-        type?: T;
-        bgColor?: T;
-        logoHeight?: T;
-        id?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

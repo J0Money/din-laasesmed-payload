@@ -18,7 +18,6 @@ import { Users } from './collections/Users'
 import { Videos } from './collections/Videos'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
-import { Home } from './globals/Home'
 import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -32,7 +31,7 @@ export default buildConfig({
     },
   },
   collections: [Pages, Articles, Categories, Brands, Employees, Jobs, Users, Media, Videos],
-  globals: [Header, Footer, SiteSettings, Home],
+  globals: [Header, Footer, SiteSettings],
   plugins: [
     // Formularer sættes sammen i admin (felter, e-mail til os, bekræftelse); indsendelser gemmes i form-submissions.
     formBuilderPlugin({

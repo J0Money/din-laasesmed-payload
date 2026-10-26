@@ -6,7 +6,7 @@ import { writeFileSync } from 'node:fs'
 
 import { MongoClient } from 'mongodb'
 
-const GLOBALS = ['home', 'header', 'footer', 'siteSettings']
+const GLOBALS = ['header', 'footer', 'siteSettings']
 
 async function run() {
   const apply = process.argv.includes('--apply')
