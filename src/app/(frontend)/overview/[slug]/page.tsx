@@ -64,12 +64,12 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
 
   return (
     <main>
-      <section className="relative bg-surface-muted pt-20 pb-[112px]">
-        <div className="site-container relative z-10 flex flex-col gap-12 lg:flex-row lg:justify-between">
+      <section className="relative overflow-x-clip bg-surface-muted pt-(--fluid-section) pb-(--fluid-pad)">
+        <div className="site-container relative z-10 flex flex-col gap-12 min-[992px]:flex-row min-[992px]:justify-between">
           <div className="flex shrink-0 flex-col justify-between gap-8">
             <div className="flex flex-col gap-2">
               <p className="text-sm leading-[21px] font-medium text-brand-500">Din lokale låsesmed siden 1992</p>
-              <h1 className="text-trim mt-5 mb-[10px] font-heading text-[32px] leading-[48px] font-light text-ink-900">
+              <h1 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-article-name) leading-[1.5] font-light text-ink-900">
                 {category.name}
               </h1>
             </div>
@@ -96,8 +96,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </nav>
           </div>
 
-          <div className="flex w-full max-w-[768px] flex-col gap-8">
-            <h2 className="text-trim mt-5 mb-[10px] font-heading text-[40px] leading-[52px] font-light text-ink-800">
+          <div className="relative left-5 flex w-full max-w-[768px] flex-col gap-8">
+            <h2 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-h2) leading-[1.3] font-light text-ink-800">
               {category.mainHeading}
             </h2>
             {/* Sidste afsnit uden bundmargin, ellers bliver båndet 10px højere end originalen. */}
@@ -107,8 +107,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       </section>
 
       {articles.docs.length > 0 && (
-        <section className="relative -mt-8 pb-20">
-          <ul className="site-container relative z-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="relative -mt-3 pb-(--fluid-section)">
+          <ul className="site-container relative z-10 grid grid-cols-1 gap-8 min-[480px]:grid-cols-2 min-[992px]:grid-cols-4">
             {articles.docs.map((article) => {
               const imageUrl = mediaUrl(article.mainImage, 'ratio32')
               const excerpt = firstParagraphText(article.mainText)

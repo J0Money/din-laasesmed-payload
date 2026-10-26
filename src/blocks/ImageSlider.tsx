@@ -36,7 +36,7 @@ export const imageSliderBlock: Block = {
 
 export function ImageSlider({ images, title }: ImageSliderBlockProps) {
   return (
-    <section className="overflow-hidden bg-white py-20">
+    <section className="overflow-hidden bg-white py-(--fluid-section)">
       <div className="site-container">
         <Slider title={title} gap={24}>
           {(images ?? []).map(({ id, image }) => (

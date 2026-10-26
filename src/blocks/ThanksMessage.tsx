@@ -32,7 +32,7 @@ export const thanksMessageBlock: Block = {
 
 export function ThanksMessage({ content, heading, image }: ThanksMessageBlockProps) {
   return (
-    <section className="bg-background py-20">
+    <section className="bg-background py-(--fluid-section)">
       <div className="site-container flex justify-center">
         <div className="flex w-full max-w-[896px] flex-col items-start gap-12">
           {image && (
@@ -43,7 +43,7 @@ export function ThanksMessage({ content, heading, image }: ThanksMessageBlockPro
               className="h-[320px] w-full rounded-2xl object-cover"
             />
           )}
-          <h1 className="text-trim mt-5 mb-[10px] w-full text-center font-heading text-[48px] leading-[62.4px] font-light text-ink-800">
+          <h1 className="text-trim mt-5 mb-[10px] w-full text-center font-heading text-(length:--fluid-h1) leading-[1.3] font-light text-ink-800">
             {heading}
           </h1>
           {content && <RichText data={content} className="w-full text-center [&>:last-child]:mb-0" />}

@@ -59,14 +59,14 @@ export async function People({ groups }: PeopleBlockProps) {
   ])
 
   return (
-    <section className="py-20">
+    <section className="py-(--fluid-section)">
       <div className="site-container flex flex-col gap-12">
         {(groups ?? []).map((group) => {
           const members = employees.docs.filter((employee) => employee.type === group.group)
           if (!members.length) return null
           return (
             <div key={group.id} className="flex flex-col gap-8">
-              <h3 className="text-trim mt-5 mb-[10px] font-heading text-[32px] leading-[48px] font-light text-ink-800">
+              <h3 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-article-name) leading-[1.5] font-light text-ink-800">
                 {group.heading}
               </h3>
               <ul className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[768px]:grid-cols-3 min-[992px]:grid-cols-4">

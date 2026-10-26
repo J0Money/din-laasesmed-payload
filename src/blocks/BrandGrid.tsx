@@ -39,7 +39,7 @@ export async function BrandGrid() {
   })
 
   return (
-    <section className="relative -mt-8 pb-20">
+    <section className="relative -mt-8 pb-(--fluid-section)">
       <ul className="site-container relative z-10 grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[768px]:grid-cols-3 min-[992px]:grid-cols-4">
         {brands.docs.map((brand) => {
           const logoUrl = mediaUrl(brand.logo)

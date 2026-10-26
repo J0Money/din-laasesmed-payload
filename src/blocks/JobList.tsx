@@ -35,7 +35,7 @@ export async function JobList({ emptyText }: JobListBlockProps) {
   ])
 
   return (
-    <section className="relative -mt-8 pb-20">
+    <section className="relative -mt-8 pb-(--fluid-section)">
       <div className="site-container relative z-10">
         {jobs.docs.length === 0 ? (
           // Originalens boks er 53px høj (21px tekst mellem 16px luft), ikke 56px.

@@ -27,7 +27,7 @@ export async function FormPage({ form, heading }: FormPageBlockProps) {
   if (!doc) return null
 
   return (
-    <section className="bg-background py-20">
+    <section className="bg-background py-(--fluid-section)">
       <div className="site-container">
         <DynamicForm form={doc} variant="page" heading={heading} />
       </div>

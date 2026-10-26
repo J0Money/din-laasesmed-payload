@@ -651,6 +651,10 @@ export interface OverviewIntroBlock {
  * via the `definition` "ContactCardsBlock".
  */
 export interface ContactCardsBlock {
+  /**
+   * Som på originalens kontaktside: under 992px står "Brug for hjælp?" først, før kortene.
+   */
+  mobileForm?: boolean | null;
   cards?:
     | {
         icon?: ('phone' | 'shop' | 'mail' | 'certificate') | null;
@@ -1526,6 +1530,7 @@ export interface OverviewIntroBlockSelect<T extends boolean = true> {
  * via the `definition` "ContactCardsBlock_select".
  */
 export interface ContactCardsBlockSelect<T extends boolean = true> {
+  mobileForm?: T;
   cards?:
     | T
     | {

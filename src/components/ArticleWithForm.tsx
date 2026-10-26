@@ -21,7 +21,7 @@ export function ArticleWithForm({
   children: React.ReactNode
 }) {
   return (
-    <section className={`bg-background py-20 ${className}`}>
+    <section className={`bg-background py-(--fluid-section) ${className}`}>
       <div className="site-container relative z-10 lg:flex lg:items-start lg:justify-center lg:gap-12">
         <article className="flex min-w-0 flex-col gap-8 lg:shrink-0 lg:basis-[min(896px,calc(100%-297px))]">
           {imageUrl && (
@@ -33,7 +33,7 @@ export function ArticleWithForm({
             />
           )}
           <div className="flex flex-col items-start gap-12">
-            <h1 className="text-trim mt-5 mb-[10px] font-heading text-[40px] leading-[52px] font-light text-ink-800">
+            <h1 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-h2) leading-[1.3] font-light text-ink-800">
               {heading}
             </h1>
             {children}

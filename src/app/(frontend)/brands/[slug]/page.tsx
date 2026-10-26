@@ -62,10 +62,10 @@ export default async function BrandPage({ params }: { params: Promise<{ slug: st
 
   return (
     <main>
-      <section className="bg-ink-800 py-20">
+      <section className="bg-ink-800 py-(--fluid-section)">
         <div className="site-container">
           <p className="text-sm leading-[21px] font-medium text-[#ced5e1]">Mærke</p>
-          <h2 className="text-trim mt-5 mb-[10px] font-heading text-[32px] leading-[48px] font-light text-[#edf0f3]">
+          <h2 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-article-name) leading-[1.5] font-light text-[#edf0f3]">
             {brand.name}
           </h2>
         </div>
@@ -73,14 +73,14 @@ export default async function BrandPage({ params }: { params: Promise<{ slug: st
 
       <section className="bg-background">
         <div className="site-container">
-          <div className="flex flex-col gap-12 border-y border-[#ced5e1] py-20 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex flex-col gap-12 border-y border-[#ced5e1] py-(--fluid-section) lg:flex-row lg:items-start lg:justify-between">
             <div className="w-48 shrink-0">
               {logoUrl && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={logoUrl} alt={mediaAlt(brand.logo)} className="h-auto w-full" />
               )}
             </div>
-            {articles.docs.length > 0 && <ArticlePreviewGrid articles={articles.docs} />}
+            {articles.docs.length > 0 && <ArticlePreviewGrid articles={articles.docs} className="relative left-5" />}
           </div>
         </div>
       </section>

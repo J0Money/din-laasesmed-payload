@@ -38,6 +38,7 @@
   --fluid-icon: clamp(32px, calc(32px + 8 * (100vw - 320px) / 1120), 40px);
   --fluid-slide-gap: clamp(56px, calc(56px + 40 * (100vw - 320px) / 1120), 96px);
   --fluid-hero-h1: clamp(28px, calc(28px + 4 * (100vw - 320px) / 1120), 32px);
+  --fluid-h1: clamp(36px, calc(36px + 12 * (100vw - 320px) / 1120), 48px);
 }
 
 @media (min-width: 480px) {
@@ -113,7 +114,7 @@
   }
 
   .rich-text h1 {
-    @apply text-trim mt-12 mb-8 font-heading text-[48px] leading-[62.4px] font-light tracking-[-0.03em] text-ink-800;
+    @apply text-trim mt-12 mb-8 font-heading text-(length:--fluid-h1) leading-[1.3] font-light tracking-[-0.03em] text-ink-800;
   }
 
   .rich-text h2 {

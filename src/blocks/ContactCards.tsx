@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Block } from 'payload'
 
+import { ContactFormSidebar } from '@/components/ContactFormSidebar'
 import { CertificateIcon, ClockIcon, MailIcon, ShopIcon } from '@/components/home/HomeIcons'
 import { linkField } from '@/fields/link'
 import { resolveLinkHref } from '@/lib/link'
@@ -19,6 +20,13 @@ export const contactCardsBlock: Block = {
   interfaceName: 'ContactCardsBlock',
   labels: { singular: 'Kontaktkort', plural: 'Kontaktkort' },
   fields: [
+    {
+      name: 'mobileForm',
+      type: 'checkbox',
+      label: 'Vis formularen over kortene på tablet og mobil',
+      defaultValue: false,
+      admin: { description: 'Som på originalens kontaktside: under 992px står "Brug for hjælp?" først, før kortene.' },
+    },
     {
       name: 'cards',
       type: 'array',
@@ -57,10 +65,15 @@ export const contactCardsBlock: Block = {
   ],
 }
 
-export function ContactCards({ cards }: ContactCardsBlockProps) {
+export function ContactCards({ cards, mobileForm }: ContactCardsBlockProps) {
   return (
-    <div className="relative z-10 -mt-8">
-      <ul className="site-container grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className={`relative z-10 -mt-8 ${mobileForm ? 'max-[991px]:mt-0' : ''}`}>
+      {mobileForm && (
+        <div className="site-container pt-9 pb-5 min-[992px]:hidden">
+          <ContactFormSidebar />
+        </div>
+      )}
+      <ul className="site-container grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[992px]:grid-cols-4">
         {(cards ?? []).map((card) => {
           const Icon = ICONS[card.icon ?? 'phone']
           const newTab = card.link?.newTab
