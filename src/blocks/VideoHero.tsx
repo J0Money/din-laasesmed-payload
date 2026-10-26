@@ -38,7 +38,7 @@ export function VideoHero({ poster, videoMp4, videoWebm }: VideoHeroBlockProps) 
   const mp4 = typeof videoMp4 === 'object' ? videoMp4?.url : undefined
 
   return (
-    <div className="relative h-[min(453px,calc(67.5px+23.85vw))] overflow-hidden bg-surface-muted">
+    <div className="relative aspect-[2.388/1] overflow-hidden min-[767px]:aspect-[3.5/1] bg-surface-muted">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={mediaUrl(poster)}
