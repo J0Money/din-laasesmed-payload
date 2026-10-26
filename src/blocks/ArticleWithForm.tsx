@@ -57,7 +57,7 @@ export function ArticleWithForm({ content, form, heading, image, overlapPrevious
       imageUrl={mediaUrl(image)}
       imageAlt={mediaAlt(image)}
       heading={heading}
-      className={overlapPrevious ? 'relative -mt-28' : ''}
+      className={overlapPrevious ? 'relative -mt-[calc(92px+0.0458*(100vw-375px))] min-[992px]:-mt-[calc(var(--fluid-section)+27px)]' : ''}
     >
       {/* Ingen fuld bredde: som på originalen er teksten kun så bred som sit indhold, op til 896px. */}
       <RichText data={content} className="[&>:last-child]:mb-0" />
