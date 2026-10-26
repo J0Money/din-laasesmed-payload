@@ -71,7 +71,7 @@ export default async function BrandPage({ params }: { params: Promise<{ slug: st
         </div>
       </section>
 
-      <section className="bg-background">
+      <section className="overflow-x-clip bg-background">
         <div className="site-container">
           <div className="flex flex-col gap-12 border-y border-[#ced5e1] py-(--fluid-section) lg:flex-row lg:items-start lg:justify-between">
             <div className="w-48 shrink-0">
@@ -80,7 +80,7 @@ export default async function BrandPage({ params }: { params: Promise<{ slug: st
                 <img src={logoUrl} alt={mediaAlt(brand.logo)} className="h-auto w-full" />
               )}
             </div>
-            {articles.docs.length > 0 && <ArticlePreviewGrid articles={articles.docs} className="relative left-5" />}
+            {articles.docs.length > 0 && <ArticlePreviewGrid articles={articles.docs} className="relative left-[14px] min-[992px]:left-5" />}
           </div>
         </div>
       </section>

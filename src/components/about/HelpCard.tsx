@@ -21,7 +21,7 @@ export function HelpCard({ phone }: { phone: string }) {
   return (
     <li className="relative flex flex-col justify-between gap-4 overflow-hidden rounded-2xl border border-[#e4e8ef] bg-ink-900 px-6 py-5 shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
       <div className="relative z-[1] flex flex-col gap-4">
-        <h3 className="text-trim mt-5 mb-[10px] font-heading text-[32px] leading-[35.2px] font-light text-[#edf0f3]">
+        <h3 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-article-name) leading-[1.1] font-light text-[#edf0f3]">
           Har du brug for hjælp?
         </h3>
         <p className="text-[#ced5e1]">Ring til os på</p>

@@ -40,7 +40,7 @@ export function ArticleWithForm({
           </div>
         </article>
 
-        <aside className="mt-12 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1">
+        <aside className="mt-7 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1">
           <ContactFormSidebar form={form} />
         </aside>
       </div>
