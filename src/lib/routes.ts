@@ -27,9 +27,6 @@ export const RESERVED_SLUGS = [
   'overview',
   'brands',
   'employees',
-  'kontakt',
-  'laasesmed-aalborg',
-  'om-os',
   'kvittering',
   '404',
 ]

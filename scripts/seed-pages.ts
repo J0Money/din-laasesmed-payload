@@ -11,12 +11,19 @@ import { extractVideos, injectVideoBlocks } from './lib/webflowVideos.js'
 
 const ORIGIN = 'https://din-laasesmed.dk'
 
-type PageSpec = { slug: string; title: string; kind: 'article' | 'videoArticle' | 'intro' | 'thanks' }
+type PageSpec = {
+  slug: string
+  title: string
+  kind: 'about' | 'article' | 'brands' | 'contact' | 'intro' | 'thanks' | 'videoArticle'
+}
 
 const PAGES: PageSpec[] = [
+  { slug: 'kontakt', title: 'Kontakt', kind: 'contact' },
+  { slug: 'laasesmed-aalborg', title: 'Låsesmed Aalborg', kind: 'contact' },
+  { slug: 'om-os', title: 'Om os', kind: 'about' },
+  { slug: 'brands', title: 'Mærker', kind: 'brands' },
   { slug: 'formular', title: 'Formular', kind: 'article' },
   { slug: 'cookie-og-privatlivspolitik', title: 'Cookie- og privatlivspolitik', kind: 'article' },
-  { slug: 'lasesmed-tranbjerg', title: 'Låsesmed Tranbjerg', kind: 'videoArticle' },
   { slug: 'ledige-stillinger', title: 'Ledige stillinger', kind: 'intro' },
   { slug: 'tak-for-din-henvendelse', title: 'Tak for din henvendelse', kind: 'thanks' },
 ]
@@ -47,7 +54,8 @@ async function run() {
     const decoded = decodeURIComponent(new URL(url).pathname.split('/').pop() ?? 'fil')
     const filename = (name ?? decoded).replace(/\s+/g, '-')
     const stem = path.parse(filename).name
-    const existing = await payload.find({ collection, where: { filename: { contains: stem } }, limit: 1, depth: 0 })
+    // Hele filnavnet, ikke kun grundnavnet: "butik.mp4" må ikke genbruge "butik.webm".
+    const existing = await payload.find({ collection, where: { filename: { contains: filename } }, limit: 1, depth: 0 })
     if (existing.docs[0]) return String(existing.docs[0].id)
 
     const res = await fetch(url)
@@ -82,7 +90,9 @@ async function run() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const layout: any[] = []
 
-    if (spec.kind === 'videoArticle') {
+    const internal = (href: string) => href.replace(ORIGIN, '') || '/'
+
+    if (spec.kind === 'videoArticle' || spec.kind === 'contact' || spec.kind === 'about') {
       const poster = attr('.hero_video_placeholder', 'src')
       const sources = [...doc.querySelectorAll('.video_hero video source')].map((s) => s.getAttribute('src') ?? '')
       const webm = sources.find((s) => s.endsWith('.webm'))
@@ -96,7 +106,27 @@ async function run() {
       })
     }
 
-    if (spec.kind === 'article' || spec.kind === 'videoArticle') {
+    if (spec.kind === 'contact') {
+      // Kortene står i fast rækkefølge på originalen: ring, butik, mail, certifikat; det første har den udfyldte knap.
+      const ICONS = ['phone', 'shop', 'mail', 'certificate']
+      const cards = [...doc.querySelectorAll('.contact_cards .contact_card')].map((card, index) => {
+        const cta = card.querySelector('a.contact_focus_cta')
+        return {
+          icon: ICONS[index] ?? 'phone',
+          text: card.querySelector('.contact_card_text')?.textContent?.trim() ?? '',
+          filled: index === 0,
+          link: {
+            type: 'custom',
+            label: card.querySelector('.contact_cta_text')?.textContent?.trim() ?? '',
+            url: internal(cta?.getAttribute('href') ?? '#'),
+            newTab: cta?.getAttribute('target') === '_blank',
+          },
+        }
+      })
+      layout.push({ blockType: 'contactCards', cards })
+    }
+
+    if (['article', 'videoArticle', 'contact', 'about'].includes(spec.kind)) {
       const image = attr('.article_main_image', 'src')
       const heading = text('.article_main_heading')
       layout.push({
@@ -104,19 +134,50 @@ async function run() {
         image: image ? await uploadFrom('media', image, attr('.article_main_image', 'alt') || heading) : undefined,
         heading,
         content: htmlToLexical(html('.article_main_text .w-richtext')),
+        overlapPrevious: spec.kind === 'about',
       })
     }
 
-    if (spec.kind === 'intro') {
+    if (spec.kind === 'about') {
+      const motto = attr('.about_motto_image', 'src')
+      const [left, right] = [...doc.querySelectorAll('.about_motto .hero_placeholder_title')].map((e) => e.textContent?.trim() ?? '')
+      layout.push({
+        blockType: 'parallaxBand',
+        image: await uploadFrom('media', motto, 'Din Låsesmed'),
+        leftText: left,
+        rightText: right,
+      })
+
+      const GROUPS: Record<string, string> = { Administration: 'administration', Montører: 'montoerer', Aalborg: 'aalborg' }
+      layout.push({
+        blockType: 'people',
+        groups: [...doc.querySelectorAll('.about_sections_wrapper')].map((section) => {
+          const heading = section.querySelector('.about_heading')?.textContent?.trim() ?? ''
+          // "Har du brug for hjælp?"-kortet står først i Administration og Aalborg. Webflow sætter det ind med
+          // JavaScript i Aalborg, så det kan ikke ses i den hentede HTML.
+          return { heading, group: GROUPS[heading], showHelpCard: heading === 'Administration' || heading === 'Aalborg' }
+        }),
+      })
+
+      const images = []
+      for (const img of doc.querySelectorAll('.history_slide img')) {
+        images.push({ image: await uploadFrom('media', img.getAttribute('src') ?? '', img.getAttribute('alt') || 'Vores historie') })
+      }
+      layout.push({ blockType: 'imageSlider', title: text('.history_slider .slide_heading'), images })
+    }
+
+    if (spec.kind === 'intro' || spec.kind === 'brands') {
+      layout.push({
+        blockType: 'overviewIntro',
+        tagline: text('.overview_intro .tagline'),
+        title: text('.overview_intro h1.heading'),
+        heading: text('.overview_intro .article_main_heading'),
+        content: htmlToLexical(html('.overview_intro .w-richtext')),
+      })
       layout.push(
-        {
-          blockType: 'overviewIntro',
-          tagline: text('.overview_intro .tagline'),
-          title: text('.overview_intro h1.heading'),
-          heading: text('.overview_intro .article_main_heading'),
-          content: htmlToLexical(html('.overview_intro .w-richtext')),
-        },
-        { blockType: 'jobList', emptyText: 'Der er ingen ledige stillinger lige nu.' },
+        spec.kind === 'intro'
+          ? { blockType: 'jobList', emptyText: 'Der er ingen ledige stillinger lige nu.' }
+          : { blockType: 'brandGrid' },
       )
     }
 
