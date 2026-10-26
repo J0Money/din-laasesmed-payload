@@ -44,7 +44,7 @@ export function Slider({ title, gap, children }: { title: string; gap: number; c
   return (
     <>
       <div className="flex items-start justify-between gap-12 pb-8">
-        <h2 className="text-trim mt-5 mb-[10px] font-heading text-[32px] leading-[48px] font-light text-ink-800">{title}</h2>
+        <h2 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-article-name) leading-[1.5] font-light text-ink-800">{title}</h2>
         <div className="flex items-center gap-6">
           <button
             type="button"

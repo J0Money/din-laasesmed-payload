@@ -54,7 +54,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   return (
     <main>
-      <section className="relative bg-background py-(--fluid-section)">
+      <section className="relative bg-background py-(--fluid-section) min-[992px]:pb-[50px]">
         {/* Værdier fra originalens CSS: bånd 4:1 (under 480px 47px nede), billede opacity .15 + saturate(200%) blur(14px). */}
         <div aria-hidden className="absolute inset-x-0 top-0 aspect-[4/1] overflow-hidden bg-surface-muted max-[479px]:top-[47px]">
           {imageUrl && (
@@ -108,7 +108,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <RichText data={article.mainText} className="mt-12 [&>:first-child]:mt-0" />
           </article>
   
-          <aside className="mt-7 lg:sticky lg:top-8 lg:mt-5 lg:max-w-[400px] lg:flex-1">
+          <aside className="mt-7 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1 lg:translate-y-5">
             <ContactFormSidebar />
           </aside>
         </div>

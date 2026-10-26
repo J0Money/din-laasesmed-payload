@@ -20,7 +20,7 @@ export function RelatedBrands({ brands, title = 'Relaterede mærker' }: { brands
   }))
 
   return (
-    <section className="overflow-hidden bg-surface-muted py-20">
+    <section className="overflow-hidden bg-surface-muted py-(--fluid-section)">
       <div className="site-container">
         <BrandSlider title={title} slides={slides} />
       </div>

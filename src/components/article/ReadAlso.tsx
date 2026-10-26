@@ -27,7 +27,7 @@ export async function ReadAlso({ articleId, category }: { articleId: string; cat
 
   return (
     <section>
-      <div className="site-container flex flex-col gap-12 py-(--fluid-section) lg:flex-row lg:justify-between">
+      <div className="site-container flex flex-col gap-4 py-(--fluid-section) min-[992px]:flex-row min-[992px]:justify-between min-[992px]:gap-12">
         <div className="shrink-0">
           <Link
             href={ROUTES.category(category.slug)}
@@ -46,16 +46,17 @@ export async function ReadAlso({ articleId, category }: { articleId: string; cat
           </h2>
         </div>
 
-        <ArticlePreviewGrid articles={docs} />
+        {/* Som originalen sidder listen 20px længere ude til højre end containeren. */}
+        <ArticlePreviewGrid articles={docs} className="relative left-5" />
       </div>
     </section>
   )
 }
 
 /** 768px gitter med små artikel-previews (64px billede + titel), som i "Læs også" og på mærkesiderne. */
-export function ArticlePreviewGrid({ articles }: { articles: Article[] }) {
+export function ArticlePreviewGrid({ articles, className = '' }: { articles: Article[]; className?: string }) {
   return (
-    <ul className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:w-[768px] lg:grid-cols-3">
+    <ul className={`grid gap-x-8 gap-y-6 min-[480px]:grid-cols-3 min-[992px]:w-[768px] ${className}`}>
       {articles.map((article) => {
         const thumb = mediaUrl(article.mainImage, 'thumbnail')
         return (
