@@ -3,6 +3,8 @@ import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { NodeHttpHandler } from '@smithy/node-http-handler'
+import { Agent as HttpsAgent } from 'https'
 import { BlocksFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -65,6 +67,8 @@ export default buildConfig({
               region: process.env.S3_REGION || 'auto',
               // Nye Railway-buckets bruger virtual-hosted-style, ældre path-style (står på bucketens Credentials-fane).
               forcePathStyle: process.env.S3_FORCE_PATH_STYLE === 'true',
+              // Bucketen lukker ventende forbindelser, så genbrugte forbindelser gav ECONNRESET og 502 på billeder. Ny forbindelse pr. kald.
+              requestHandler: new NodeHttpHandler({ httpsAgent: new HttpsAgent({ keepAlive: false }) }),
               credentials: {
                 accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
                 secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
