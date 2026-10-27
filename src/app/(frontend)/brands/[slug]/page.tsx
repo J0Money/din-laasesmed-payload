@@ -7,6 +7,7 @@ import { RelatedBrands } from '@/components/article/RelatedBrands'
 import { RichText } from '@/components/RichText'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import { getPayloadClient } from '@/lib/payload'
+import { seoMetadata } from '@/lib/seo'
 
 async function getBrand(slug: string) {
   const payload = await getPayloadClient()
@@ -22,11 +23,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const brand = await getBrand(slug)
   if (!brand) return {}
-  return {
+  return seoMetadata({
     // Originalens Scantron-side har tom titel; her falder vi tilbage på navnet.
     title: brand.titleTag || brand.name,
-    description: brand.metaDescription || undefined,
-  }
+    description: brand.metaDescription,
+    image: mediaUrl(brand.mainImage, 'og'),
+  })
 }
 
 /**

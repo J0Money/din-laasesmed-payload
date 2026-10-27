@@ -4,11 +4,12 @@ import type React from 'react'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { archivo, montserrat } from '@/lib/fonts'
+import { SITE_URL } from '@/lib/seo'
 import '@/styles/globals.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'Din Låsesmed',
-  description: 'Din Låsesmed i Aarhus — under opbygning.',
 }
 
 // Header/Footer henter fra databasen på hver side. Uden dette prøver Next.js at prerendere

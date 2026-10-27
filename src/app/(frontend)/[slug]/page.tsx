@@ -4,6 +4,7 @@ import { notFound, redirect } from 'next/navigation'
 import { BlockRenderer } from '@/components/blocks/BlockRenderer'
 import { getPayloadClient } from '@/lib/payload'
 import { HOME_PAGE_SLUG } from '@/lib/routes'
+import { seoMetadata } from '@/lib/seo'
 
 async function getPage(slug: string) {
   const payload = await getPayloadClient()
@@ -19,10 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const page = await getPage(slug)
   if (!page) return {}
-  return {
-    title: page.titleTag || page.title,
-    description: page.metaDescription || undefined,
-  }
+  return seoMetadata({ title: page.titleTag || page.title, description: page.metaDescription })
 }
 
 export default async function StaticPage({ params }: { params: Promise<{ slug: string }> }) {
