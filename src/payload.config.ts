@@ -1,4 +1,5 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { BlocksFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
@@ -32,6 +33,19 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  // E-mail fra formularerne sendes over SMTP, når SMTP_HOST er sat (se .env.example). Ellers skrives de kun til konsollen.
+  email: process.env.SMTP_HOST
+    ? nodemailerAdapter({
+        defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'noreply@din-laasesmed.dk',
+        defaultFromName: process.env.EMAIL_FROM_NAME || 'Din Låsesmed',
+        transportOptions: {
+          host: process.env.SMTP_HOST,
+          port: Number(process.env.SMTP_PORT || 587),
+          secure: process.env.SMTP_SECURE === 'true',
+          auth: process.env.SMTP_USER ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS } : undefined,
+        },
+      })
+    : undefined,
   collections: [Pages, Articles, Categories, Brands, Employees, Jobs, Users, Media, Videos],
   globals: [Header, Footer, SiteSettings],
   folders: false,

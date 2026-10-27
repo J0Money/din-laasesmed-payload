@@ -9,24 +9,31 @@ import config from '../src/payload.config.js'
 const THANKS = '/tak-for-din-henvendelse'
 const NOTIFY = 'info@din-laasesmed.dk'
 
-const paragraph = (text: string) => ({
+const paragraphs = (...texts: string[]) => ({
   root: {
     type: 'root',
     format: '',
     indent: 0,
     version: 1,
     direction: null,
-    children: [
-      {
-        type: 'paragraph',
-        format: '',
-        indent: 0,
-        version: 1,
-        direction: null,
-        children: [{ type: 'text', text, detail: 0, format: 0, mode: 'normal', style: '', version: 1 }],
-      },
-    ],
+    children: texts.map((text) => ({
+      type: 'paragraph',
+      format: '',
+      indent: 0,
+      version: 1,
+      direction: null,
+      children: [{ type: 'text', text, detail: 0, format: 0, mode: 'normal', style: '', version: 1 }],
+    })),
   },
+})
+const paragraph = (text: string) => paragraphs(text)
+
+/** Mailen til os: alle felter som tabel ({{*:table}}), og svar går til den besøgende (replyTo = deres mailfelt). */
+const notificationEmail = (title: string, mailField: string) => ({
+  emailTo: NOTIFY,
+  replyTo: `{{${mailField}}}`,
+  subject: `Ny henvendelse: ${title}`,
+  message: paragraphs('Der er kommet en ny henvendelse fra hjemmesiden:', '{{*:table}}'),
 })
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -114,8 +121,8 @@ async function run() {
         title: form.title,
         confirmationType: 'redirect',
         redirect: { type: 'custom', url: THANKS },
-        // Mailen går først afsted, når Payload har en e-mail-adapter (SMTP/Resend); indsendelserne gemmes altid.
-        emails: [{ emailTo: NOTIFY, subject: `Ny henvendelse: ${form.title}` }],
+        // Mailen går afsted, når SMTP er sat (se payload.config.ts); indsendelserne gemmes altid.
+        emails: [notificationEmail(form.title, form.title === 'Nøgleformular' ? 'email' : 'mail')],
         ...form.data,
       } as any,
     })
