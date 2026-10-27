@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
+import { publishWhenViaMcp } from '@/lib/publishViaMcp'
+
 export const Articles: CollectionConfig = {
   slug: 'articles',
   admin: {
@@ -9,6 +11,9 @@ export const Articles: CollectionConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    beforeChange: [publishWhenViaMcp],
   },
   fields: [
     {

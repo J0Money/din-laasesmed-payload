@@ -1,6 +1,7 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { BlocksFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -50,6 +51,36 @@ export default buildConfig({
   globals: [Header, Footer, SiteSettings],
   folders: false,
   plugins: [
+    // MCP-adgang til indholdet (så fx Claude kan læse, oprette og rette). Kun de tre indholdstyper nedenfor er med:
+    // formularindsendelser og brugere (persondata) er bevidst udeladt, og intet kan slettes. Nøgler oprettes i admin
+    // under "MCP > API-nøgler", hvor man pr. nøgle kan slå rettighederne fra.
+    mcpPlugin({
+      userCollection: 'users',
+      collections: {
+        articles: {
+          description: 'Artikler på din-laasesmed.dk (viden, lokationssider som "Låsesmed Hammel" og nyheder).',
+          enabled: { find: true, create: true, update: true, delete: false },
+        },
+        brands: {
+          description: 'Mærker Din Låsesmed forhandler (logo, tekst og SEO).',
+          enabled: { find: true, create: true, update: true, delete: false },
+        },
+        categories: {
+          description: 'Kategorier i oversigterne (Mekanisk sikring, Elektronisk sikring, Service, Nyheder).',
+          enabled: { find: true, create: true, update: true, delete: false },
+        },
+      },
+      mcp: {
+        serverOptions: {
+          serverInfo: { name: 'Din Låsesmed CMS', version: '1.0.0' },
+          instructions:
+            'Du redigerer indholdet på din-laasesmed.dk, en dansk låsesmed i Aarhus. Skriv på dansk i samme tone som de eksisterende artikler. ' +
+            'Opfind aldrig priser, telefonnumre, adresser, certificeringer eller tal. Brug kun oplysninger, brugeren har givet, eller som allerede står på siden. ' +
+            'Slug skal være små bogstaver uden æ, ø, å og med bindestreger (fx lasesmed-hammel). Hent en lignende artikel først og følg dens opbygning. ' +
+            'Ændringer udgives med det samme, så spørg før du overskriver en eksisterende tekst.',
+        },
+      },
+    }),
     // Formularer sættes sammen i admin (felter, e-mail til os, bekræftelse); indsendelser gemmes i form-submissions.
     formBuilderPlugin({
       fields: { payment: false, state: false, country: false },
