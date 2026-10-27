@@ -15,6 +15,7 @@
     "import:webflow": "node --env-file=.env.local --import tsx scripts/import-webflow.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1156.0",
     "@payloadcms/db-mongodb": "3.92.0",
     "@payloadcms/email-nodemailer": "3.92.0",
     "@payloadcms/next": "3.92.0",
@@ -22,6 +23,7 @@
     "@payloadcms/plugin-mcp": "3.92.0",
     "@payloadcms/plugin-seo": "3.92.0",
     "@payloadcms/richtext-lexical": "3.92.0",
+    "@payloadcms/storage-s3": "3.92.0",
     "@payloadcms/ui": "3.92.0",
     "@phosphor-icons/react": "2.1.10",
     "next": "16.4.2",
