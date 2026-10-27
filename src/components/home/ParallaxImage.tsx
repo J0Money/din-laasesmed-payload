@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from 'react'
 
-// Originalens statistik-bånd har et baggrundsbillede ~140% af båndets højde, der glider op mens man scroller forbi.
+// Som originalens statistik-bånd: fra 992px har billedet sit eget billedformat (højst 140% af båndets højde) og glider
+// fra -40% til 0 mens båndet scroller forbi (kun fra 1024px). Under 992px fylder billedet bare båndet.
 export function ParallaxImage({ src, alt }: { src: string; alt: string }) {
   const ref = useRef<HTMLImageElement>(null)
 
@@ -14,10 +15,13 @@ export function ParallaxImage({ src, alt }: { src: string; alt: string }) {
     let frame = 0
     function update() {
       frame = 0
+      if (window.innerWidth < 1024) {
+        img!.style.transform = ''
+        return
+      }
       const rect = section!.getBoundingClientRect()
-      const travel = img!.offsetHeight - rect.height
       const progress = Math.min(Math.max((window.innerHeight - rect.top) / (window.innerHeight + rect.height), 0), 1)
-      img!.style.transform = `translate3d(0, ${-progress * travel}px, 0)`
+      img!.style.transform = `translate3d(0, ${-0.4 * (1 - progress) * img!.offsetHeight}px, 0)`
     }
     function onScroll() {
       if (!frame) frame = requestAnimationFrame(update)
@@ -34,5 +38,12 @@ export function ParallaxImage({ src, alt }: { src: string; alt: string }) {
   }, [])
 
   // eslint-disable-next-line @next/next/no-img-element
-  return <img ref={ref} src={src} alt={alt} className="absolute inset-x-0 top-0 h-[140%] w-full object-cover will-change-transform" />
+  return (
+    <img
+      ref={ref}
+      src={src}
+      alt={alt}
+      className="absolute inset-0 h-auto max-h-[140%] w-full object-cover will-change-transform max-[991px]:h-full max-[991px]:max-h-full"
+    />
+  )
 }
