@@ -8,15 +8,22 @@ import type { Block } from 'payload'
 export const BLOCK_ROW_LABELS: Record<string, string> = {}
 
 /**
- * Sætter RowLabel-komponenten på alle blocks på én gang ud fra
- * BLOCK_ROW_LABELS, så den ikke skal gentages i hver enkelt block-fil.
+ * Sætter RowLabel-komponenten og miniaturen i blokvælgeren på alle blocks på én gang,
+ * så det ikke skal gentages i hver enkelt block-fil. Miniaturerne er SVG'er i public/block-thumbs,
+ * ét pr. slug (fx text.svg).
  */
 export function prepareBlocks(blocks: Block[]): Block[] {
   return blocks.map((block) => {
-    if (!BLOCK_ROW_LABELS[block.slug]) return block
+    const label = typeof block.labels?.singular === 'string' ? block.labels.singular : block.slug
+    const withThumb: Block = {
+      ...block,
+      imageURL: block.imageURL ?? `/block-thumbs/${block.slug}.svg`,
+      imageAltText: block.imageAltText ?? label,
+    }
+    if (!BLOCK_ROW_LABELS[block.slug]) return withThumb
 
     return {
-      ...block,
+      ...withThumb,
       admin: {
         ...block.admin,
         components: {
