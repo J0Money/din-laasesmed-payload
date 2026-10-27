@@ -96,7 +96,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </nav>
           </div>
 
-          <div className="relative left-5 flex w-full max-w-[768px] flex-col gap-8">
+          <div className="flex w-full max-w-[768px] flex-col gap-8">
             <h2 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-h2) leading-[1.3] font-light text-ink-800">
               {category.mainHeading}
             </h2>
@@ -107,8 +107,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       </section>
 
       {articles.docs.length > 0 && (
-        <section className="relative -mt-3 pb-(--fluid-section)">
-          <ul className="site-container relative z-10 grid grid-cols-1 gap-8 min-[480px]:grid-cols-2 min-[992px]:grid-cols-4">
+        <section className="relative -mt-8 pb-(--fluid-section)">
+          <ul className="site-container relative z-10 grid auto-rows-fr grid-cols-1 gap-8 min-[480px]:grid-cols-2 min-[992px]:grid-cols-4">
             {articles.docs.map((article) => {
               const imageUrl = mediaUrl(article.mainImage, 'ratio32')
               const excerpt = firstParagraphText(article.mainText)

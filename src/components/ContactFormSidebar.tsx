@@ -21,7 +21,7 @@ export async function ContactFormSidebar({ form }: { form?: Form | null | string
   if (!doc) return null
 
   return (
-    <div className="rounded-2xl border-[0.8px] border-[#ced5e1] bg-surface-form px-(--fluid-form-pad) py-5">
+    <div className="rounded-2xl border-[0.8px] border-[#ced5e1] bg-surface-form px-(--fluid-form-pad) py-5 max-[767px]:py-6">
       <h2 className="text-trim mt-5 font-heading text-(length:--fluid-article-name) leading-9 font-light text-ink-800">
         {doc.heading || 'Brug for hjælp?'}
       </h2>

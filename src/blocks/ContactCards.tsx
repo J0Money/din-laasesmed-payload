@@ -67,9 +67,9 @@ export const contactCardsBlock: Block = {
 
 export function ContactCards({ cards, mobileForm }: ContactCardsBlockProps) {
   return (
-    <div className={`relative z-10 -mt-8 ${mobileForm ? 'max-[767px]:mt-0' : ''}`}>
+    <div className="relative z-10 -mt-8">
       {mobileForm && (
-        <div className="site-container pt-9 pb-5 min-[768px]:hidden">
+        <div className="site-container pt-6 pb-4 min-[768px]:hidden">
           <ContactFormSidebar />
         </div>
       )}

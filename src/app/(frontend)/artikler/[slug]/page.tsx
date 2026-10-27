@@ -54,7 +54,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
   return (
     <main>
-      <section className="relative bg-background py-(--fluid-section) min-[992px]:pb-[50px]">
+      <section className="relative bg-background py-(--fluid-section)">
         {/* Værdier fra originalens CSS: bånd 4:1 (under 480px 47px nede), billede opacity .15 + saturate(200%) blur(14px). */}
         <div aria-hidden className="absolute inset-x-0 top-0 aspect-[4/1] overflow-hidden bg-surface-muted max-[479px]:top-[47px]">
           {imageUrl && (
@@ -90,7 +90,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 height={height}
                 loading="eager"
                 sizes={SIZES.hero}
-                className="mt-[62px] aspect-video w-full rounded-2xl object-cover shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
+                className="mt-[42px] aspect-video w-full rounded-2xl object-cover shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
               />
             )}
   
@@ -105,10 +105,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               <span className="text-text-body">Få et gratis servicetjek</span>
             </div>
   
-            <RichText data={article.mainText} className="mt-12 [&>:first-child]:mt-0" />
+            <RichText data={article.mainText} className="mt-12 [&>:first-child]:mt-0 [&>:last-child]:mb-0" />
           </article>
   
-          <aside className="mt-7 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1 lg:translate-y-5">
+          <aside className="mt-6 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1">
             <ContactFormSidebar />
           </aside>
         </div>

@@ -54,7 +54,7 @@ export function OverviewIntro({ content, heading, tagline, title }: OverviewIntr
           </h1>
         </div>
 
-        <div className="relative left-5 flex w-full max-w-[768px] flex-col gap-8">
+        <div className="flex w-full max-w-[768px] flex-col gap-8">
           <h2 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-h2) leading-[1.3] font-light text-ink-800">
             {heading}
           </h2>

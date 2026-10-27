@@ -28,7 +28,7 @@ export function ArticleWithForm({
 }) {
   return (
     <section
-      className={`py-(--fluid-section) ${overlapPrevious ? 'relative -mt-(--overlap) [--overlap:calc(92px+0.0458*(100vw-375px))] min-[992px]:[--overlap:calc(var(--fluid-section)+27px)]' : 'bg-background'} ${className}`}
+      className={`py-(--fluid-section) ${overlapPrevious ? 'relative -mt-(--overlap) [--overlap:7rem]' : 'bg-background'} ${className}`}
     >
       {overlapPrevious && <div aria-hidden className="absolute inset-x-0 top-(--overlap) bottom-0 bg-background" />}
       <div className={`site-container relative z-10 lg:flex lg:items-start lg:justify-center lg:gap-12 ${formFirst ? 'max-[767px]:flex max-[767px]:flex-col' : ''}`}>
@@ -49,7 +49,7 @@ export function ArticleWithForm({
           </div>
         </article>
 
-        <aside className={`${formFirst ? 'max-[767px]:order-first max-[767px]:mt-0 max-[767px]:mb-1' : ''} mt-7 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1`}>
+        <aside className={`${formFirst ? 'max-[767px]:order-first max-[767px]:mt-0 max-[767px]:mb-1' : ''} mt-6 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1`}>
           <ContactFormSidebar form={form} />
         </aside>
       </div>

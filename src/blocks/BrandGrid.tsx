@@ -41,7 +41,8 @@ export async function BrandGrid() {
   })
 
   return (
-    <section className="relative -mt-8 pb-(--fluid-section)">
+    // Originalen har 80px under mærkerne ved alle bredder (ikke den flydende skala).
+    <section className="relative -mt-8 pb-20">
       <ul className="site-container relative z-10 grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[768px]:grid-cols-3 min-[992px]:grid-cols-4">
         {brands.docs.map((brand) => {
           const logoUrl = mediaUrl(brand.logo)
