@@ -16,14 +16,14 @@ export const homeHeroBlock: Block = {
     { name: 'videoWebm', type: 'upload', relationTo: 'videos', label: 'Video (WebM)' },
     { name: 'videoMp4', type: 'upload', relationTo: 'videos', label: 'Video (MP4)' },
     {
-      name: 'overlay',
+      name: 'textBox',
       type: 'number',
-      label: 'Mørkelægning af videoen (%)',
-      defaultValue: 15,
+      label: 'Mørk boks bag teksten (%)',
+      defaultValue: 40,
       min: 0,
-      max: 80,
+      max: 90,
       admin: {
-        description: 'Et mørkt lag mellem video og tekst, så teksten bliver lettere at læse. 15 er som på originalen, 0 er ingen. Prøv 30 til 40, hvis teksten er utydelig.',
+        description: 'En mørk, gennemsigtig boks mellem videoen og teksten, så teksten er lettere at læse. Resten af videoen røres ikke. 0 fjerner boksen.',
       },
     },
     { name: 'leftText', type: 'text', required: true, label: 'Tekst til venstre', defaultValue: 'Din Låsesmed' },
@@ -47,7 +47,7 @@ export const homeHeroBlock: Block = {
   ],
 }
 
-export function HomeHero({ buttons, leftText, overlay, rightText, videoMp4, videoWebm }: HomeHeroBlockProps) {
+export function HomeHero({ buttons, leftText, rightText, textBox, videoMp4, videoWebm }: HomeHeroBlockProps) {
   const webm = typeof videoWebm === 'object' ? videoWebm?.url : undefined
   const mp4 = typeof videoMp4 === 'object' ? videoMp4?.url : undefined
 
@@ -61,28 +61,31 @@ export function HomeHero({ buttons, leftText, overlay, rightText, videoMp4, vide
         </video>
       )}
 
-      {/* Originalens hero_overlay: ink-900 over videoen (15% som standard), under teksten. */}
-      <div aria-hidden className="absolute inset-0 z-[1] bg-ink-900" style={{ opacity: (overlay ?? 15) / 100 }} />
-
       <div data-animate="fade" data-delay="800" className="site-container relative z-10 flex h-full flex-col items-center justify-center gap-6 text-center">
-        <h1 className="mt-5 mb-[10px] flex flex-wrap items-center justify-center gap-x-(--fluid-gap) gap-y-2 font-heading text-(length:--fluid-hero-h1) leading-none font-light text-[#edf0f3]">
-          <span className="text-trim">{leftText}</span>
-          <span className="hidden h-3 w-3 shrink-0 rounded-full bg-[#edf0f3] min-[768px]:block" />
-          <span className="text-trim">{rightText}</span>
-        </h1>
+        {/* Boksen ligger mellem video og tekst og følger tekstens størrelse. */}
+        <div
+          className="flex flex-col items-center gap-6 rounded-2xl px-[clamp(20px,4vw,56px)] py-[clamp(12px,2vw,32px)]"
+          style={{ backgroundColor: `rgba(18, 23, 41, ${(textBox ?? 40) / 100})` }}
+        >
+          <h1 className="mt-5 mb-[10px] flex flex-wrap items-center justify-center gap-x-(--fluid-gap) gap-y-2 font-heading text-(length:--fluid-hero-h1) leading-none font-light text-[#edf0f3]">
+            <span className="text-trim">{leftText}</span>
+            <span className="hidden h-3 w-3 shrink-0 rounded-full bg-[#edf0f3] min-[768px]:block" />
+            <span className="text-trim">{rightText}</span>
+          </h1>
 
-        <div className="flex flex-wrap items-center justify-center gap-6">
-          {(buttons ?? []).map((button) => (
-            <Link
-              key={button.id}
-              href={resolveLinkHref(button.link)}
-              target={button.link?.newTab ? '_blank' : undefined}
-              className={`${button.accent ? 'button-accent' : 'button'} ${HOME_BUTTON}`}
-            >
-              <span className="text-trim">{button.link?.label}</span>
-              {button.accent && <ButtonCheckIcon className="h-auto w-4" />}
-            </Link>
-          ))}
+          <div className="flex flex-wrap items-center justify-center gap-6">
+            {(buttons ?? []).map((button) => (
+              <Link
+                key={button.id}
+                href={resolveLinkHref(button.link)}
+                target={button.link?.newTab ? '_blank' : undefined}
+                className={`${button.accent ? 'button-accent' : 'button'} ${HOME_BUTTON}`}
+              >
+                <span className="text-trim">{button.link?.label}</span>
+                {button.accent && <ButtonCheckIcon className="h-auto w-4" />}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>

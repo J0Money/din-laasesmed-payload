@@ -218,9 +218,9 @@ export interface HomeHeroBlock {
   videoWebm?: (string | null) | Video;
   videoMp4?: (string | null) | Video;
   /**
-   * Et mørkt lag mellem video og tekst, så teksten bliver lettere at læse. 15 er som på originalen, 0 er ingen. Prøv 30 til 40, hvis teksten er utydelig.
+   * En mørk, gennemsigtig boks mellem videoen og teksten, så teksten er lettere at læse. Resten af videoen røres ikke. 0 fjerner boksen.
    */
-  overlay?: number | null;
+  textBox?: number | null;
   leftText: string;
   rightText: string;
   buttons?:
@@ -1589,7 +1589,7 @@ export interface PagesSelect<T extends boolean = true> {
 export interface HomeHeroBlockSelect<T extends boolean = true> {
   videoWebm?: T;
   videoMp4?: T;
-  overlay?: T;
+  textBox?: T;
   leftText?: T;
   rightText?: T;
   buttons?:
