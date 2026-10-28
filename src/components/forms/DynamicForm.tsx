@@ -103,7 +103,9 @@ export function DynamicForm({
   const inputClass = card ? CARD_INPUT : PAGE_INPUT
 
   return (
+    // method="post": trykkes der send, før JavaScript er indlæst, må navn, telefon og e-mail ikke havne i adressen (GET er standard).
     <form
+      method="post"
       onSubmit={onSubmit}
       className={card ? 'mt-6 flex flex-col gap-4' : 'flex flex-col gap-4'}
     >
