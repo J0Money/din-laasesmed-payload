@@ -64,6 +64,11 @@
   h3 {
     @apply font-heading;
   }
+
+  /* 404-siden ligger over header/footer (se not-found.tsx), så siden bagved ikke skal kunne scrolle. */
+  body:has([data-not-found]) {
+    overflow: hidden;
+  }
 }
 
 /*
