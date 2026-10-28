@@ -1,10 +1,23 @@
 import type { Metadata } from 'next'
 
+import { mediaUrl } from '@/lib/media'
+import { getPayloadClient } from '@/lib/payload'
+
 /** Sitets offentlige adresse. Bruges til sitemap og delings-billeder; kan overstyres med SITE_URL. */
 export const SITE_URL = (process.env.SITE_URL || 'https://din-laasesmed.dk').replace(/\/$/, '')
 
-/** Titel, beskrivelse og delings-metadata (Open Graph og Twitter) som på originalen: samme tekst og stort delings-kort. */
-export function seoMetadata({
+/** Standard delings-billede fra Konfiguration > Indstillinger > SEO. Originalen bruger det samme billede på alle sider. */
+async function defaultOgImage(): Promise<string | undefined> {
+  const payload = await getPayloadClient()
+  const settings = await payload.findGlobal({ slug: 'siteSettings', depth: 1 })
+  return mediaUrl(settings.ogImage, 'og')
+}
+
+/**
+ * Titel, beskrivelse og delings-metadata (Open Graph og Twitter) som på originalen: samme tekst og stort delings-kort.
+ * Uden eget billede bruges standard-billedet fra indstillingerne.
+ */
+export async function seoMetadata({
   description,
   image,
   title,
@@ -12,12 +25,13 @@ export function seoMetadata({
   description?: string | null
   image?: string
   title: string
-}): Metadata {
+}): Promise<Metadata> {
   const desc = description?.trim() || undefined
+  const shareImage = image ?? (await defaultOgImage())
   return {
     title,
     description: desc,
-    openGraph: { type: 'website', title, description: desc, images: image ? [image] : undefined },
-    twitter: { card: 'summary_large_image', title, description: desc, images: image ? [image] : undefined },
+    openGraph: { type: 'website', title, description: desc, images: shareImage ? [shareImage] : undefined },
+    twitter: { card: 'summary_large_image', title, description: desc, images: shareImage ? [shareImage] : undefined },
   }
 }
