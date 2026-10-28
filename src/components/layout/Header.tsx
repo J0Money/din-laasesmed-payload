@@ -8,7 +8,7 @@ import { ROUTES } from '@/lib/routes'
 import { CallLink } from './CallLink'
 import { Logo } from './Logo'
 import { MobileMenu } from './MobileMenu'
-import { GridIcon, NAV_ICON_BY_CATEGORY_SLUG } from './NavIcons'
+import { ChevronDownIcon, GridIcon, NAV_ICON_BY_CATEGORY_SLUG } from './NavIcons'
 
 /** Mål aflæst fra din-laasesmed.dk: topbjælke 38px, hovednav 72px, logo 208px der hænger ud under nav-kanten. */
 export async function Header() {
@@ -54,7 +54,10 @@ export async function Header() {
               item.children && item.children.length > 0 ? (
                 // Hover-området fylder hele topbjælkens højde, så der ikke er et hul mellem tekst og dropdown.
                 <div key={item.id ?? index} className="group relative flex h-full items-center">
-                  <span className="cursor-default">{item.link?.label}</span>
+                  <span className="flex cursor-default items-center gap-1">
+                    {item.link?.label}
+                    <ChevronDownIcon />
+                  </span>
                   {/* Mål fra din-laasesmed.dk: mørk boks (samme farve som topbjælken), ikke hvid. */}
                   <div className="invisible absolute right-0 top-full z-30 flex min-w-max flex-col gap-[6px] rounded-md bg-ink-800 px-3 py-[10px] text-[#ced5e1] opacity-0 transition-[opacity,visibility] duration-200 group-hover:visible group-hover:opacity-100">
                     {item.children.map((child, childIndex) => (
@@ -96,6 +99,7 @@ export async function Header() {
                       <Link href={categoryHref} className="flex items-center gap-3 py-[5px] leading-5 transition-colors duration-200 hover:text-brand-500">
                         {Icon && <Icon />}
                         {item.link?.label}
+                        {item.children && item.children.length > 0 && <ChevronDownIcon />}
                       </Link>
 
                       {/* Mega-menu, mål og lag aflæst fra din-laasesmed.dk (1600px): mørkt bånd i fuld bredde, 5-kolonners grid, ikon = artiklens eget billede.

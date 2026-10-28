@@ -60,3 +60,18 @@ export const NAV_ICON_BY_CATEGORY_SLUG: Record<string, (props: IconProps) => Rea
   'mekanisk-sikring': LockIcon,
   service: CheckCircleIcon,
 }
+
+/** Lille pil ved menupunkter med undermenu. Drejer, når den omgivende gruppe (group) holdes over med musen. */
+export function ChevronDownIcon({ className = 'h-3 w-3' }: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 12 12"
+      fill="none"
+      aria-hidden="true"
+      className={`shrink-0 transition-transform duration-200 group-hover:rotate-180 ${className}`}
+    >
+      <path d="M2.5 4.5 6 8l3.5-3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
