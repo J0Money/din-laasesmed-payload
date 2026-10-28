@@ -49,7 +49,7 @@ export function ArticleWithForm({
           </div>
         </article>
 
-        <aside className={`${formFirst ? 'max-[767px]:order-first max-[767px]:mt-0 max-[767px]:mb-1' : ''} mt-6 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1`}>
+        <aside className={`${formFirst ? 'max-[767px]:order-first max-[767px]:mt-0 max-[767px]:mb-1' : ''} mt-6 lg:sticky lg:top-[97px] lg:mt-0 lg:max-w-[400px] lg:flex-1`}>
           <ContactFormSidebar form={form} />
         </aside>
       </div>

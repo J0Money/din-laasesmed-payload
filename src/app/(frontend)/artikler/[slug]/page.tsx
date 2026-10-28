@@ -110,7 +110,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             <RichText data={article.mainText} className="mt-12 [&>:first-child]:mt-0 [&>:last-child]:mb-0" />
           </article>
   
-          <aside className="mt-6 lg:sticky lg:top-8 lg:mt-0 lg:max-w-[400px] lg:flex-1">
+          <aside className="mt-6 lg:sticky lg:top-[97px] lg:mt-0 lg:max-w-[400px] lg:flex-1">
             <ContactFormSidebar />
           </aside>
         </div>

@@ -32,8 +32,9 @@ export async function Header() {
   const mobileCta = header.cta?.link?.label ? { href: resolveLinkHref(header.cta.link), label: header.cta.link.label } : undefined
 
   return (
-    <header className="relative z-20">
-      <div className="bg-ink-900 text-[#ced5e1]">
+    <>
+      {/* Topbjælken ligger uden for den klæbende header og scroller væk, som på originalen. z-index over headeren, så dropdownen kan nå ned over den. */}
+      <div className="relative z-[101] bg-ink-900 text-[#ced5e1]">
         <div className="site-container flex h-[38px] items-center justify-between text-[0.9rem] md:max-[991px]:h-11">
           <div className="flex items-center gap-8">
             {siteSettings.phone && (
@@ -73,82 +74,85 @@ export async function Header() {
         </div>
       </div>
 
-      <div className="h-[52.2px] border-b-[0.8px] border-[#ced5e1] bg-surface-form text-text-body min-[992px]:h-[72px]">
-        <div className="site-container flex h-full items-center justify-between">
-          {/* Linkboksen er 28px høj; SVG'en er 55px og må gerne hænge ud under nav'en som på originalen. Under 768px er logoet 192px. */}
-          <Link href={ROUTES.home()} aria-label="Forside" className="block h-7 w-[208px] self-start mt-[6.4px] text-brand-500 min-[992px]:mt-[21px] max-[767px]:w-[192px]">
-            <Logo className="h-auto w-full overflow-visible" />
-          </Link>
+      {/* Hovednavigationen klæber til toppen (originalen: position sticky, top 0, z-index 100). Mega-menuen positioneres relativt til denne. */}
+      <header className="sticky top-0 z-[100]">
+        <div className="h-[52.2px] border-b-[0.8px] border-[#ced5e1] bg-surface-form text-text-body min-[992px]:h-[72px]">
+          <div className="site-container flex h-full items-center justify-between">
+            {/* Linkboksen er 28px høj; SVG'en er 55px og må gerne hænge ud under nav'en som på originalen. Under 768px er logoet 192px. */}
+            <Link href={ROUTES.home()} aria-label="Forside" className="block h-7 w-[208px] self-start mt-[6.4px] text-brand-500 min-[992px]:mt-[21px] max-[767px]:w-[192px]">
+              <Logo className="h-auto w-full overflow-visible" />
+            </Link>
 
-          <div className="flex items-center gap-10 self-stretch">
-            <MobileMenu cta={mobileCta} links={mobileLinks} main={mobileMain} />
+            <div className="flex items-center gap-10 self-stretch">
+              <MobileMenu cta={mobileCta} links={mobileLinks} main={mobileMain} />
 
-            <nav className="hidden items-center gap-10 self-stretch font-heading text-[0.9rem] font-medium min-[992px]:flex">
-              {(header.navItems ?? []).map((item, index) => {
-                const Icon = NAV_ICON_BY_CATEGORY_SLUG[linkCategorySlug(item.link) ?? '']
-                const categoryHref = resolveLinkHref(item.link)
+              <nav className="hidden items-center gap-10 self-stretch font-heading text-[0.9rem] font-medium min-[992px]:flex">
+                {(header.navItems ?? []).map((item, index) => {
+                  const Icon = NAV_ICON_BY_CATEGORY_SLUG[linkCategorySlug(item.link) ?? '']
+                  const categoryHref = resolveLinkHref(item.link)
 
-                return (
-                  <div key={item.id ?? index} className="group flex h-full items-center">
-                    <Link href={categoryHref} className="flex items-center gap-3 py-[5px] leading-5 transition-colors duration-200 hover:text-brand-500">
-                      {Icon && <Icon />}
-                      {item.link?.label}
-                    </Link>
+                  return (
+                    <div key={item.id ?? index} className="group flex h-full items-center">
+                      <Link href={categoryHref} className="flex items-center gap-3 py-[5px] leading-5 transition-colors duration-200 hover:text-brand-500">
+                        {Icon && <Icon />}
+                        {item.link?.label}
+                      </Link>
 
-                    {/* Mega-menu, mål og lag aflæst fra din-laasesmed.dk (1600px): mørkt bånd i fuld bredde, 5-kolonners grid, ikon = artiklens eget billede.
-                        Positioneres relativt til <header> (øverste "relative"-forfader), ikke dette lille nav-punkt — ellers bliver båndet ikke fuld bredde.
-                        Som originalen glider panelet ned og fader over 0,4 s. Visibility skifter først til sidst ved lukning,
-                        så man kan nå at flytte musen ned i panelet. -z-10 lægger det under nav-bjælkerne, mens det glider. */}
-                    {item.children && item.children.length > 0 && (
-                      <div className="invisible absolute inset-x-0 top-0 -z-10 overflow-x-clip bg-[rgba(18,23,41,0.9)] py-10 font-sans opacity-0 transition-[top,opacity,visibility] duration-[400ms] group-hover:visible group-hover:top-full group-hover:opacity-100">
-                        <div className="site-container">
-                          <p className="mb-[10px] text-[19px] leading-[29px] font-medium text-[#96a1b7]">{item.link?.label}</p>
+                      {/* Mega-menu, mål og lag aflæst fra din-laasesmed.dk (1600px): mørkt bånd i fuld bredde, 5-kolonners grid, ikon = artiklens eget billede.
+                          Positioneres relativt til <header> (øverste "relative"-forfader), ikke dette lille nav-punkt — ellers bliver båndet ikke fuld bredde.
+                          Som originalen glider panelet ned og fader over 0,4 s. Visibility skifter først til sidst ved lukning,
+                          så man kan nå at flytte musen ned i panelet. -z-10 lægger det under nav-bjælkerne, mens det glider. */}
+                      {item.children && item.children.length > 0 && (
+                        <div className="invisible absolute inset-x-0 top-0 -z-10 overflow-x-clip bg-[rgba(18,23,41,0.9)] py-10 font-sans opacity-0 transition-[top,opacity,visibility] duration-[400ms] group-hover:visible group-hover:top-full group-hover:opacity-100">
+                          <div className="site-container">
+                            <p className="mb-[10px] text-[19px] leading-[29px] font-medium text-[#96a1b7]">{item.link?.label}</p>
 
-                          <div className="grid grid-cols-5 gap-x-[38px] gap-y-[30px]">
-                            {item.children.map((child, childIndex) => {
-                              const article = linkArticle(child.link)
-                              const imageUrl = article ? mediaUrl(article.mainImage, 'thumbnail') : undefined
+                            <div className="grid grid-cols-5 gap-x-[38px] gap-y-[30px]">
+                              {item.children.map((child, childIndex) => {
+                                const article = linkArticle(child.link)
+                                const imageUrl = article ? mediaUrl(article.mainImage, 'thumbnail') : undefined
 
-                              return (
-                                <Link
-                                  key={child.id ?? childIndex}
-                                  href={resolveLinkHref(child.link)}
-                                  className="flex items-center gap-3 text-[15px] text-[#edf0f3] hover:text-white"
-                                >
-                                  {imageUrl && (
-                                    <img
-                                      src={imageUrl}
-                                      alt={article ? mediaAlt(article.mainImage) : ''}
-                                      className="h-[43px] w-16 shrink-0 rounded-lg object-cover"
-                                    />
-                                  )}
-                                  {child.link?.label}
-                                </Link>
-                              )
-                            })}
+                                return (
+                                  <Link
+                                    key={child.id ?? childIndex}
+                                    href={resolveLinkHref(child.link)}
+                                    className="flex items-center gap-3 text-[15px] text-[#edf0f3] hover:text-white"
+                                  >
+                                    {imageUrl && (
+                                      <img
+                                        src={imageUrl}
+                                        alt={article ? mediaAlt(article.mainImage) : ''}
+                                        className="h-[43px] w-16 shrink-0 rounded-lg object-cover"
+                                      />
+                                    )}
+                                    {child.link?.label}
+                                  </Link>
+                                )
+                              })}
 
-                            <Link href={categoryHref} className="button-accent gap-3">
-                              <GridIcon />
-                              Se alle artikler
-                            </Link>
+                              <Link href={categoryHref} className="button-accent gap-3">
+                                <GridIcon />
+                                Se alle artikler
+                              </Link>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
-            </nav>
+                      )}
+                    </div>
+                  )
+                })}
+              </nav>
 
-            {header.cta?.link?.label && (
-              <Link href={resolveLinkHref(header.cta.link)} className="button max-[991px]:hidden">
-                {header.cta.link.label}
-              </Link>
-            )}
+              {header.cta?.link?.label && (
+                <Link href={resolveLinkHref(header.cta.link)} className="button max-[991px]:hidden">
+                  {header.cta.link.label}
+                </Link>
+              )}
 
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   )
 }
