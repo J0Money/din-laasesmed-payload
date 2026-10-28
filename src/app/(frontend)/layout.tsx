@@ -3,6 +3,7 @@ import type React from 'react'
 
 import { AlertBar } from '@/components/layout/AlertBar'
 import { ScrollAnimations } from '@/components/ScrollAnimations'
+import { ScrollToTop } from '@/components/ScrollToTop'
 import { SchemaMarkup } from '@/components/SchemaMarkup'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Footer />
         <ScrollAnimations />
+        <ScrollToTop />
       </body>
     </html>
   )
