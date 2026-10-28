@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import { ContactFormSidebar } from '@/components/ContactFormSidebar'
 import type { Form } from '@/payload-types'
 
@@ -34,10 +36,12 @@ export function ArticleWithForm({
       <div className={`site-container relative z-10 lg:flex lg:items-start lg:justify-center lg:gap-12 ${formFirst ? 'max-[767px]:flex max-[767px]:flex-col' : ''}`}>
         <article className="flex min-w-0 flex-col gap-8 lg:shrink-0 lg:basis-[min(896px,calc(100%-297px))]">
           {imageUrl && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={imageUrl}
               alt={imageAlt}
+              width={896}
+              height={504}
+              sizes="(min-width: 992px) 896px, 100vw"
               data-animate="fade-up"
               className="aspect-video w-full rounded-2xl object-cover shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
             />

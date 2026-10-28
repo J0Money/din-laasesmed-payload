@@ -1,10 +1,11 @@
 'use client'
 
+import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 
 // Som originalens statistik-bånd: fra 992px har billedet sit eget billedformat (højst 140% af båndets højde) og glider
 // fra -40% til 0 mens båndet scroller forbi (kun fra 1024px). Under 992px fylder billedet bare båndet.
-export function ParallaxImage({ src, alt }: { src: string; alt: string }) {
+export function ParallaxImage({ src, alt, width = 1920, height = 1080 }: { src: string; alt: string; width?: number; height?: number }) {
   const ref = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
@@ -37,12 +38,14 @@ export function ParallaxImage({ src, alt }: { src: string; alt: string }) {
     }
   }, [])
 
-  // eslint-disable-next-line @next/next/no-img-element
   return (
-    <img
+    <Image
       ref={ref}
       src={src}
       alt={alt}
+      width={width}
+      height={height}
+      sizes="100vw"
       className="absolute inset-0 h-auto max-h-[140%] w-full object-cover will-change-transform max-[991px]:h-full max-[991px]:max-h-full"
     />
   )

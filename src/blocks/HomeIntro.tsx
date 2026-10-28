@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import type { Block } from 'payload'
 
@@ -87,8 +88,13 @@ export function HomeIntro({ features, heading, image, link, tagline }: HomeIntro
 
         {imageUrl && (
           <div className="relative aspect-square overflow-hidden rounded-2xl">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={imageUrl} alt={mediaAlt(image)} className="absolute inset-0 h-full w-full object-cover" />
+            <Image
+              src={imageUrl}
+              alt={mediaAlt(image)}
+              fill
+              sizes="(min-width: 992px) 33vw, 100vw"
+              className="object-cover"
+            />
             {link?.label && (
               <div className="absolute inset-x-8 bottom-6">
                 <Link href={resolveLinkHref(link)} className={`button-accent w-full ${HOME_BUTTON} py-[18.4px]`}>

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import type { Block } from 'payload'
 
 import { RichText } from '@/components/RichText'
@@ -38,10 +39,12 @@ export function ThanksMessage({ content, heading, image }: ThanksMessageBlockPro
       <div className="site-container flex justify-center">
         <div data-animate="fade-up" className="flex w-full max-w-[896px] flex-col items-start gap-12">
           {image && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={mediaUrl(image)}
+            <Image
+              src={mediaUrl(image) ?? ''}
               alt={mediaAlt(image)}
+              width={896}
+              height={320}
+              sizes="(min-width: 992px) 896px, 100vw"
               className="h-[320px] w-full rounded-2xl object-cover"
             />
           )}

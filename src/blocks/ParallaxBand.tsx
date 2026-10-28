@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import type { Block } from 'payload'
 
 import { ParallaxImage } from '@/components/home/ParallaxImage'
-import { mediaAlt, mediaUrl } from '@/lib/media'
+import { mediaAlt, mediaDimensions, mediaUrl } from '@/lib/media'
 import type { ParallaxBandBlock as ParallaxBandBlockProps } from '@/payload-types'
 
 import { contentWithSpacingTabs } from './fields/layout'
@@ -42,7 +42,7 @@ export const parallaxBandBlock: Block = {
 export function ParallaxBand({ image, leftText, rightText }: ParallaxBandBlockProps) {
   return (
     <section className="relative flex items-center justify-center overflow-hidden py-[clamp(64px,calc(64px+48*(100vw-320px)/1120),112px)]">
-      <ParallaxImage src={mediaUrl(image) ?? ''} alt={mediaAlt(image)} />
+      <ParallaxImage src={mediaUrl(image) ?? ''} alt={mediaAlt(image)} {...mediaDimensions(image)} />
       <div aria-hidden className="absolute inset-0 z-[2] bg-ink-900 opacity-80" />
       <div className="site-container relative z-[3] flex items-center justify-center gap-[clamp(28px,calc(28px+4*(100vw-320px)/1120),32px)]">
         {[leftText, rightText].map((text, index) => (

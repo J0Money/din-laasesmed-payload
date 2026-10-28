@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import type { Block } from 'payload'
 
@@ -100,8 +101,14 @@ export function HomeFocusCards({ cards }: HomeFocusCardsBlockProps) {
                   </div>
                 </div>
                 {imageUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={imageUrl} alt="" className="h-(--fluid-dark-img) w-full rounded-b-2xl object-cover min-[992px]:h-auto min-[992px]:min-h-0 min-[992px]:flex-1" />
+                  <Image
+                    src={imageUrl}
+                    alt=""
+                    width={800}
+                    height={900}
+                    sizes="(min-width: 992px) 33vw, 100vw"
+                    className="aspect-auto h-(--fluid-dark-img) w-full rounded-b-2xl object-cover min-[992px]:h-auto min-[992px]:min-h-0 min-[992px]:flex-1"
+                  />
                 )}
               </Link>
             )
@@ -111,8 +118,13 @@ export function HomeFocusCards({ cards }: HomeFocusCardsBlockProps) {
           return (
             <Link key={card.id} href={href} data-animate="fade-up" className="group relative block aspect-[2/1] overflow-hidden rounded-2xl px-10 pt-10 min-[992px]:aspect-[8/9]">
               {imageUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={imageUrl} alt={mediaAlt(card.image) || card.link?.label || ''} className="absolute inset-0 h-full w-full object-cover" />
+                <Image
+                  src={imageUrl}
+                  alt={mediaAlt(card.image) || card.link?.label || ''}
+                  fill
+                  sizes="(min-width: 992px) 33vw, 100vw"
+                  className="object-cover"
+                />
               )}
               <span className="absolute inset-0 z-[1] bg-[rgba(34,41,59,0.25)]" />
               <span className="relative z-10 inline-flex items-center gap-3 rounded-lg bg-background px-6 py-[13.6px] max-[767px]:pl-4 text-brand-500 shadow-[0_2px_8px_rgba(0,0,0,0.2)] transition-colors duration-200 group-hover:bg-ink-900 group-hover:text-white">

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import type { Block } from 'payload'
 
 import { PinIcon } from '@/components/home/HomeIcons'
@@ -75,18 +76,25 @@ export function HomeCustomers({ heading, items, tagline }: HomeCustomersBlockPro
                     className="flex aspect-[2/1] items-center justify-center"
                     style={{ backgroundColor: customer.bgColor || '#ffffff' }}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={url}
                       alt={mediaAlt(customer.image)}
-                      className="w-full object-contain"
+                      width={400}
+                      height={200}
+                      sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="aspect-auto w-full object-contain"
                       style={{ height: customer.logoHeight ?? 96 }}
                     />
                   </div>
                 ) : (
                   <div className="relative aspect-square">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={url} alt={mediaAlt(customer.image)} className="absolute inset-0 h-full w-full object-cover" />
+                    <Image
+                      src={url}
+                      alt={mediaAlt(customer.image)}
+                      fill
+                      sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="object-cover"
+                    />
                     {customer.label && (
                       <span className="absolute bottom-8 left-8 flex items-center gap-[9.6px] rounded-lg bg-[rgba(34,41,59,0.25)] px-4 py-3 text-[#edf0f3] backdrop-blur-[5px]">
                         <PinIcon />

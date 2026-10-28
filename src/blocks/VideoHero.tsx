@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import type { Block } from 'payload'
 
 import { mediaAlt, mediaUrl } from '@/lib/media'
@@ -39,12 +40,16 @@ export function VideoHero({ poster, videoMp4, videoWebm }: VideoHeroBlockProps) 
 
   return (
     <div className="relative aspect-[2.388/1] overflow-hidden min-[767px]:aspect-[3.5/1] bg-surface-muted">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={mediaUrl(poster)}
-        alt={mediaAlt(poster)}
-        className="absolute inset-0 h-full w-full object-cover"
-      />
+      {mediaUrl(poster) && (
+        <Image
+          src={mediaUrl(poster)!}
+          alt={mediaAlt(poster)}
+          fill
+          preload
+          sizes="100vw"
+          className="object-cover"
+        />
+      )}
       {(webm || mp4) && (
         <video autoPlay loop muted playsInline className="absolute inset-0 h-full w-full object-cover">
           {webm && <source src={webm} type="video/webm" />}

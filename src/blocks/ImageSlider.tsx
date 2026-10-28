@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import type { Block } from 'payload'
 
 import { Slider } from '@/components/Slider'
@@ -48,8 +49,15 @@ export function ImageSlider({ images, title }: ImageSliderBlockProps) {
               className="w-[calc((100%-1.2px)/1.2)] shrink-0 overflow-hidden rounded-2xl border border-[#ced5e1] bg-surface-form transition-[border-color,box-shadow] duration-200 hover:border-brand-500 hover:shadow-[0_2px_12px_rgba(0,0,0,0.08)] min-[996px]:w-[calc((100%-24px)/2)]"
             >
               <a href={mediaUrl(image)} className="block aspect-[3/2]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={mediaUrl(image)} alt={mediaAlt(image)} loading="lazy" className="h-full w-full object-cover" />
+                {mediaUrl(image) && (
+                  <Image
+                    src={mediaUrl(image)!}
+                    alt={mediaAlt(image)}
+                    fill
+                    sizes="(min-width: 996px) 50vw, 84vw"
+                    className="object-cover"
+                  />
+                )}
               </a>
             </li>
           ))}
