@@ -15,6 +15,17 @@ export const homeHeroBlock: Block = {
   fields: [
     { name: 'videoWebm', type: 'upload', relationTo: 'videos', label: 'Video (WebM)' },
     { name: 'videoMp4', type: 'upload', relationTo: 'videos', label: 'Video (MP4)' },
+    {
+      name: 'overlay',
+      type: 'number',
+      label: 'Mørkelægning af videoen (%)',
+      defaultValue: 15,
+      min: 0,
+      max: 80,
+      admin: {
+        description: 'Et mørkt lag mellem video og tekst, så teksten bliver lettere at læse. 15 er som på originalen, 0 er ingen. Prøv 30 til 40, hvis teksten er utydelig.',
+      },
+    },
     { name: 'leftText', type: 'text', required: true, label: 'Tekst til venstre', defaultValue: 'Din Låsesmed' },
     { name: 'rightText', type: 'text', required: true, label: 'Tekst til højre', defaultValue: 'Din tryghed' },
     {
@@ -36,7 +47,7 @@ export const homeHeroBlock: Block = {
   ],
 }
 
-export function HomeHero({ buttons, leftText, rightText, videoMp4, videoWebm }: HomeHeroBlockProps) {
+export function HomeHero({ buttons, leftText, overlay, rightText, videoMp4, videoWebm }: HomeHeroBlockProps) {
   const webm = typeof videoWebm === 'object' ? videoWebm?.url : undefined
   const mp4 = typeof videoMp4 === 'object' ? videoMp4?.url : undefined
 
@@ -49,6 +60,9 @@ export function HomeHero({ buttons, leftText, rightText, videoMp4, videoWebm }: 
           {mp4 && <source src={mp4} type="video/mp4" />}
         </video>
       )}
+
+      {/* Originalens hero_overlay: ink-900 over videoen (15% som standard), under teksten. */}
+      <div aria-hidden className="absolute inset-0 z-[1] bg-ink-900" style={{ opacity: (overlay ?? 15) / 100 }} />
 
       <div data-animate="fade" data-delay="800" className="site-container relative z-10 flex h-full flex-col items-center justify-center gap-6 text-center">
         <h1 className="mt-5 mb-[10px] flex flex-wrap items-center justify-center gap-x-(--fluid-gap) gap-y-2 font-heading text-(length:--fluid-hero-h1) leading-none font-light text-[#edf0f3]">
