@@ -7,6 +7,9 @@ import { linkField } from '@/fields/link'
 import { resolveLinkHref } from '@/lib/link'
 import type { ContactCardsBlock as ContactCardsBlockProps } from '@/payload-types'
 
+// Forsinkelser pr. kort (ms), som på originalen.
+const CARD_DELAYS = [100, 0, 200, 300]
+
 const ICONS = {
   phone: ClockIcon,
   shop: ShopIcon,
@@ -74,12 +77,14 @@ export function ContactCards({ cards, mobileForm }: ContactCardsBlockProps) {
         </div>
       )}
       <ul className="site-container grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 min-[992px]:grid-cols-4">
-        {(cards ?? []).map((card) => {
+        {(cards ?? []).map((card, index) => {
           const Icon = ICONS[card.icon ?? 'phone']
           const newTab = card.link?.newTab
           return (
             <li
               key={card.id}
+              data-animate="fade-up"
+              data-delay={CARD_DELAYS[index] ?? 0}
               className="flex flex-col justify-between gap-5 rounded-2xl border border-[#e4e8ef] bg-white px-7 py-5 shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
             >
               <div className="flex items-center gap-5">

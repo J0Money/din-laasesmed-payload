@@ -73,13 +73,15 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </div>
 
             <nav className="flex gap-2" aria-label="Kategorier">
-              {TAB_SLUGS.map((tabSlug) => {
+              {TAB_SLUGS.map((tabSlug, index) => {
                 const Icon = NAV_ICON_BY_CATEGORY_SLUG[tabSlug]
                 const isCurrent = tabSlug === category.slug
                 return (
                   <Link
                     key={tabSlug}
                     href={ROUTES.category(tabSlug)}
+                    data-animate="fade-up"
+                    data-delay={index * 100}
                     aria-current={isCurrent ? 'page' : undefined}
                     className={`flex h-12 w-12 items-center justify-center rounded-lg transition-colors duration-200 ${
                       isCurrent
@@ -94,7 +96,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </nav>
           </div>
 
-          <div className="flex w-full max-w-[768px] flex-col gap-8">
+          <div data-animate="fade-left" className="flex w-full max-w-[768px] flex-col gap-8">
             <h2 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-h2) leading-[1.3] font-light text-ink-800">
               {category.mainHeading}
             </h2>
@@ -111,7 +113,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
               const imageUrl = mediaUrl(article.mainImage, 'ratio32')
               const excerpt = firstParagraphText(article.mainText)
               return (
-                <li key={article.id} className="group relative flex flex-col">
+                <li key={article.id} data-animate="fade-up" className="group relative flex flex-col">
                   <div className="relative aspect-[3/2] overflow-hidden rounded-lg bg-surface-muted">
                     {imageUrl && (
                       // eslint-disable-next-line @next/next/no-img-element

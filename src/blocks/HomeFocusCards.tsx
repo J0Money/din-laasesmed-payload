@@ -82,6 +82,7 @@ export function HomeFocusCards({ cards }: HomeFocusCardsBlockProps) {
               <Link
                 key={card.id}
                 href={href}
+                data-animate="fade-up"
                 className="group flex flex-col items-start justify-between rounded-2xl bg-ink-900 text-[#ced5e1] min-[992px]:aspect-[8/9] min-[992px]:gap-10 min-[992px]:pt-16"
               >
                 <div className="flex w-full shrink-0 flex-col gap-(--fluid-gap) px-(--fluid-card-pad)">
@@ -108,7 +109,7 @@ export function HomeFocusCards({ cards }: HomeFocusCardsBlockProps) {
 
           const Icon = card.icon === 'signal' ? SignalIcon : LockIcon
           return (
-            <Link key={card.id} href={href} className="group relative block aspect-[2/1] overflow-hidden rounded-2xl px-10 pt-10 min-[992px]:aspect-[8/9]">
+            <Link key={card.id} href={href} data-animate="fade-up" className="group relative block aspect-[2/1] overflow-hidden rounded-2xl px-10 pt-10 min-[992px]:aspect-[8/9]">
               {imageUrl && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={imageUrl} alt={mediaAlt(card.image) || card.link?.label || ''} className="absolute inset-0 h-full w-full object-cover" />

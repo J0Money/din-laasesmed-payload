@@ -20,7 +20,7 @@ export function TestimonialSlider({ testimonials }: { testimonials: Testimonial[
   }, [active, testimonials.length])
 
   return (
-    <div className="relative w-[800px] shrink-0 max-[991px]:pb-(--fluid-gap-lg)">
+    <div data-animate="fade-up" className="relative w-[800px] shrink-0 max-[991px]:pb-(--fluid-gap-lg)">
       {/* Alle slides ligger i samme grid-celle, så højden altid er den højeste slides. */}
       <div className="grid">
         {testimonials.map((testimonial, index) => (

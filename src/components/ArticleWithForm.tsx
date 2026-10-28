@@ -38,10 +38,11 @@ export function ArticleWithForm({
             <img
               src={imageUrl}
               alt={imageAlt}
+              data-animate="fade-up"
               className="aspect-video w-full rounded-2xl object-cover shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
             />
           )}
-          <div className="flex flex-col items-start gap-12">
+          <div data-animate="fade-up" className="flex flex-col items-start gap-12">
             <h1 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-h2) leading-[1.3] font-light text-ink-800">
               {heading}
             </h1>
@@ -49,7 +50,7 @@ export function ArticleWithForm({
           </div>
         </article>
 
-        <aside className={`${formFirst ? 'max-[767px]:order-first max-[767px]:mt-0 max-[767px]:mb-1' : ''} mt-6 lg:sticky lg:top-[97px] lg:mt-0 lg:max-w-[400px] lg:flex-1`}>
+        <aside data-animate="fade-up" className={`${formFirst ? 'max-[767px]:order-first max-[767px]:mt-0 max-[767px]:mb-1' : ''} mt-6 lg:sticky lg:top-[97px] lg:mt-0 lg:max-w-[400px] lg:flex-1`}>
           <ContactFormSidebar form={form} />
         </aside>
       </div>

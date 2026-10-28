@@ -67,7 +67,7 @@ export async function People({ groups }: PeopleBlockProps) {
           const members = employees.docs.filter((employee) => employee.type === group.group)
           if (!members.length) return null
           return (
-            <div key={group.id} className="flex flex-col gap-8">
+            <div key={group.id} data-animate="fade-up" className="flex flex-col gap-8">
               <h3 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-article-name) leading-[1.5] font-light text-ink-800">
                 {group.heading}
               </h3>

@@ -28,7 +28,7 @@ export async function ReadAlso({ articleId, category }: { articleId: string; cat
   return (
     <section>
       <div className="site-container flex flex-col gap-8 py-(--fluid-section) min-[992px]:flex-row min-[992px]:justify-between min-[992px]:gap-12">
-        <div className="shrink-0">
+        <div data-animate="fade-up" className="shrink-0">
           <Link
             href={ROUTES.category(category.slug)}
             className="flex items-center gap-3 text-base leading-[21px] font-medium text-brand-500"
@@ -59,7 +59,7 @@ export function ArticlePreviewGrid({ articles, className = '' }: { articles: Art
       {articles.map((article) => {
         const thumb = mediaUrl(article.mainImage, 'thumbnail')
         return (
-          <li key={article.id}>
+          <li key={article.id} data-animate="fade-left">
             <Link href={ROUTES.article(article.slug)} className="group flex items-center gap-3">
               {thumb && (
                 <img

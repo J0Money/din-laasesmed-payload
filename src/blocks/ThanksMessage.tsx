@@ -36,7 +36,7 @@ export function ThanksMessage({ content, heading, image }: ThanksMessageBlockPro
   return (
     <section className="bg-background py-(--fluid-section)">
       <div className="site-container flex justify-center">
-        <div className="flex w-full max-w-[896px] flex-col items-start gap-12">
+        <div data-animate="fade-up" className="flex w-full max-w-[896px] flex-col items-start gap-12">
           {image && (
             // eslint-disable-next-line @next/next/no-img-element
             <img

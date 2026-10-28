@@ -58,7 +58,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     <main>
       <section className="relative bg-background py-(--fluid-section)">
         {/* Værdier fra originalens CSS: bånd 4:1 (under 480px 47px nede), billede opacity .15 + saturate(200%) blur(14px). */}
-        <div aria-hidden className="absolute inset-x-0 top-0 aspect-[4/1] overflow-hidden bg-surface-muted max-[479px]:top-[47px]">
+        <div aria-hidden data-animate="fade" className="absolute inset-x-0 top-0 aspect-[4/1] overflow-hidden bg-surface-muted max-[479px]:top-[47px]">
           {imageUrl && (
             <img
               src={imageUrl}
@@ -92,10 +92,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 height={height}
                 loading="eager"
                 sizes={SIZES.hero}
+                data-animate="fade-up"
                 className="mt-[42px] aspect-video w-full rounded-2xl object-cover shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
               />
             )}
   
+            <div data-animate="fade-up">
             <h1 className="text-trim mt-[52px] mb-[10px] font-heading text-(length:--fluid-h2) leading-[1.3] font-light text-ink-800">
               {article.mainHeading}
             </h1>
@@ -108,9 +110,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             </div>
   
             <RichText data={article.mainText} className="mt-12 [&>:first-child]:mt-0 [&>:last-child]:mb-0" />
+            </div>
           </article>
   
-          <aside className="mt-6 lg:sticky lg:top-[97px] lg:mt-0 lg:max-w-[400px] lg:flex-1">
+          <aside data-animate="fade-up" className="mt-6 lg:sticky lg:top-[97px] lg:mt-0 lg:max-w-[400px] lg:flex-1">
             <ContactFormSidebar />
           </aside>
         </div>

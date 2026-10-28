@@ -53,7 +53,7 @@ export function Slider({
   const move = (direction: 1 | -1) => setOffset(Math.min(Math.max(clamped + direction * step, 0), maxOffset))
 
   return (
-    <>
+    <div data-animate="fade">
       <div className="flex items-start justify-between gap-12 pb-8">
         <h2 className="text-trim mt-5 mb-[10px] font-heading text-(length:--fluid-article-name) leading-[1.5] font-light text-ink-800">{title}</h2>
         <div className="flex items-center gap-6">
@@ -87,6 +87,6 @@ export function Slider({
           {children}
         </ul>
       </div>
-    </>
+    </div>
   )
 }

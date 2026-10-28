@@ -50,7 +50,7 @@ export function HomeHero({ buttons, leftText, rightText, videoMp4, videoWebm }: 
         </video>
       )}
 
-      <div className="site-container relative z-10 flex h-full flex-col items-center justify-center gap-6 text-center">
+      <div data-animate="fade" data-delay="800" className="site-container relative z-10 flex h-full flex-col items-center justify-center gap-6 text-center">
         <h1 className="mt-5 mb-[10px] flex flex-wrap items-center justify-center gap-x-(--fluid-gap) gap-y-2 font-heading text-(length:--fluid-hero-h1) leading-none font-light text-[#edf0f3]">
           <span className="text-trim">{leftText}</span>
           <span className="hidden h-3 w-3 shrink-0 rounded-full bg-[#edf0f3] min-[768px]:block" />

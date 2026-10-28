@@ -49,6 +49,7 @@ export async function BrandGrid() {
           return (
             <li
               key={brand.id}
+              data-animate="fade-up"
               className="relative flex aspect-[2/1] min-h-0 items-center justify-center rounded-2xl border border-[#e4e8ef] bg-white p-8 shadow-[0_2px_8px_rgba(0,0,0,0.05)] transition-colors duration-200 hover:border-brand-500"
             >
               {logoUrl && (

@@ -72,6 +72,38 @@
 }
 
 /*
+ * Scroll-animationer (se ScrollAnimations.tsx): elementer med data-animate er skjulte, indtil de animeres ind. Uden JavaScript vises de som normalt.
+ * Fallback: skulle scriptet ikke køre, vises de efter 4 sekunder, så indhold aldrig bliver væk.
+ */
+@media (scripting: enabled) {
+  [data-animate]:not([data-revealed]) {
+    opacity: 0;
+  }
+  [data-animate='fade-up']:not([data-revealed]) {
+    transform: translateY(20px);
+  }
+  [data-animate='fade-down']:not([data-revealed]) {
+    transform: translateY(-20px);
+  }
+  [data-animate='fade-left']:not([data-revealed]) {
+    transform: translateX(20px);
+  }
+  [data-animate='fade-right']:not([data-revealed]) {
+    transform: translateX(-20px);
+  }
+  [data-animate]:not([data-animated]) {
+    animation: animate-fallback 0.3s ease 4s forwards;
+  }
+}
+
+@keyframes animate-fallback {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
  * Originalen (Webflow/Lumos) trimmer den tomme luft over og under tekstlinjer.
  * Udledt af målinger: trim pr. side = 0.5lh - 0.4em (passer på h1, h2, p og formular-overskrift).
  */
@@ -172,5 +204,33 @@
 
   .rich-text-video iframe {
     @apply h-full w-full border-0;
+  }
+}
+
+/* Sidetransition (se template.tsx): hurtig udtoning af den gamle side og indtoning af den nye. */
+::view-transition-old(.page-fade) {
+  animation: 150ms ease-in both page-fade-out;
+}
+::view-transition-new(.page-fade) {
+  animation: 250ms ease-out 100ms both page-fade-in;
+}
+
+@keyframes page-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation: none !important;
   }
 }

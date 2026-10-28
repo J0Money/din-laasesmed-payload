@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import type React from 'react'
 
 import { AlertBar } from '@/components/layout/AlertBar'
+import { ScrollAnimations } from '@/components/ScrollAnimations'
 import { SchemaMarkup } from '@/components/SchemaMarkup'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         {children}
         <Footer />
+        <ScrollAnimations />
       </body>
     </html>
   )

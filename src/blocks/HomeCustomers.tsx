@@ -59,7 +59,9 @@ export function HomeCustomers({ heading, items, tagline }: HomeCustomersBlockPro
   return (
     <section className="bg-surface-muted py-(--fluid-section)">
       <div className="site-container flex flex-col gap-12">
-        <SectionHeadline tagline={tagline} title={heading} center />
+        <div data-animate="fade-up">
+          <SectionHeadline tagline={tagline} title={heading} center />
+        </div>
 
         <div className="columns-1 gap-8 min-[768px]:columns-2 min-[992px]:columns-3">
           {items.map((customer) => {
@@ -67,7 +69,7 @@ export function HomeCustomers({ heading, items, tagline }: HomeCustomersBlockPro
             if (!url) return null
 
             return (
-              <div key={customer.id} className="mb-8 break-inside-avoid overflow-hidden rounded-2xl">
+              <div key={customer.id} data-animate="fade-up" className="mb-8 break-inside-avoid overflow-hidden rounded-2xl">
                 {customer.type === 'logo' ? (
                   <div
                     className="flex aspect-[2/1] items-center justify-center"

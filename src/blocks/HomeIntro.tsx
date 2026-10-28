@@ -72,7 +72,7 @@ export function HomeIntro({ features, heading, image, link, tagline }: HomeIntro
             {(features ?? []).map((feature) => {
               const Icon = ICONS[feature.icon ?? 'lock']
               return (
-                <div key={feature.id} className="flex gap-5">
+                <div key={feature.id} data-animate="fade-up" className="flex gap-5">
                   <span className="flex size-(--fluid-icon) shrink-0 items-center justify-center rounded-lg bg-brand-500 text-[#edf0f3]">
                     <Icon className="h-[19px] w-4" />
                   </span>
