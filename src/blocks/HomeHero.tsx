@@ -18,12 +18,12 @@ export const homeHeroBlock: Block = {
     {
       name: 'textBox',
       type: 'number',
-      label: 'Mørk boks bag teksten (%)',
-      defaultValue: 40,
+      label: 'Mørk tone bag teksten (%)',
+      defaultValue: 60,
       min: 0,
       max: 90,
       admin: {
-        description: 'En mørk, gennemsigtig boks mellem videoen og teksten, så teksten er lettere at læse. Resten af videoen røres ikke. 0 fjerner boksen.',
+        description: 'En blød, mørk tone mellem videoen og teksten, så teksten er lettere at læse. Den toner ud mod kanterne og rører ikke resten af videoen. 0 fjerner den.',
       },
     },
     { name: 'leftText', type: 'text', required: true, label: 'Tekst til venstre', defaultValue: 'Din Låsesmed' },
@@ -62,11 +62,15 @@ export function HomeHero({ buttons, leftText, rightText, textBox, videoMp4, vide
       )}
 
       <div data-animate="fade" data-delay="800" className="site-container relative z-10 flex h-full flex-col items-center justify-center gap-6 text-center">
-        {/* Boksen ligger mellem video og tekst og følger tekstens størrelse. */}
-        <div
-          className="flex flex-col items-center gap-6 rounded-2xl px-[clamp(20px,4vw,56px)] py-[clamp(12px,2vw,32px)]"
-          style={{ backgroundColor: `rgba(18, 23, 41, ${(textBox ?? 40) / 100})` }}
-        >
+        {/* Blød, mørk tone mellem video og tekst: en oval, der er mørkest bag teksten og toner ud mod kanterne, uden hård kant. */}
+        <div className="relative flex flex-col items-center gap-6">
+          <div
+            aria-hidden
+            className="absolute -inset-x-[22%] -inset-y-[55%] -z-10"
+            style={{
+              background: `radial-gradient(ellipse closest-side, rgba(18, 23, 41, ${(textBox ?? 60) / 100}) 0%, rgba(18, 23, 41, ${((textBox ?? 60) / 100) * 0.6}) 45%, rgba(18, 23, 41, 0) 100%)`,
+            }}
+          />
           <h1 className="mt-5 mb-[10px] flex flex-wrap items-center justify-center gap-x-(--fluid-gap) gap-y-2 font-heading text-(length:--fluid-hero-h1) leading-none font-light text-[#edf0f3]">
             <span className="text-trim">{leftText}</span>
             <span className="hidden h-3 w-3 shrink-0 rounded-full bg-[#edf0f3] min-[768px]:block" />

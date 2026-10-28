@@ -218,7 +218,7 @@ export interface HomeHeroBlock {
   videoWebm?: (string | null) | Video;
   videoMp4?: (string | null) | Video;
   /**
-   * En mørk, gennemsigtig boks mellem videoen og teksten, så teksten er lettere at læse. Resten af videoen røres ikke. 0 fjerner boksen.
+   * En blød, mørk tone mellem videoen og teksten, så teksten er lettere at læse. Den toner ud mod kanterne og rører ikke resten af videoen. 0 fjerner den.
    */
   textBox?: number | null;
   leftText: string;
