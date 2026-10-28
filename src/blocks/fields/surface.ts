@@ -9,11 +9,11 @@ export function surfaceField(): Field {
   return {
     name: 'mutedBackground',
     type: 'checkbox',
-    label: 'Dæmpet baggrund',
+    label: 'Muted background',
     defaultValue: false,
     admin: {
       description:
-        'Giver sektionen en dæmpet grå baggrund i stedet for standardbaggrunden — brug til at skabe visuel adskillelse mellem sektioner.',
+        'Gives the section a muted gray background instead of the default one. Use it to create visual separation between sections.',
     },
   }
 }

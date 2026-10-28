@@ -6,10 +6,10 @@ import type { CollectionConfig } from 'payload'
  */
 export const Jobs: CollectionConfig = {
   slug: 'jobs',
-  labels: { singular: 'Stilling', plural: 'Ledige stillinger' },
+  labels: { singular: 'Job', plural: 'Open positions' },
   admin: {
     useAsTitle: 'title',
-    group: 'Indhold',
+    group: 'Content',
     defaultColumns: ['title', 'location', '_status', 'publishedAt'],
   },
   versions: {
@@ -20,37 +20,37 @@ export const Jobs: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
-      label: 'Titel',
+      label: 'Title',
     },
     {
       name: 'location',
       type: 'text',
-      label: 'Arbejdssted',
-      admin: { description: 'F.eks.: Aarhus eller Aalborg.' },
+      label: 'Location',
+      admin: { description: 'E.g.: Aarhus or Aalborg.' },
     },
     {
       name: 'summary',
       type: 'textarea',
-      label: 'Kort beskrivelse',
+      label: 'Short description',
     },
     {
       name: 'description',
       type: 'richText',
-      label: 'Stillingsbeskrivelse',
+      label: 'Job description',
     },
     {
       name: 'applyEmail',
       type: 'email',
-      label: 'Send ansøgning til',
-      admin: { description: 'Lad stå tom for at bruge virksomhedens e-mail.' },
+      label: 'Send applications to',
+      admin: { description: 'Leave empty to use the company email.' },
     },
     {
       name: 'publishedAt',
       type: 'date',
-      label: 'Opslået',
+      label: 'Posted',
       admin: {
         position: 'sidebar',
-        description: 'Nyeste stilling vises først.',
+        description: 'The newest job is shown first.',
         date: { pickerAppearance: 'dayAndTime' },
       },
     },

@@ -3,14 +3,14 @@ import type { GlobalConfig } from 'payload'
 export const SiteSettings: GlobalConfig = {
   slug: 'siteSettings',
   admin: {
-    group: 'Konfiguration',
+    group: 'Configuration',
   },
   fields: [
     {
       type: 'tabs',
       tabs: [
         {
-          label: 'Virksomhed',
+          label: 'Company',
           fields: [
             {
               name: 'logo',
@@ -22,30 +22,30 @@ export const SiteSettings: GlobalConfig = {
               name: 'certificationLogo',
               type: 'upload',
               relationTo: 'media',
-              label: 'Certificeringslogo',
-              admin: { description: 'Vises i footeren, fx ISO 9001.' },
+              label: 'Certification logo',
+              admin: { description: 'Shown in the footer, e.g. ISO 9001.' },
             },
             {
               name: 'companyName',
               type: 'text',
-              label: 'Virksomhedsnavn',
+              label: 'Company name',
             },
             {
               name: 'cvr',
               type: 'text',
-              label: 'CVR-nummer',
+              label: 'CVR number',
             },
             {
               name: 'address',
               type: 'text',
-              label: 'Adresse',
+              label: 'Address',
             },
             {
               name: 'phone',
               type: 'text',
-              label: 'Telefon',
+              label: 'Phone',
               admin: {
-                description: 'Bruges af footer, kontaktside og schema.org-data.',
+                description: 'Used by the footer, the contact page and schema.org data.',
               },
             },
             {
@@ -56,47 +56,47 @@ export const SiteSettings: GlobalConfig = {
             {
               name: 'openingHours',
               type: 'array',
-              label: 'Åbningstider',
+              label: 'Opening hours',
               fields: [
-                { name: 'label', type: 'text', required: true, label: 'Dage' },
-                { name: 'hours', type: 'text', required: true, label: 'Tidsrum' },
+                { name: 'label', type: 'text', required: true, label: 'Days' },
+                { name: 'hours', type: 'text', required: true, label: 'Hours' },
               ],
             },
           ],
         },
         {
-          label: 'Afdelinger',
+          label: 'Departments',
           fields: [
             {
               name: 'departments',
               type: 'array',
-              label: 'Butikker/afdelinger',
+              label: 'Stores/departments',
               fields: [
-                { name: 'name', type: 'text', required: true, label: 'Navn' },
-                { name: 'address', type: 'text', required: true, label: 'Adresse' },
-                { name: 'phone', type: 'text', required: true, label: 'Telefon' },
+                { name: 'name', type: 'text', required: true, label: 'Name' },
+                { name: 'address', type: 'text', required: true, label: 'Address' },
+                { name: 'phone', type: 'text', required: true, label: 'Phone' },
                 { name: 'email', type: 'email', label: 'E-mail' },
               ],
             },
           ],
         },
         {
-          label: 'Formularer',
+          label: 'Forms',
           fields: [
             {
               name: 'ctaForm',
               type: 'relationship',
               relationTo: 'forms',
-              label: '"Brug for hjælp?"-formular',
+              label: '"Brug for hjælp?" form',
               admin: {
                 description:
-                  'Vises ved siden af artikler, mærker og i blokken "Artikel med formular", medmindre blokken vælger en anden.',
+                  'Shown next to articles and brands and in the "Article with form" block, unless the block picks another form.',
               },
             },
           ],
         },
         {
-          label: 'Sociale medier',
+          label: 'Social media',
           fields: [
             {
               name: 'facebook',
@@ -121,18 +121,18 @@ export const SiteSettings: GlobalConfig = {
             {
               name: 'defaultTitleTag',
               type: 'text',
-              label: 'Standard title tag',
+              label: 'Default title tag',
             },
             {
               name: 'defaultMetaDescription',
               type: 'textarea',
-              label: 'Standard meta description',
+              label: 'Default meta description',
             },
             {
               name: 'ogImage',
               type: 'upload',
               relationTo: 'media',
-              label: 'Standard OG-billede',
+              label: 'Default OG image',
             },
           ],
         },

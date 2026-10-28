@@ -8,7 +8,7 @@ export const navItemFields: Field[] = [
   {
     name: 'children',
     type: 'array',
-    label: 'Undermenupunkter',
+    label: 'Submenu items',
     fields: [linkField],
   },
 ]

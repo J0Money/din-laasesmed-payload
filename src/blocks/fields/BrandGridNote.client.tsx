@@ -4,7 +4,7 @@
 export function BrandGridNote() {
   return (
     <p style={{ margin: 0, opacity: 0.7 }}>
-      Viser automatisk alle udgivne mærker. Ret mærkerne under Indhold, Brands.
+      Automatically shows all published brands. Edit the brands under Content, Brands.
     </p>
   )
 }

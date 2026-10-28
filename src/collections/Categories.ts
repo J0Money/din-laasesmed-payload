@@ -6,7 +6,7 @@ export const Categories: CollectionConfig = {
   slug: 'categories',
   admin: {
     useAsTitle: 'name',
-    group: 'Indhold',
+    group: 'Content',
     defaultColumns: ['name', 'slug', '_status', 'updatedAt'],
   },
   versions: {
@@ -20,7 +20,7 @@ export const Categories: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
-      label: 'Navn',
+      label: 'Name',
     },
     {
       name: 'slug',
@@ -29,19 +29,19 @@ export const Categories: CollectionConfig = {
       unique: true,
       label: 'Slug',
       admin: {
-        description: "Bruges i URL'en: /overview/<slug>",
+        description: 'Used in the URL: /overview/<slug>',
       },
     },
     {
       name: 'mainHeading',
       type: 'text',
       required: true,
-      label: 'Overskrift (H1)',
+      label: 'Heading (H1)',
     },
     {
       name: 'mainText',
       type: 'richText',
-      label: 'Brødtekst',
+      label: 'Body text',
     },
     {
       type: 'tabs',
@@ -62,7 +62,7 @@ export const Categories: CollectionConfig = {
             {
               name: 'sitemapIndexing',
               type: 'checkbox',
-              label: 'Vis i sitemap/søgemaskiner',
+              label: 'Show in sitemap/search engines',
               defaultValue: true,
             },
           ],

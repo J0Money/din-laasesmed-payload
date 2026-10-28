@@ -6,7 +6,7 @@ import type { CollectionConfig } from 'payload'
  */
 export const Videos: CollectionConfig = {
   slug: 'videos',
-  labels: { singular: 'Video', plural: 'Videoer' },
+  labels: { singular: 'Video', plural: 'Videos' },
   admin: {
     group: 'System',
     useAsTitle: 'filename',

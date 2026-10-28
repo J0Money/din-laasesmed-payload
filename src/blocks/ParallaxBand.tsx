@@ -11,26 +11,26 @@ import { contentWithSpacingTabs } from './fields/layout'
 export const parallaxBandBlock: Block = {
   slug: 'parallaxBand',
   interfaceName: 'ParallaxBandBlock',
-  labels: { singular: 'Parallax-bånd', plural: 'Parallax-bånd' },
+  labels: { singular: 'Parallax band', plural: 'Parallax bands' },
   fields: contentWithSpacingTabs('parallaxBand', [
     {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
       required: true,
-      label: 'Baggrundsbillede',
+      label: 'Background image',
     },
     {
       name: 'leftText',
       type: 'text',
       required: true,
-      label: 'Tekst til venstre',
+      label: 'Left text',
     },
     {
       name: 'rightText',
       type: 'text',
       required: true,
-      label: 'Tekst til højre',
+      label: 'Right text',
     },
   ]),
 }

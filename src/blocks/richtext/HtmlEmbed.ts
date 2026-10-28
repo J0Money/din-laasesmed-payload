@@ -7,7 +7,7 @@ import type { Block } from 'payload'
 export const htmlEmbedBlock: Block = {
   slug: 'htmlEmbed',
   interfaceName: 'HtmlEmbedBlock',
-  labels: { singular: 'HTML-kode', plural: 'HTML-kode' },
+  labels: { singular: 'HTML code', plural: 'HTML code' },
   fields: [
     {
       name: 'html',
@@ -16,7 +16,7 @@ export const htmlEmbedBlock: Block = {
       label: 'HTML',
       admin: {
         rows: 12,
-        description: 'Indsættes uændret på siden, fx en <table> med en <style> foran. Kun til avancerede redaktører.',
+        description: 'Inserted unchanged on the page, e.g. a <table> with a <style> in front. For advanced editors only.',
       },
     },
   ],

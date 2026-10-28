@@ -13,12 +13,12 @@ import { contentWithSpacingTabs } from './fields/layout'
 export const jobListBlock: Block = {
   slug: 'jobList',
   interfaceName: 'JobListBlock',
-  labels: { singular: 'Jobliste', plural: 'Joblister' },
+  labels: { singular: 'Job list', plural: 'Job lists' },
   fields: contentWithSpacingTabs('jobList', [
     {
       name: 'emptyText',
       type: 'text',
-      label: 'Tekst når der ingen stillinger er',
+      label: 'Text when there are no jobs',
       defaultValue: 'Der er ingen ledige stillinger lige nu.',
     },
   ]),

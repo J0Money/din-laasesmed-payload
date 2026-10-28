@@ -175,11 +175,11 @@ export interface Page {
   title: string;
   slug: string;
   /**
-   * Bruges til sidetræ. Ikke i brug endnu.
+   * Used for the page tree. Not in use yet.
    */
   parent?: (string | null) | Page;
   /**
-   * Vælg mellem: Forside-hero, Forside-intro, Kundeudtalelser, Tal-bånd, Fokuskort, Erhvervskunder, Video-bånd, Intro-bånd, Kontaktkort, Artikel med formular, Parallax-bånd, Medarbejdere, Billed-slider, Mærkeoversigt, Jobliste, Formular-side, Tak-besked, Tekst, Tekst med billede.
+   * Choose from: Home page hero, Home page intro, Testimonials, Stats band, Focus cards, Business customers, Video band, Intro band, Contact cards, Article with form, Parallax band, Employees, Image slider, Brand overview, Job list, Form page, Thank-you message, Text, Text with image.
    */
   layout?:
     | (
@@ -218,7 +218,7 @@ export interface HomeHeroBlock {
   videoWebm?: (string | null) | Video;
   videoMp4?: (string | null) | Video;
   /**
-   * En blød, mørk tone mellem videoen og teksten, så teksten er lettere at læse. Den toner ud mod kanterne og rører ikke resten af videoen. 0 fjerner den.
+   * A soft, dark tone between the video and the text, so the text is easier to read. It fades out toward the edges and does not touch the rest of the video. 0 removes it.
    */
   textBox?: number | null;
   leftText: string;
@@ -229,7 +229,7 @@ export interface HomeHeroBlock {
           type?: ('reference' | 'custom') | null;
           label: string;
           /**
-           * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+           * The link follows the document URL automatically. Edit it in the document, not here.
            */
           reference?:
             | ({
@@ -245,13 +245,13 @@ export interface HomeHeroBlock {
                 value: string | Article;
               } | null);
           /**
-           * Fx en ekstern adresse eller et tel:-link.
+           * E.g. an external address or a tel: link.
            */
           url?: string | null;
           newTab?: boolean | null;
         };
         /**
-         * Ellers en blå knap.
+         * Otherwise a blue button.
          */
         accent?: boolean | null;
         id?: string | null;
@@ -287,7 +287,7 @@ export interface Category {
   id: string;
   name: string;
   /**
-   * Bruges i URL'en: /overview/<slug>
+   * Used in the URL: /overview/<slug>
    */
   slug: string;
   mainHeading: string;
@@ -321,11 +321,11 @@ export interface Article {
   id: string;
   name: string;
   /**
-   * Bruges i URL'en: /artikler/<slug>
+   * Used in the URL: /artikler/<slug>
    */
   slug: string;
   /**
-   * Lad stå tom for artikler uden kategori, fx lokationssider som "Låsesmed Aalborg".
+   * Leave empty for articles without a category, e.g. location pages like "Låsesmed Aalborg".
    */
   category?: (string | null) | Category;
   mainImage?: (string | null) | Media;
@@ -346,7 +346,7 @@ export interface Article {
     [k: string]: unknown;
   };
   /**
-   * Styrer rækkefølgen i "Læs også" (nyeste først).
+   * Controls the order in "Læs også" (newest first).
    */
   publishedAt?: string | null;
   brands?: (string | Brand)[] | null;
@@ -364,7 +364,7 @@ export interface Article {
 export interface Media {
   id: string;
   /**
-   * Beskrivelse af billedet, bruges af skærmlæsere og SEO. Må aldrig stå tom.
+   * Description of the image, used by screen readers and SEO. Must never be empty.
    */
   alt: string;
   updatedAt: string;
@@ -421,7 +421,7 @@ export interface Brand {
   id: string;
   name: string;
   /**
-   * Bruges i URL'en: /brands/<slug>
+   * Used in the URL: /brands/<slug>
    */
   slug: string;
   logo?: (string | null) | Media;
@@ -444,7 +444,7 @@ export interface Brand {
     [k: string]: unknown;
   } | null;
   /**
-   * Op til 4 foldbare sektioner nederst på siden (titel, billede, tekst).
+   * Up to 4 accordion sections at the bottom of the page (title, image, text).
    */
   accordion?:
     | {
@@ -490,14 +490,14 @@ export interface HomeIntroBlock {
       }[]
     | null;
   /**
-   * Vises i kvadrat. Brug originalfilen, ikke en beskåret udgave.
+   * Shown as a square. Use the original file, not a cropped version.
    */
   image?: (string | null) | Media;
   link: {
     type?: ('reference' | 'custom') | null;
     label: string;
     /**
-     * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+     * The link follows the document URL automatically. Edit it in the document, not here.
      */
     reference?:
       | ({
@@ -513,17 +513,17 @@ export interface HomeIntroBlock {
           value: string | Article;
         } | null);
     /**
-     * Fx en ekstern adresse eller et tel:-link.
+     * E.g. an external address or a tel: link.
      */
     url?: string | null;
     newTab?: boolean | null;
   };
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -545,11 +545,11 @@ export interface HomeTestimonialsBlock {
       }[]
     | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -586,7 +586,7 @@ export interface HomeFocusCardsBlock {
           type?: ('reference' | 'custom') | null;
           label: string;
           /**
-           * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+           * The link follows the document URL automatically. Edit it in the document, not here.
            */
           reference?:
             | ({
@@ -602,7 +602,7 @@ export interface HomeFocusCardsBlock {
                 value: string | Article;
               } | null);
           /**
-           * Fx en ekstern adresse eller et tel:-link.
+           * E.g. an external address or a tel: link.
            */
           url?: string | null;
           newTab?: boolean | null;
@@ -614,11 +614,11 @@ export interface HomeFocusCardsBlock {
       }[]
     | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -643,11 +643,11 @@ export interface HomeCustomersBlock {
       }[]
     | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -660,12 +660,12 @@ export interface HomeCustomersBlock {
  */
 export interface VideoHeroBlock {
   /**
-   * Vises, mens videoen loader, og hvis den ikke kan afspilles.
+   * Shown while the video loads, and if it cannot be played.
    */
   poster: string | Media;
   videoWebm?: (string | null) | Video;
   /**
-   * Bruges, hvis browseren ikke kan afspille WebM (bl.a. Safari).
+   * Used if the browser cannot play WebM (e.g. Safari).
    */
   videoMp4?: (string | null) | Video;
   id?: string | null;
@@ -678,11 +678,11 @@ export interface VideoHeroBlock {
  */
 export interface OverviewIntroBlock {
   /**
-   * Lille blå tekst øverst til venstre, fx "Vi forhandler".
+   * Small blue text at the top left, e.g. "Vi forhandler".
    */
   tagline: string;
   /**
-   * Stor tekst til venstre, fx "Se alle mærker".
+   * Large text on the left, e.g. "Se alle mærker".
    */
   title: string;
   heading: string;
@@ -702,11 +702,11 @@ export interface OverviewIntroBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -719,7 +719,7 @@ export interface OverviewIntroBlock {
  */
 export interface ContactCardsBlock {
   /**
-   * Som på originalens kontaktside: under 992px står "Brug for hjælp?" først, før kortene.
+   * As on the original contact page: below 992px, "Brug for hjælp?" comes first, before the cards.
    */
   mobileForm?: boolean | null;
   cards?:
@@ -730,7 +730,7 @@ export interface ContactCardsBlock {
           type?: ('reference' | 'custom') | null;
           label: string;
           /**
-           * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+           * The link follows the document URL automatically. Edit it in the document, not here.
            */
           reference?:
             | ({
@@ -746,13 +746,13 @@ export interface ContactCardsBlock {
                 value: string | Article;
               } | null);
           /**
-           * Fx en ekstern adresse eller et tel:-link.
+           * E.g. an external address or a tel: link.
            */
           url?: string | null;
           newTab?: boolean | null;
         };
         /**
-         * Blå knap i stedet for en knap med kant.
+         * Blue button instead of an outlined button.
          */
         filled?: boolean | null;
         id?: string | null;
@@ -768,7 +768,7 @@ export interface ContactCardsBlock {
  */
 export interface ArticleWithFormBlock {
   /**
-   * Vises i 16:9 over overskriften. Kan udelades.
+   * Shown in 16:9 above the heading. Can be left out.
    */
   image?: (string | null) | Media;
   heading: string;
@@ -788,19 +788,19 @@ export interface ArticleWithFormBlock {
     [k: string]: unknown;
   };
   /**
-   * Lad stå tom for at bruge standardformularen fra Site Settings (fanen Formularer).
+   * Leave empty to use the default form from Site Settings (Forms tab).
    */
   form?: (string | null) | Form;
   /**
-   * Rykker sektionen 7rem op over det forrige bånd, som på Om os.
+   * Moves the section 7rem up over the previous band, as on Om os.
    */
   overlapPrevious?: boolean | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -824,7 +824,7 @@ export interface Form {
             defaultValue?: boolean | null;
             mediumLabel?: boolean | null;
             /**
-             * Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.
+             * Enter the field name of the checkbox, e.g. "levering". Leave empty to always show the field.
              */
             showWhen?: string | null;
             id?: string | null;
@@ -839,7 +839,7 @@ export interface Form {
             placeholder?: string | null;
             mediumLabel?: boolean | null;
             /**
-             * Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.
+             * Enter the field name of the checkbox, e.g. "levering". Leave empty to always show the field.
              */
             showWhen?: string | null;
             id?: string | null;
@@ -875,7 +875,7 @@ export interface Form {
             placeholder?: string | null;
             mediumLabel?: boolean | null;
             /**
-             * Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.
+             * Enter the field name of the checkbox, e.g. "levering". Leave empty to always show the field.
              */
             showWhen?: string | null;
             id?: string | null;
@@ -898,7 +898,7 @@ export interface Form {
             required?: boolean | null;
             mediumLabel?: boolean | null;
             /**
-             * Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.
+             * Enter the field name of the checkbox, e.g. "levering". Leave empty to always show the field.
              */
             showWhen?: string | null;
             id?: string | null;
@@ -914,7 +914,7 @@ export interface Form {
             placeholder?: string | null;
             mediumLabel?: boolean | null;
             /**
-             * Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.
+             * Enter the field name of the checkbox, e.g. "levering". Leave empty to always show the field.
              */
             showWhen?: string | null;
             id?: string | null;
@@ -930,7 +930,7 @@ export interface Form {
             placeholder?: string | null;
             mediumLabel?: boolean | null;
             /**
-             * Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.
+             * Enter the field name of the checkbox, e.g. "levering". Leave empty to always show the field.
              */
             showWhen?: string | null;
             id?: string | null;
@@ -991,7 +991,7 @@ export interface Form {
       }[]
     | null;
   /**
-   * Bruges, når formularen vises som kort ved siden af en artikel.
+   * Used when the form is shown as a card next to an article.
    */
   heading?: string | null;
   subheading?: string | null;
@@ -1008,11 +1008,11 @@ export interface ParallaxBandBlock {
   leftText: string;
   rightText: string;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -1033,11 +1033,11 @@ export interface PeopleBlock {
       }[]
     | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -1057,11 +1057,11 @@ export interface ImageSliderBlock {
       }[]
     | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -1074,11 +1074,11 @@ export interface ImageSliderBlock {
  */
 export interface BrandGridBlock {
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -1092,11 +1092,11 @@ export interface BrandGridBlock {
 export interface JobListBlock {
   emptyText?: string | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -1111,11 +1111,11 @@ export interface FormPageBlock {
   heading: string;
   form: string | Form;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -1145,11 +1145,11 @@ export interface ThanksMessageBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   id?: string | null;
@@ -1177,19 +1177,19 @@ export interface TextBlock {
     [k: string]: unknown;
   };
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Giver sektionen en dæmpet grå baggrund i stedet for standardbaggrunden — brug til at skabe visuel adskillelse mellem sektioner.
+   * Gives the section a muted gray background instead of the default one. Use it to create visual separation between sections.
    */
   mutedBackground?: boolean | null;
   /**
-   * Valgfrit — bruges kun til særlige layout-behov, ikke til almindelig indholdsredigering.
+   * Optional. Only for special layout needs, not for regular content editing.
    */
   blockClass?: string | null;
   id?: string | null;
@@ -1219,19 +1219,19 @@ export interface TextWithImageBlock {
     [k: string]: unknown;
   };
   /**
-   * Luften i toppen af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Luften i bunden af sektionen. Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
    */
   spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
   /**
-   * Giver sektionen en dæmpet grå baggrund i stedet for standardbaggrunden — brug til at skabe visuel adskillelse mellem sektioner.
+   * Gives the section a muted gray background instead of the default one. Use it to create visual separation between sections.
    */
   mutedBackground?: boolean | null;
   /**
-   * Valgfrit — bruges kun til særlige layout-behov, ikke til almindelig indholdsredigering.
+   * Optional. Only for special layout needs, not for regular content editing.
    */
   blockClass?: string | null;
   id?: string | null;
@@ -1246,24 +1246,24 @@ export interface Employee {
   id: string;
   name: string;
   /**
-   * Bruges i URL'en: /employees/<slug>
+   * Used in the URL: /employees/<slug>
    */
   slug: string;
   /**
-   * F.eks.: Montør
+   * E.g.: Montør (technician)
    */
   title?: string | null;
   mail?: string | null;
   phone?: string | null;
   type?: ('administration' | 'montoerer' | 'aalborg') | null;
   /**
-   * Billedforhold 3:2.
+   * Aspect ratio 3:2.
    */
   photo?: (string | null) | Media;
   showImage?: boolean | null;
   showOnAbout?: boolean | null;
   /**
-   * Lavest først inden for gruppen på Om os.
+   * Lowest first within the group on About us.
    */
   sortOrder?: number | null;
   updatedAt: string;
@@ -1277,7 +1277,7 @@ export interface Job {
   id: string;
   title: string;
   /**
-   * F.eks.: Aarhus eller Aalborg.
+   * E.g.: Aarhus or Aalborg.
    */
   location?: string | null;
   summary?: string | null;
@@ -1297,11 +1297,11 @@ export interface Job {
     [k: string]: unknown;
   } | null;
   /**
-   * Lad stå tom for at bruge virksomhedens e-mail.
+   * Leave empty to use the company email.
    */
   applyEmail?: string | null;
   /**
-   * Nyeste stilling vises først.
+   * The newest job is shown first.
    */
   publishedAt?: string | null;
   updatedAt: string;
@@ -2344,7 +2344,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Header {
   id: string;
   /**
-   * Den smalle, mørke linje øverst — fx Afdelinger, Om os, Mærker, Job.
+   * The narrow, dark line at the top, e.g. Afdelinger, Om os, Mærker, Job.
    */
   utilityLinks?:
     | {
@@ -2352,7 +2352,7 @@ export interface Header {
           type?: ('reference' | 'custom') | null;
           label: string;
           /**
-           * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+           * The link follows the document URL automatically. Edit it in the document, not here.
            */
           reference?:
             | ({
@@ -2368,7 +2368,7 @@ export interface Header {
                 value: string | Article;
               } | null);
           /**
-           * Fx en ekstern adresse eller et tel:-link.
+           * E.g. an external address or a tel: link.
            */
           url?: string | null;
           newTab?: boolean | null;
@@ -2379,7 +2379,7 @@ export interface Header {
                 type?: ('reference' | 'custom') | null;
                 label: string;
                 /**
-                 * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+                 * The link follows the document URL automatically. Edit it in the document, not here.
                  */
                 reference?:
                   | ({
@@ -2395,7 +2395,7 @@ export interface Header {
                       value: string | Article;
                     } | null);
                 /**
-                 * Fx en ekstern adresse eller et tel:-link.
+                 * E.g. an external address or a tel: link.
                  */
                 url?: string | null;
                 newTab?: boolean | null;
@@ -2407,7 +2407,7 @@ export interface Header {
       }[]
     | null;
   /**
-   * Bruges til dropdown-menuer, fx under Mekanisk sikring.
+   * Used for dropdown menus, e.g. under Mekanisk sikring.
    */
   navItems?:
     | {
@@ -2415,7 +2415,7 @@ export interface Header {
           type?: ('reference' | 'custom') | null;
           label: string;
           /**
-           * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+           * The link follows the document URL automatically. Edit it in the document, not here.
            */
           reference?:
             | ({
@@ -2431,7 +2431,7 @@ export interface Header {
                 value: string | Article;
               } | null);
           /**
-           * Fx en ekstern adresse eller et tel:-link.
+           * E.g. an external address or a tel: link.
            */
           url?: string | null;
           newTab?: boolean | null;
@@ -2442,7 +2442,7 @@ export interface Header {
                 type?: ('reference' | 'custom') | null;
                 label: string;
                 /**
-                 * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+                 * The link follows the document URL automatically. Edit it in the document, not here.
                  */
                 reference?:
                   | ({
@@ -2458,7 +2458,7 @@ export interface Header {
                       value: string | Article;
                     } | null);
                 /**
-                 * Fx en ekstern adresse eller et tel:-link.
+                 * E.g. an external address or a tel: link.
                  */
                 url?: string | null;
                 newTab?: boolean | null;
@@ -2474,7 +2474,7 @@ export interface Header {
       type?: ('reference' | 'custom') | null;
       label: string;
       /**
-       * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+       * The link follows the document URL automatically. Edit it in the document, not here.
        */
       reference?:
         | ({
@@ -2490,7 +2490,7 @@ export interface Header {
             value: string | Article;
           } | null);
       /**
-       * Fx en ekstern adresse eller et tel:-link.
+       * E.g. an external address or a tel: link.
        */
       url?: string | null;
       newTab?: boolean | null;
@@ -2511,7 +2511,7 @@ export interface Footer {
           type?: ('reference' | 'custom') | null;
           label: string;
           /**
-           * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+           * The link follows the document URL automatically. Edit it in the document, not here.
            */
           reference?:
             | ({
@@ -2527,7 +2527,7 @@ export interface Footer {
                 value: string | Article;
               } | null);
           /**
-           * Fx en ekstern adresse eller et tel:-link.
+           * E.g. an external address or a tel: link.
            */
           url?: string | null;
           newTab?: boolean | null;
@@ -2546,14 +2546,14 @@ export interface SiteSetting {
   id: string;
   logo?: (string | null) | Media;
   /**
-   * Vises i footeren, fx ISO 9001.
+   * Shown in the footer, e.g. ISO 9001.
    */
   certificationLogo?: (string | null) | Media;
   companyName?: string | null;
   cvr?: string | null;
   address?: string | null;
   /**
-   * Bruges af footer, kontaktside og schema.org-data.
+   * Used by the footer, the contact page and schema.org data.
    */
   phone?: string | null;
   email?: string | null;
@@ -2574,7 +2574,7 @@ export interface SiteSetting {
       }[]
     | null;
   /**
-   * Vises ved siden af artikler, mærker og i blokken "Artikel med formular", medmindre blokken vælger en anden.
+   * Shown next to articles and brands and in the "Article with form" block, unless the block picks another form.
    */
   ctaForm?: (string | null) | Form;
   facebook?: string | null;
@@ -2587,7 +2587,7 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
- * En bjælke øverst på alle sider, fx ved lukkedage eller ændrede åbningstider. Slå den fra, når den ikke skal vises.
+ * A bar at the top of all pages, e.g. for closing days or changed opening hours. Turn it off when it should not be shown.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "alert".
@@ -2596,7 +2596,7 @@ export interface Alert {
   id: string;
   enabled?: boolean | null;
   /**
-   * Hold den kort, så den kan være på én til to linjer på mobil.
+   * Keep it short so it fits on one to two lines on mobile.
    */
   message?: string | null;
   hasLink?: boolean | null;
@@ -2604,7 +2604,7 @@ export interface Alert {
     type?: ('reference' | 'custom') | null;
     label: string;
     /**
-     * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+     * The link follows the document URL automatically. Edit it in the document, not here.
      */
     reference?:
       | ({
@@ -2620,7 +2620,7 @@ export interface Alert {
           value: string | Article;
         } | null);
     /**
-     * Fx en ekstern adresse eller et tel:-link.
+     * E.g. an external address or a tel: link.
      */
     url?: string | null;
     newTab?: boolean | null;
@@ -2805,11 +2805,11 @@ export interface CollectionsWidget {
  */
 export interface VideoEmbedBlock {
   /**
-   * Fx https://www.youtube.com/watch?v=... eller et embed-link.
+   * E.g. https://www.youtube.com/watch?v=... or an embed link.
    */
   url: string;
   /**
-   * Læses op af skærmlæsere.
+   * Read aloud by screen readers.
    */
   title?: string | null;
   id?: string | null;
@@ -2822,7 +2822,7 @@ export interface VideoEmbedBlock {
  */
 export interface HtmlEmbedBlock {
   /**
-   * Indsættes uændret på siden, fx en <table> med en <style> foran. Kun til avancerede redaktører.
+   * Inserted unchanged on the page, e.g. a <table> with a <style> in front. For advanced editors only.
    */
   html: string;
   id?: string | null;

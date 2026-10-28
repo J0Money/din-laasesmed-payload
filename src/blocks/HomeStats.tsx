@@ -10,18 +10,18 @@ import type { HomeStatsBlock as HomeStatsBlockProps } from '@/payload-types'
 export const homeStatsBlock: Block = {
   slug: 'homeStats',
   interfaceName: 'HomeStatsBlock',
-  labels: { singular: 'Tal-bånd', plural: 'Tal-bånd' },
+  labels: { singular: 'Stats band', plural: 'Stats bands' },
   fields: [
-    { name: 'image', type: 'upload', relationTo: 'media', label: 'Baggrundsbillede' },
+    { name: 'image', type: 'upload', relationTo: 'media', label: 'Background image' },
     {
       name: 'items',
       type: 'array',
-      label: 'Tal',
+      label: 'Numbers',
       minRows: 1,
       maxRows: 4,
       fields: [
-        { name: 'value', type: 'number', required: true, label: 'Tal' },
-        { name: 'label', type: 'text', required: true, label: 'Tekst under tallet' },
+        { name: 'value', type: 'number', required: true, label: 'Number' },
+        { name: 'label', type: 'text', required: true, label: 'Text below the number' },
       ],
     },
   ],

@@ -33,7 +33,7 @@ export function contentWithSpacingTabs(blockType: string, fields: Field[]): Fiel
   return [
     {
       type: 'tabs',
-      tabs: [{ label: 'Indhold', fields }, layoutTabSpacingOnly(blockType)],
+      tabs: [{ label: 'Content', fields }, layoutTabSpacingOnly(blockType)],
     },
   ]
 }
@@ -53,9 +53,9 @@ function blockClassField(): Field {
   return {
     name: 'blockClass',
     type: 'text',
-    label: 'Ekstra CSS-klasse (avanceret)',
+    label: 'Extra CSS class (advanced)',
     admin: {
-      description: 'Valgfrit — bruges kun til særlige layout-behov, ikke til almindelig indholdsredigering.',
+      description: 'Optional. Only for special layout needs, not for regular content editing.',
     },
   }
 }

@@ -6,7 +6,7 @@ export const Articles: CollectionConfig = {
   slug: 'articles',
   admin: {
     useAsTitle: 'name',
-    group: 'Indhold',
+    group: 'Content',
     defaultColumns: ['name', 'category', '_status', 'updatedAt'],
   },
   versions: {
@@ -20,7 +20,7 @@ export const Articles: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
-      label: 'Navn',
+      label: 'Name',
     },
     {
       name: 'slug',
@@ -29,44 +29,44 @@ export const Articles: CollectionConfig = {
       unique: true,
       label: 'Slug',
       admin: {
-        description: "Bruges i URL'en: /artikler/<slug>",
+        description: 'Used in the URL: /artikler/<slug>',
       },
     },
     {
       name: 'category',
       type: 'relationship',
       relationTo: 'categories',
-      label: 'Kategori',
+      label: 'Category',
       admin: {
         description:
-          'Lad stå tom for artikler uden kategori, fx lokationssider som "Låsesmed Aalborg".',
+          'Leave empty for articles without a category, e.g. location pages like "Låsesmed Aalborg".',
       },
     },
     {
       name: 'mainImage',
       type: 'upload',
       relationTo: 'media',
-      label: 'Hovedbillede',
+      label: 'Main image',
     },
     {
       name: 'mainHeading',
       type: 'text',
       required: true,
-      label: 'Overskrift (H1)',
+      label: 'Heading (H1)',
     },
     {
       name: 'mainText',
       type: 'richText',
       required: true,
-      label: 'Brødtekst',
+      label: 'Body text',
     },
     {
       name: 'publishedAt',
       type: 'date',
-      label: 'Publiceringsdato',
+      label: 'Publish date',
       admin: {
         position: 'sidebar',
-        description: 'Styrer rækkefølgen i "Læs også" (nyeste først).',
+        description: 'Controls the order in "Læs også" (newest first).',
         date: { pickerAppearance: 'dayAndTime' },
       },
     },
@@ -75,7 +75,7 @@ export const Articles: CollectionConfig = {
       type: 'relationship',
       relationTo: 'brands',
       hasMany: true,
-      label: 'Relevante mærker',
+      label: 'Related brands',
     },
     {
       type: 'tabs',
@@ -96,7 +96,7 @@ export const Articles: CollectionConfig = {
             {
               name: 'sitemapIndexing',
               type: 'checkbox',
-              label: 'Vis i sitemap/søgemaskiner',
+              label: 'Show in sitemap/search engines',
               defaultValue: true,
             },
           ],

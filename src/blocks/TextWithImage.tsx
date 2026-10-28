@@ -11,29 +11,29 @@ import { layoutTab } from './fields/layout'
 export const textWithImageBlock: Block = {
   slug: 'textWithImage',
   interfaceName: 'TextWithImageBlock',
-  labels: { singular: 'Tekst med billede', plural: 'Tekst med billede' },
+  labels: { singular: 'Text with image', plural: 'Text with image' },
   fields: [
     {
       type: 'tabs',
       tabs: [
         {
-          label: 'Indhold',
+          label: 'Content',
           fields: [
             {
               name: 'image',
               type: 'upload',
               relationTo: 'media',
               required: true,
-              label: 'Billede',
+              label: 'Image',
             },
             {
               name: 'imagePosition',
               type: 'radio',
-              label: 'Billedets placering',
+              label: 'Image position',
               defaultValue: 'right',
               options: [
-                { label: 'Venstre', value: 'left' },
-                { label: 'Højre', value: 'right' },
+                { label: 'Left', value: 'left' },
+                { label: 'Right', value: 'right' },
               ],
               admin: { layout: 'horizontal' },
             },
@@ -41,7 +41,7 @@ export const textWithImageBlock: Block = {
               name: 'content',
               type: 'richText',
               required: true,
-              label: 'Tekst',
+              label: 'Text',
             },
           ],
         },

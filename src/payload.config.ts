@@ -85,15 +85,15 @@ export default buildConfig({
       userCollection: 'users',
       collections: {
         articles: {
-          description: 'Artikler på din-laasesmed.dk (viden, lokationssider som "Låsesmed Hammel" og nyheder).',
+          description: 'Articles on din-laasesmed.dk (knowledge articles, location pages like "Låsesmed Hammel" and news). The content is written in Danish.',
           enabled: { find: true, create: true, update: true, delete: false },
         },
         brands: {
-          description: 'Mærker Din Låsesmed forhandler (logo, tekst og SEO).',
+          description: 'Brands that Din Låsesmed sells (logo, text and SEO). The content is written in Danish.',
           enabled: { find: true, create: true, update: true, delete: false },
         },
         categories: {
-          description: 'Kategorier i oversigterne (Mekanisk sikring, Elektronisk sikring, Service, Nyheder).',
+          description: 'Categories in the overview pages (Mekanisk sikring, Elektronisk sikring, Service, Nyheder). The content is written in Danish.',
           enabled: { find: true, create: true, update: true, delete: false },
         },
       },
@@ -101,10 +101,10 @@ export default buildConfig({
         serverOptions: {
           serverInfo: { name: 'Din Låsesmed CMS', version: '1.0.0' },
           instructions:
-            'Du redigerer indholdet på din-laasesmed.dk, en dansk låsesmed i Aarhus. Skriv på dansk i samme tone som de eksisterende artikler. ' +
-            'Opfind aldrig priser, telefonnumre, adresser, certificeringer eller tal. Brug kun oplysninger, brugeren har givet, eller som allerede står på siden. ' +
-            'Slug skal være små bogstaver uden æ, ø, å og med bindestreger (fx lasesmed-hammel). Hent en lignende artikel først og følg dens opbygning. ' +
-            'Ændringer udgives med det samme, så spørg før du overskriver en eksisterende tekst.',
+            'You edit the content of din-laasesmed.dk, a Danish locksmith in Aarhus. Write the site content in Danish, in the same tone as the existing articles. ' +
+            'Never invent prices, phone numbers, addresses, certifications or figures. Only use information the user has given or that is already on the site. ' +
+            'A slug must be lowercase without æ, ø, å and with hyphens (e.g. lasesmed-hammel). Fetch a similar article first and follow its structure. ' +
+            'Changes are published immediately, so ask before overwriting existing text.',
         },
       },
     }),
@@ -113,13 +113,13 @@ export default buildConfig({
       fields: { payment: false, state: false, country: false },
       redirectRelationships: ['pages'],
       formOverrides: {
-        labels: { singular: 'Formular', plural: 'Formularer' },
-        admin: { group: 'Formularer' },
+        labels: { singular: 'Form', plural: 'Forms' },
+        admin: { group: 'Forms' },
         fields: extendFormFields,
       },
       formSubmissionOverrides: {
-        labels: { singular: 'Indsendelse', plural: 'Indsendelser' },
-        admin: { group: 'Formularer' },
+        labels: { singular: 'Submission', plural: 'Submissions' },
+        admin: { group: 'Forms' },
       },
     }),
   ],

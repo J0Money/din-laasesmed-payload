@@ -7,15 +7,15 @@ import type { VideoHeroBlock as VideoHeroBlockProps } from '@/payload-types'
 export const videoHeroBlock: Block = {
   slug: 'videoHero',
   interfaceName: 'VideoHeroBlock',
-  labels: { singular: 'Video-bånd', plural: 'Video-bånd' },
+  labels: { singular: 'Video band', plural: 'Video bands' },
   fields: [
     {
       name: 'poster',
       type: 'upload',
       relationTo: 'media',
       required: true,
-      label: 'Plakatbillede',
-      admin: { description: 'Vises, mens videoen loader, og hvis den ikke kan afspilles.' },
+      label: 'Poster image',
+      admin: { description: 'Shown while the video loads, and if it cannot be played.' },
     },
     {
       name: 'videoWebm',
@@ -28,7 +28,7 @@ export const videoHeroBlock: Block = {
       type: 'upload',
       relationTo: 'videos',
       label: 'Video (MP4)',
-      admin: { description: 'Bruges, hvis browseren ikke kan afspille WebM (bl.a. Safari).' },
+      admin: { description: 'Used if the browser cannot play WebM (e.g. Safari).' },
     },
   ],
 }

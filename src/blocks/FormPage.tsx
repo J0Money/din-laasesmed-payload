@@ -13,10 +13,10 @@ import { contentWithSpacingTabs } from './fields/layout'
 export const formPageBlock: Block = {
   slug: 'formPage',
   interfaceName: 'FormPageBlock',
-  labels: { singular: 'Formular-side', plural: 'Formular-sider' },
+  labels: { singular: 'Form page', plural: 'Form pages' },
   fields: contentWithSpacingTabs('formPage', [
-    { name: 'heading', type: 'text', required: true, label: 'Overskrift (H1)' },
-    { name: 'form', type: 'relationship', relationTo: 'forms', required: true, label: 'Formular' },
+    { name: 'heading', type: 'text', required: true, label: 'Heading (H1)' },
+    { name: 'form', type: 'relationship', relationTo: 'forms', required: true, label: 'Form' },
   ]),
 }
 

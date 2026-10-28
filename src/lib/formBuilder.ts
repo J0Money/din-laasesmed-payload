@@ -12,15 +12,15 @@ const extendable = [...withPlaceholder, 'select', 'checkbox', 'radio']
 
 const extraFields = (blockSlug: string): Field[] => [
   ...(withPlaceholder.includes(blockSlug)
-    ? ([{ name: 'placeholder', type: 'text', label: 'Pladsholdertekst' }] as Field[])
+    ? ([{ name: 'placeholder', type: 'text', label: 'Placeholder text' }] as Field[])
     : []),
-  { name: 'mediumLabel', type: 'checkbox', label: 'Fed label (medium vægt)', defaultValue: false },
+  { name: 'mediumLabel', type: 'checkbox', label: 'Bold label (medium weight)', defaultValue: false },
   {
     name: 'showWhen',
     type: 'text',
-    label: 'Vis kun når dette afkrydsningsfelt er markeret',
+    label: 'Only show when this checkbox is checked',
     admin: {
-      description: 'Skriv feltnavnet på afkrydsningsfeltet, fx "levering". Lad stå tom for at vise feltet altid.',
+      description: 'Enter the field name of the checkbox, e.g. "levering". Leave empty to always show the field.',
     },
   },
 ]
@@ -35,14 +35,14 @@ const formExtras: Field[] = [
   {
     name: 'heading',
     type: 'text',
-    label: 'Overskrift (kort-formular)',
-    admin: { description: 'Bruges, når formularen vises som kort ved siden af en artikel.' },
+    label: 'Heading (card form)',
+    admin: { description: 'Used when the form is shown as a card next to an article.' },
   },
-  { name: 'subheading', type: 'text', label: 'Undertekst (kort-formular)' },
+  { name: 'subheading', type: 'text', label: 'Subheading (card form)' },
   {
     name: 'errorMessage',
     type: 'text',
-    label: 'Fejlbesked',
+    label: 'Error message',
     defaultValue: 'Noget gik galt, prøv igen eller ring til os.',
   },
 ]

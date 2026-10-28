@@ -8,5 +8,5 @@ export function blocksAdminDescription(blocks: Block[]): string {
   const names = blocks.map((block) =>
     typeof block.labels?.singular === 'string' ? block.labels.singular : block.slug,
   )
-  return `Vælg mellem: ${names.join(', ')}.`
+  return `Choose from: ${names.join(', ')}.`
 }

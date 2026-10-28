@@ -11,7 +11,7 @@ import { contentWithSpacingTabs } from './fields/layout'
 export const brandGridBlock: Block = {
   slug: 'brandGrid',
   interfaceName: 'BrandGridBlock',
-  labels: { singular: 'Mærkeoversigt', plural: 'Mærkeoversigt' },
+  labels: { singular: 'Brand overview', plural: 'Brand overviews' },
   fields: contentWithSpacingTabs('brandGrid', [
     {
       name: 'note',

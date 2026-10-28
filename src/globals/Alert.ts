@@ -4,34 +4,34 @@ import { linkField } from '../fields/link'
 
 export const Alert: GlobalConfig = {
   slug: 'alert',
-  label: 'Besked i toppen',
+  label: 'Top banner',
   admin: {
-    group: 'Konfiguration',
-    description: 'En bjælke øverst på alle sider, fx ved lukkedage eller ændrede åbningstider. Slå den fra, når den ikke skal vises.',
+    group: 'Configuration',
+    description: 'A bar at the top of all pages, e.g. for closing days or changed opening hours. Turn it off when it should not be shown.',
   },
   fields: [
     {
       name: 'enabled',
       type: 'checkbox',
-      label: 'Vis beskeden',
+      label: 'Show the message',
       defaultValue: false,
     },
     {
       name: 'message',
       type: 'text',
-      label: 'Besked',
+      label: 'Message',
       maxLength: 160,
       admin: {
-        description: 'Hold den kort, så den kan være på én til to linjer på mobil.',
+        description: 'Keep it short so it fits on one to two lines on mobile.',
         condition: (data) => Boolean(data?.enabled),
       },
       validate: (value: string | null | undefined, { siblingData }: { siblingData: { enabled?: boolean } }) =>
-        siblingData?.enabled && !value?.trim() ? 'Skriv en besked, eller slå visning fra.' : true,
+        siblingData?.enabled && !value?.trim() ? 'Write a message, or turn off display.' : true,
     },
     {
       name: 'hasLink',
       type: 'checkbox',
-      label: 'Tilføj et link',
+      label: 'Add a link',
       defaultValue: false,
       admin: { condition: (data) => Boolean(data?.enabled) },
     },

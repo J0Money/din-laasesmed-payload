@@ -12,10 +12,10 @@ export const linkField: Field = {
     {
       name: 'type',
       type: 'radio',
-      label: 'Linktype',
+      label: 'Link type',
       options: [
-        { label: 'Intern side', value: 'reference' },
-        { label: 'Ekstern/brugerdefineret URL', value: 'custom' },
+        { label: 'Internal page', value: 'reference' },
+        { label: 'External/custom URL', value: 'custom' },
       ],
       defaultValue: 'reference',
       admin: {
@@ -26,16 +26,16 @@ export const linkField: Field = {
       name: 'label',
       type: 'text',
       required: true,
-      label: 'Linktekst',
+      label: 'Link text',
     },
     {
       name: 'reference',
       type: 'relationship',
       relationTo: ['pages', 'categories', 'articles'],
-      label: 'Side',
+      label: 'Page',
       admin: {
         condition: (_, siblingData) => siblingData?.type === 'reference',
-        description: 'Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.',
+        description: 'The link follows the document URL automatically. Edit it in the document, not here.',
       },
     },
     {
@@ -44,13 +44,13 @@ export const linkField: Field = {
       label: 'URL',
       admin: {
         condition: (_, siblingData) => siblingData?.type === 'custom',
-        description: 'Fx en ekstern adresse eller et tel:-link.',
+        description: 'E.g. an external address or a tel: link.',
       },
     },
     {
       name: 'newTab',
       type: 'checkbox',
-      label: 'Åbn i nyt vindue',
+      label: 'Open in new window',
       defaultValue: false,
     },
   ],

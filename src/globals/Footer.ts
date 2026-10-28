@@ -5,13 +5,13 @@ import { linkField } from '../fields/link'
 export const Footer: GlobalConfig = {
   slug: 'footer',
   admin: {
-    group: 'Konfiguration',
+    group: 'Configuration',
   },
   fields: [
     {
       name: 'links',
       type: 'array',
-      label: 'Linkliste',
+      label: 'Link list',
       fields: [linkField],
     },
   ],

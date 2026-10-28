@@ -13,32 +13,32 @@ import { contentWithSpacingTabs } from './fields/layout'
 export const overviewIntroBlock: Block = {
   slug: 'overviewIntro',
   interfaceName: 'OverviewIntroBlock',
-  labels: { singular: 'Intro-bånd', plural: 'Intro-bånd' },
+  labels: { singular: 'Intro band', plural: 'Intro bands' },
   fields: contentWithSpacingTabs('overviewIntro', [
     {
       name: 'tagline',
       type: 'text',
       required: true,
       label: 'Tagline',
-      admin: { description: 'Lille blå tekst øverst til venstre, fx "Vi forhandler".' },
+      admin: { description: 'Small blue text at the top left, e.g. "Vi forhandler".' },
     },
     {
       name: 'title',
       type: 'text',
       required: true,
-      label: 'Navn (H1)',
-      admin: { description: 'Stor tekst til venstre, fx "Se alle mærker".' },
+      label: 'Name (H1)',
+      admin: { description: 'Large text on the left, e.g. "Se alle mærker".' },
     },
     {
       name: 'heading',
       type: 'text',
       required: true,
-      label: 'Overskrift til højre',
+      label: 'Heading on the right',
     },
     {
       name: 'content',
       type: 'richText',
-      label: 'Tekst',
+      label: 'Text',
     },
   ]),
 }

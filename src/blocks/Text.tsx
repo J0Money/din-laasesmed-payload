@@ -10,19 +10,19 @@ import { layoutTab } from './fields/layout'
 export const textBlock: Block = {
   slug: 'text',
   interfaceName: 'TextBlock',
-  labels: { singular: 'Tekst', plural: 'Tekst' },
+  labels: { singular: 'Text', plural: 'Text' },
   fields: [
     {
       type: 'tabs',
       tabs: [
         {
-          label: 'Indhold',
+          label: 'Content',
           fields: [
             {
               name: 'content',
               type: 'richText',
               required: true,
-              label: 'Tekst',
+              label: 'Text',
             },
           ],
         },

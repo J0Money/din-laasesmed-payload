@@ -11,19 +11,19 @@ import { contentWithSpacingTabs } from './fields/layout'
 export const homeCustomersBlock: Block = {
   slug: 'homeCustomers',
   interfaceName: 'HomeCustomersBlock',
-  labels: { singular: 'Erhvervskunder', plural: 'Erhvervskunder' },
+  labels: { singular: 'Business customers', plural: 'Business customers' },
   fields: contentWithSpacingTabs('homeCustomers', [
     { name: 'tagline', type: 'text', required: true, label: 'Tagline', defaultValue: 'Fra havedøren til havudsigt' },
-    { name: 'heading', type: 'text', required: true, label: 'Overskrift', defaultValue: 'Mød vores erhvervskunder' },
+    { name: 'heading', type: 'text', required: true, label: 'Heading', defaultValue: 'Mød vores erhvervskunder' },
     {
       name: 'items',
       type: 'array',
-      label: 'Kunder',
-      labels: { singular: 'Erhvervskunde', plural: 'Erhvervskunder' },
+      label: 'Customers',
+      labels: { singular: 'Business customer', plural: 'Business customers' },
       minRows: 1,
       fields: [
-        { name: 'image', type: 'upload', relationTo: 'media', required: true, label: 'Billede/logo' },
-        { name: 'label', type: 'text', label: 'Stedsnavn (valgfrit, vises som badge over fotos)' },
+        { name: 'image', type: 'upload', relationTo: 'media', required: true, label: 'Image/logo' },
+        { name: 'label', type: 'text', label: 'Place name (optional, shown as a badge on photos)' },
         {
           name: 'type',
           type: 'radio',
@@ -31,20 +31,20 @@ export const homeCustomersBlock: Block = {
           defaultValue: 'logo',
           options: [
             { label: 'Logo', value: 'logo' },
-            { label: 'Foto', value: 'photo' },
+            { label: 'Photo', value: 'photo' },
           ],
         },
         {
           name: 'bgColor',
           type: 'text',
-          label: 'Baggrundsfarve (kun logo-type, hex)',
+          label: 'Background color (logo type only, hex)',
           defaultValue: '#ffffff',
           admin: { condition: (_, siblingData) => siblingData?.type === 'logo' },
         },
         {
           name: 'logoHeight',
           type: 'number',
-          label: 'Logohøjde i px (kun logo-type)',
+          label: 'Logo height in px (logo type only)',
           defaultValue: 96,
           admin: { condition: (_, siblingData) => siblingData?.type === 'logo' },
         },

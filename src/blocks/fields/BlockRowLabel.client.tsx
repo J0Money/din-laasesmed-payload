@@ -11,5 +11,5 @@ export function BlockRowLabel() {
   const labelField = data.blockType ? BLOCK_ROW_LABELS[data.blockType] : undefined
   const label = labelField ? (data[labelField] as string | undefined) : undefined
 
-  return <div>{label || `Blok ${(rowNumber ?? 0) + 1}`}</div>
+  return <div>{label || `Block ${(rowNumber ?? 0) + 1}`}</div>
 }

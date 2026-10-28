@@ -12,10 +12,10 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      label: 'Alt-tekst',
+      label: 'Alt text',
       required: true,
       admin: {
-        description: 'Beskrivelse af billedet, bruges af skærmlæsere og SEO. Må aldrig stå tom.',
+        description: 'Description of the image, used by screen readers and SEO. Must never be empty.',
       },
     },
   ],

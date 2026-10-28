@@ -30,7 +30,7 @@ export const BLOCK_SPACING: Record<string, BlockSpacing> = {
 const SPACING_LABELS: Record<SpacingSize, string> = {
   large: 'Large',
   medium: 'Medium',
-  none: 'Ingen',
+  none: 'None',
   small: 'Small',
 }
 
@@ -64,7 +64,7 @@ export function spacingClasses(blockType: string, before?: null | string, after?
 }
 
 const DESCRIPTION =
-  'Samme skala som originalen: Small 80px, Medium 112px og Large 160px på store skærme, mindre på mobil.'
+  'Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.'
 
 const SPACING_OPTIONS = (['none', 'small', 'medium', 'large'] as SpacingSize[]).map((value) => ({
   label: SPACING_LABELS[value],
@@ -79,18 +79,18 @@ export function spacingFields(blockType: string): Field[] {
     {
       name: 'spacingBefore',
       type: 'select',
-      label: 'Luft over',
+      label: 'Space above',
       defaultValue: own.before,
       options: SPACING_OPTIONS,
-      admin: { description: `Luften i toppen af sektionen. ${DESCRIPTION}` },
+      admin: { description: `The space at the top of the section. ${DESCRIPTION}` },
     },
     {
       name: 'spacingAfter',
       type: 'select',
-      label: 'Luft under',
+      label: 'Space below',
       defaultValue: own.after,
       options: SPACING_OPTIONS,
-      admin: { description: `Luften i bunden af sektionen. ${DESCRIPTION}` },
+      admin: { description: `The space at the bottom of the section. ${DESCRIPTION}` },
     },
   ]
 }

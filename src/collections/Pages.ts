@@ -7,7 +7,7 @@ export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
     useAsTitle: 'title',
-    group: 'Indhold',
+    group: 'Content',
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
   },
   versions: {
@@ -18,7 +18,7 @@ export const Pages: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
-      label: 'Titel',
+      label: 'Title',
     },
     {
       name: 'slug',
@@ -31,15 +31,15 @@ export const Pages: CollectionConfig = {
       name: 'parent',
       type: 'relationship',
       relationTo: 'pages',
-      label: 'Overordnet side',
+      label: 'Parent page',
       admin: {
-        description: 'Bruges til sidetræ. Ikke i brug endnu.',
+        description: 'Used for the page tree. Not in use yet.',
       },
     },
     {
       name: 'layout',
       type: 'blocks',
-      label: 'Indhold',
+      label: 'Content',
       blocks: allBlocks,
       admin: {
         description: blocksAdminDescription(allBlocks),

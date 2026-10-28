@@ -10,18 +10,18 @@ import { contentWithSpacingTabs } from './fields/layout'
 export const imageSliderBlock: Block = {
   slug: 'imageSlider',
   interfaceName: 'ImageSliderBlock',
-  labels: { singular: 'Billed-slider', plural: 'Billed-slidere' },
+  labels: { singular: 'Image slider', plural: 'Image sliders' },
   fields: contentWithSpacingTabs('imageSlider', [
     {
       name: 'title',
       type: 'text',
       required: true,
-      label: 'Overskrift',
+      label: 'Heading',
     },
     {
       name: 'images',
       type: 'array',
-      label: 'Billeder',
+      label: 'Images',
       minRows: 1,
       fields: [
         {
@@ -29,7 +29,7 @@ export const imageSliderBlock: Block = {
           type: 'upload',
           relationTo: 'media',
           required: true,
-          label: 'Billede',
+          label: 'Image',
         },
       ],
     },

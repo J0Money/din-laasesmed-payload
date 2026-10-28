@@ -11,35 +11,35 @@ import { contentWithSpacingTabs } from './fields/layout'
 export const peopleBlock: Block = {
   slug: 'people',
   interfaceName: 'PeopleBlock',
-  labels: { singular: 'Medarbejdere', plural: 'Medarbejdere' },
+  labels: { singular: 'Employees', plural: 'Employees' },
   fields: contentWithSpacingTabs('people', [
     {
       name: 'groups',
       type: 'array',
-      label: 'Grupper',
+      label: 'Groups',
       minRows: 1,
       fields: [
         {
           name: 'heading',
           type: 'text',
           required: true,
-          label: 'Overskrift',
+          label: 'Heading',
         },
         {
           name: 'group',
           type: 'select',
           required: true,
-          label: 'Vis medarbejdere af typen',
+          label: 'Show employees of type',
           options: [
             { label: 'Administration', value: 'administration' },
-            { label: 'Montører', value: 'montoerer' },
+            { label: 'Technicians', value: 'montoerer' },
             { label: 'Aalborg', value: 'aalborg' },
           ],
         },
         {
           name: 'showHelpCard',
           type: 'checkbox',
-          label: 'Vis "Har du brug for hjælp?"-kortet først',
+          label: 'Show the "Har du brug for hjælp?" card first',
           defaultValue: false,
         },
       ],

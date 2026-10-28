@@ -10,18 +10,18 @@ import { contentWithSpacingTabs } from './fields/layout'
 export const homeTestimonialsBlock: Block = {
   slug: 'homeTestimonials',
   interfaceName: 'HomeTestimonialsBlock',
-  labels: { singular: 'Kundeudtalelser', plural: 'Kundeudtalelser' },
+  labels: { singular: 'Testimonials', plural: 'Testimonials' },
   fields: contentWithSpacingTabs('homeTestimonials', [
     { name: 'tagline', type: 'text', required: true, label: 'Tagline', defaultValue: 'Hvad siger vores kunder' },
-    { name: 'heading', type: 'text', required: true, label: 'Overskrift', defaultValue: 'Udtalelser' },
+    { name: 'heading', type: 'text', required: true, label: 'Heading', defaultValue: 'Udtalelser' },
     {
       name: 'items',
       type: 'array',
-      label: 'Udtalelser',
+      label: 'Testimonials',
       minRows: 1,
       fields: [
-        { name: 'quote', type: 'textarea', required: true, label: 'Citat' },
-        { name: 'author', type: 'text', required: true, label: 'Kunde' },
+        { name: 'quote', type: 'textarea', required: true, label: 'Quote' },
+        { name: 'author', type: 'text', required: true, label: 'Customer' },
       ],
     },
   ]),

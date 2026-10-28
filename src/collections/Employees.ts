@@ -4,7 +4,7 @@ export const Employees: CollectionConfig = {
   slug: 'employees',
   admin: {
     useAsTitle: 'name',
-    group: 'Indhold',
+    group: 'Content',
     defaultColumns: ['name', 'title', 'type', 'sortOrder', 'showOnAbout'],
   },
   fields: [
@@ -12,7 +12,7 @@ export const Employees: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
-      label: 'Navn',
+      label: 'Name',
     },
     {
       name: 'slug',
@@ -21,15 +21,15 @@ export const Employees: CollectionConfig = {
       unique: true,
       label: 'Slug',
       admin: {
-        description: "Bruges i URL'en: /employees/<slug>",
+        description: 'Used in the URL: /employees/<slug>',
       },
     },
     {
       name: 'title',
       type: 'text',
-      label: 'Titel',
+      label: 'Title',
       admin: {
-        description: 'F.eks.: Montør',
+        description: 'E.g.: Montør (technician)',
       },
     },
     {
@@ -40,7 +40,7 @@ export const Employees: CollectionConfig = {
     {
       name: 'phone',
       type: 'text',
-      label: 'Telefon',
+      label: 'Phone',
     },
     {
       name: 'type',
@@ -48,7 +48,7 @@ export const Employees: CollectionConfig = {
       label: 'Type',
       options: [
         { label: 'Administration', value: 'administration' },
-        { label: 'Montører', value: 'montoerer' },
+        { label: 'Technicians', value: 'montoerer' },
         { label: 'Aalborg', value: 'aalborg' },
       ],
     },
@@ -56,29 +56,29 @@ export const Employees: CollectionConfig = {
       name: 'photo',
       type: 'upload',
       relationTo: 'media',
-      label: 'Foto',
+      label: 'Photo',
       admin: {
-        description: 'Billedforhold 3:2.',
+        description: 'Aspect ratio 3:2.',
       },
     },
     {
       name: 'showImage',
       type: 'checkbox',
-      label: 'Vis billede',
+      label: 'Show image',
       defaultValue: true,
     },
     {
       name: 'showOnAbout',
       type: 'checkbox',
-      label: 'Vis på Om os',
+      label: 'Show on About us',
       defaultValue: true,
     },
     {
       name: 'sortOrder',
       type: 'number',
-      label: 'Rækkefølge',
+      label: 'Sort order',
       admin: {
-        description: 'Lavest først inden for gruppen på Om os.',
+        description: 'Lowest first within the group on About us.',
       },
     },
   ],

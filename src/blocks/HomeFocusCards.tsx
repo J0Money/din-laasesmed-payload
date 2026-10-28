@@ -18,12 +18,12 @@ import { contentWithSpacingTabs } from './fields/layout'
 export const homeFocusCardsBlock: Block = {
   slug: 'homeFocusCards',
   interfaceName: 'HomeFocusCardsBlock',
-  labels: { singular: 'Fokuskort', plural: 'Fokuskort' },
+  labels: { singular: 'Focus cards', plural: 'Focus cards' },
   fields: contentWithSpacingTabs('homeFocusCards', [
     {
       name: 'cards',
       type: 'array',
-      label: 'Kort',
+      label: 'Cards',
       minRows: 1,
       maxRows: 3,
       fields: [
@@ -33,34 +33,34 @@ export const homeFocusCardsBlock: Block = {
           label: 'Type',
           defaultValue: 'image',
           options: [
-            { label: 'Billedkort', value: 'image' },
-            { label: 'Servicekort (mørkt)', value: 'service' },
+            { label: 'Image card', value: 'image' },
+            { label: 'Service card (dark)', value: 'service' },
           ],
           admin: { layout: 'horizontal' },
         },
-        { name: 'image', type: 'upload', relationTo: 'media', label: 'Billede' },
+        { name: 'image', type: 'upload', relationTo: 'media', label: 'Image' },
         linkField,
         {
           name: 'icon',
           type: 'select',
-          label: 'Ikon i badget',
+          label: 'Icon in the badge',
           defaultValue: 'lock',
           options: [
-            { label: 'Lås (mekanisk)', value: 'lock' },
-            { label: 'Signal (elektronisk)', value: 'signal' },
+            { label: 'Lock (mechanical)', value: 'lock' },
+            { label: 'Signal (electronic)', value: 'signal' },
           ],
           admin: { condition: (_, siblingData) => siblingData?.type !== 'service' },
         },
         {
           name: 'heading',
           type: 'text',
-          label: 'Overskrift',
+          label: 'Heading',
           admin: { condition: (_, siblingData) => siblingData?.type === 'service' },
         },
         {
           name: 'text',
           type: 'textarea',
-          label: 'Tekst',
+          label: 'Text',
           admin: { condition: (_, siblingData) => siblingData?.type === 'service' },
         },
       ],

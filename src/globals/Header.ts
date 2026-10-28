@@ -6,31 +6,31 @@ import { navItemFields } from '../fields/navItem'
 export const Header: GlobalConfig = {
   slug: 'header',
   admin: {
-    group: 'Konfiguration',
+    group: 'Configuration',
   },
   fields: [
     {
       name: 'utilityLinks',
       type: 'array',
-      label: 'Øverste bjælke (links)',
+      label: 'Top bar (links)',
       admin: {
-        description: 'Den smalle, mørke linje øverst — fx Afdelinger, Om os, Mærker, Job.',
+        description: 'The narrow, dark line at the top, e.g. Afdelinger, Om os, Mærker, Job.',
       },
       fields: navItemFields,
     },
     {
       name: 'navItems',
       type: 'array',
-      label: 'Hovednavigation',
+      label: 'Main navigation',
       admin: {
-        description: 'Bruges til dropdown-menuer, fx under Mekanisk sikring.',
+        description: 'Used for dropdown menus, e.g. under Mekanisk sikring.',
       },
       fields: navItemFields,
     },
     {
       name: 'cta',
       type: 'group',
-      label: 'Kontakt-knap',
+      label: 'Contact button',
       fields: [linkField],
     },
   ],

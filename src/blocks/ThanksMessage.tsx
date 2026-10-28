@@ -10,24 +10,24 @@ import { contentWithSpacingTabs } from './fields/layout'
 export const thanksMessageBlock: Block = {
   slug: 'thanksMessage',
   interfaceName: 'ThanksMessageBlock',
-  labels: { singular: 'Tak-besked', plural: 'Tak-beskeder' },
+  labels: { singular: 'Thank-you message', plural: 'Thank-you messages' },
   fields: contentWithSpacingTabs('thanksMessage', [
     {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
-      label: 'Billede',
+      label: 'Image',
     },
     {
       name: 'heading',
       type: 'text',
       required: true,
-      label: 'Overskrift (H1)',
+      label: 'Heading (H1)',
     },
     {
       name: 'content',
       type: 'richText',
-      label: 'Tekst',
+      label: 'Text',
     },
   ]),
 }

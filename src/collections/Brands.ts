@@ -6,7 +6,7 @@ export const Brands: CollectionConfig = {
   slug: 'brands',
   admin: {
     useAsTitle: 'name',
-    group: 'Indhold',
+    group: 'Content',
     defaultColumns: ['name', 'slug', '_status', 'updatedAt'],
   },
   versions: {
@@ -20,7 +20,7 @@ export const Brands: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
-      label: 'Navn',
+      label: 'Name',
     },
     {
       name: 'slug',
@@ -29,7 +29,7 @@ export const Brands: CollectionConfig = {
       unique: true,
       label: 'Slug',
       admin: {
-        description: "Bruges i URL'en: /brands/<slug>",
+        description: 'Used in the URL: /brands/<slug>',
       },
     },
     {
@@ -42,48 +42,48 @@ export const Brands: CollectionConfig = {
       name: 'mainImage',
       type: 'upload',
       relationTo: 'media',
-      label: 'Hovedbillede',
+      label: 'Main image',
     },
     {
       name: 'mainAlt',
       type: 'text',
-      label: 'Alt-tekst til hovedbillede',
+      label: 'Alt text for main image',
     },
     {
       name: 'mainHeading',
       type: 'text',
       required: true,
-      label: 'Overskrift (H1)',
+      label: 'Heading (H1)',
     },
     {
       name: 'mainText',
       type: 'richText',
-      label: 'Brødtekst',
+      label: 'Body text',
     },
     {
       name: 'accordion',
       type: 'array',
-      label: 'Foldbare sektioner',
+      label: 'Accordion sections',
       maxRows: 4,
       admin: {
-        description: 'Op til 4 foldbare sektioner nederst på siden (titel, billede, tekst).',
+        description: 'Up to 4 accordion sections at the bottom of the page (title, image, text).',
       },
       fields: [
         {
           name: 'title',
           type: 'text',
-          label: 'Titel',
+          label: 'Title',
         },
         {
           name: 'image',
           type: 'upload',
           relationTo: 'media',
-          label: 'Billede',
+          label: 'Image',
         },
         {
           name: 'text',
           type: 'richText',
-          label: 'Tekst',
+          label: 'Text',
         },
       ],
     },
