@@ -2,7 +2,7 @@ import type { Block } from 'payload'
 
 import { EmployeeCard } from '@/components/about/EmployeeCard'
 import { HelpCard } from '@/components/about/HelpCard'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import type { PeopleBlock as PeopleBlockProps } from '@/payload-types'
 
 import { contentWithSpacingTabs } from './fields/layout'
@@ -48,7 +48,7 @@ export const peopleBlock: Block = {
 }
 
 export async function People({ groups }: PeopleBlockProps) {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const [siteSettings, employees] = await Promise.all([
     payload.findGlobal({ slug: 'siteSettings' }),
     payload.find({

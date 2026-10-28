@@ -1,4 +1,4 @@
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import { HOME_PAGE_SLUG, ROUTES } from '@/lib/routes'
 import { SITE_URL } from '@/lib/seo'
 
@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 const escapeXml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
 export async function GET() {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const published = { _status: { equals: 'published' } } as const
   const find = (collection: 'pages' | 'articles' | 'brands' | 'categories') =>
     payload.find({ collection, where: published, limit: 1000, depth: 0, pagination: false })

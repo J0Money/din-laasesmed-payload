@@ -1,11 +1,11 @@
 import Link from 'next/link'
 
 import { resolveLinkHref } from '@/lib/link'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 
 /** Bjælken øverst, styres i admin under Konfiguration > Besked i toppen. Vises kun, når den er slået til og har en tekst. */
 export async function AlertBar() {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const alert = await payload.findGlobal({ slug: 'alert' })
 
   if (!alert.enabled || !alert.message?.trim()) return null

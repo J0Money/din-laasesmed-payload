@@ -26,6 +26,7 @@ import { Alert } from './globals/Alert'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
 import { extendFormFields } from './lib/formBuilder'
+import { revalidateCmsPlugin } from './lib/revalidate'
 import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -122,6 +123,8 @@ export default buildConfig({
         admin: { group: 'Forms' },
       },
     }),
+    // Skal stå sidst: rydder sitets cache, når indhold ændres (se lib/revalidate.ts).
+    revalidateCmsPlugin,
   ],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [...defaultFeatures, BlocksFeature({ blocks: [videoEmbedBlock, htmlEmbedBlock] })],

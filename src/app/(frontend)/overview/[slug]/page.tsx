@@ -6,7 +6,7 @@ import { RelatedBrands } from '@/components/article/RelatedBrands'
 import { NAV_ICON_BY_CATEGORY_SLUG } from '@/components/layout/NavIcons'
 import { RichText } from '@/components/RichText'
 import { mediaAlt, mediaUrl } from '@/lib/media'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import { firstParagraphText } from '@/lib/richtext'
 import { ROUTES } from '@/lib/routes'
 import { seoMetadata } from '@/lib/seo'
@@ -15,7 +15,7 @@ import { seoMetadata } from '@/lib/seo'
 const TAB_SLUGS = ['mekanisk-sikring', 'elektronisk-sikring', 'service']
 
 async function getCategory(slug: string) {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const result = await payload.find({
     collection: 'categories',
     where: { slug: { equals: slug }, _status: { equals: 'published' } },
@@ -41,7 +41,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const category = await getCategory(slug)
   if (!category) notFound()
 
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   // Originalen sorterer efter slug (fx "vaerdiskabe" før "vindueslase"), ikke efter dansk alfabet.
   const [articles, brands] = await Promise.all([
     payload.find({

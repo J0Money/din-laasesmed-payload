@@ -1,5 +1,5 @@
 import { mediaUrl } from '@/lib/media'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import { SITE_URL } from '@/lib/seo'
 
 // Samme tekst som originalens strukturerede data, bruges når standard-beskrivelsen ikke er udfyldt i admin.
@@ -18,7 +18,7 @@ function postalAddress(address: string) {
 
 /** LocalBusiness som JSON-LD på alle sider, som originalen, bygget af Konfiguration > Indstillinger. Tomme felter udelades. */
 export async function SchemaMarkup() {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const settings = await payload.findGlobal({ slug: 'siteSettings', depth: 1 })
 
   const sameAs = [settings.facebook, settings.instagram, settings.linkedin].filter(Boolean)

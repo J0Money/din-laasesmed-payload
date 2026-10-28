@@ -6,11 +6,11 @@ import { ArticlePreviewGrid } from '@/components/article/ReadAlso'
 import { RelatedBrands } from '@/components/article/RelatedBrands'
 import { RichText } from '@/components/RichText'
 import { mediaAlt, mediaUrl } from '@/lib/media'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import { seoMetadata } from '@/lib/seo'
 
 async function getBrand(slug: string) {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const result = await payload.find({
     collection: 'brands',
     where: { slug: { equals: slug }, _status: { equals: 'published' } },
@@ -41,7 +41,7 @@ export default async function BrandPage({ params }: { params: Promise<{ slug: st
   const brand = await getBrand(slug)
   if (!brand) notFound()
 
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const [articles, brands] = await Promise.all([
     payload.find({
       collection: 'articles',

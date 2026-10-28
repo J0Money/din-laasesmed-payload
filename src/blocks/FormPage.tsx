@@ -1,7 +1,7 @@
 import type { Block } from 'payload'
 
 import { DynamicForm } from '@/components/forms/DynamicForm'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import type { FormPageBlock as FormPageBlockProps } from '@/payload-types'
 
 import { contentWithSpacingTabs } from './fields/layout'
@@ -24,7 +24,7 @@ export async function FormPage({ form, heading }: FormPageBlockProps) {
   const id = typeof form === 'string' ? form : form?.id
   if (!id) return null
 
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const doc = await payload.findByID({ collection: 'forms', id, depth: 1 }).catch(() => null)
   if (!doc) return null
 

@@ -1,5 +1,5 @@
 import { DynamicForm } from '@/components/forms/DynamicForm'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import type { Form } from '@/payload-types'
 
 /**
@@ -7,7 +7,7 @@ import type { Form } from '@/payload-types'
  * .cta_form på originalen. Formularen vælges i blokken, ellers bruges den, der er valgt i Site Settings.
  */
 export async function ContactFormSidebar({ form }: { form?: Form | null | string }) {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
 
   let id: null | string | undefined = typeof form === 'string' ? form : form?.id
   if (!id) {

@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 import { linkArticle, linkCategorySlug, resolveLinkHref } from '@/lib/link'
 import { mediaAlt, mediaUrl } from '@/lib/media'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import { ROUTES } from '@/lib/routes'
 
 import { CallLink } from './CallLink'
@@ -12,7 +12,7 @@ import { ChevronDownIcon, GridIcon, NAV_ICON_BY_CATEGORY_SLUG } from './NavIcons
 
 /** Mål aflæst fra din-laasesmed.dk: topbjælke 38px, hovednav 72px, logo 208px der hænger ud under nav-kanten. */
 export async function Header() {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const [header, siteSettings] = await Promise.all([
     payload.findGlobal({ slug: 'header' }),
     payload.findGlobal({ slug: 'siteSettings' }),

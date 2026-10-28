@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { BlockRenderer } from '@/components/blocks/BlockRenderer'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import { HOME_PAGE_SLUG } from '@/lib/routes'
 import { seoMetadata } from '@/lib/seo'
 
 async function getHomePage() {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const result = await payload.find({
     collection: 'pages',
     where: { slug: { equals: HOME_PAGE_SLUG }, _status: { equals: 'published' } },

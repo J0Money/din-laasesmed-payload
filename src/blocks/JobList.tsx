@@ -1,6 +1,6 @@
 import type { Block } from 'payload'
 
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import type { JobListBlock as JobListBlockProps } from '@/payload-types'
 
 import { contentWithSpacingTabs } from './fields/layout'
@@ -25,7 +25,7 @@ export const jobListBlock: Block = {
 }
 
 export async function JobList({ emptyText }: JobListBlockProps) {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const [siteSettings, jobs] = await Promise.all([
     payload.findGlobal({ slug: 'siteSettings' }),
     payload.find({

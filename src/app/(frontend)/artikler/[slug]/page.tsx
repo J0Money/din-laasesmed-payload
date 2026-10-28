@@ -7,13 +7,13 @@ import { RelatedBrands } from '@/components/article/RelatedBrands'
 import { ContactFormSidebar } from '@/components/ContactFormSidebar'
 import { RichText } from '@/components/RichText'
 import { mediaAlt, mediaDimensions, mediaUrl, SIZES } from '@/lib/media'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import { ROUTES } from '@/lib/routes'
 import { seoMetadata } from '@/lib/seo'
 import type { Brand, Category } from '@/payload-types'
 
 async function getArticle(slug: string) {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const result = await payload.find({
     collection: 'articles',
     where: { slug: { equals: slug }, _status: { equals: 'published' } },

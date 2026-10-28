@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 import { resolveLinkHref } from '@/lib/link'
 import { mediaAlt, mediaUrl } from '@/lib/media'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import { ROUTES } from '@/lib/routes'
 
 import { LinkedInIcon, MailIcon, PhoneIcon, StoreIcon } from './FooterIcons'
@@ -36,7 +36,7 @@ function FooterLine({ children, href, icon }: { children: React.ReactNode; href?
 
 /** Mål aflæst fra footer.footer på din-laasesmed.dk (1600px viewport). */
 export async function Footer() {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const [footer, siteSettings, categories] = await Promise.all([
     payload.findGlobal({ slug: 'footer' }),
     payload.findGlobal({ slug: 'siteSettings' }),

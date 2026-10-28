@@ -2,7 +2,7 @@ import Link from 'next/link'
 import type { Block } from 'payload'
 
 import { mediaAlt, mediaUrl } from '@/lib/media'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import { ROUTES } from '@/lib/routes'
 
 import { contentWithSpacingTabs } from './fields/layout'
@@ -31,7 +31,7 @@ export const brandGridBlock: Block = {
  * så gitteret løber ud over containeren; her holdes kortene inden for de 1344px.
  */
 export async function BrandGrid() {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const brands = await payload.find({
     collection: 'brands',
     where: { _status: { equals: 'published' } },

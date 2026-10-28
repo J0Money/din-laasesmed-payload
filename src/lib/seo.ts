@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
 
 import { mediaUrl } from '@/lib/media'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 
 /** Sitets offentlige adresse. Bruges til sitemap og delings-billeder; kan overstyres med SITE_URL. */
 export const SITE_URL = (process.env.SITE_URL || 'https://din-laasesmed.dk').replace(/\/$/, '')
 
 /** Standard delings-billede fra Konfiguration > Indstillinger > SEO. Originalen bruger det samme billede på alle sider. */
 async function defaultOgImage(): Promise<string | undefined> {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const settings = await payload.findGlobal({ slug: 'siteSettings', depth: 1 })
   return mediaUrl(settings.ogImage, 'og')
 }

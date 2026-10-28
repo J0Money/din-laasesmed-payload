@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import { mediaAlt, mediaUrl } from '@/lib/media'
-import { getPayloadClient } from '@/lib/payload'
+import { getCms } from '@/lib/cms'
 import { ROUTES } from '@/lib/routes'
 import type { Article, Category } from '@/payload-types'
 
@@ -10,7 +10,7 @@ import type { Article, Category } from '@/payload-types'
  * sorteret som på originalen (nyeste publicering først, dernæst oprettelse).
  */
 export async function ReadAlso({ articleId, category }: { articleId: string; category: Category }) {
-  const payload = await getPayloadClient()
+  const payload = await getCms()
   const { docs } = await payload.find({
     collection: 'articles',
     where: {
