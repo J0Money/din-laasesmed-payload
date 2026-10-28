@@ -212,8 +212,6 @@ export interface Page {
      */
     image?: (string | null) | Media;
   };
-  titleTag?: string | null;
-  metaDescription?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -322,8 +320,6 @@ export interface Category {
      */
     image?: (string | null) | Media;
   };
-  titleTag?: string | null;
-  metaDescription?: string | null;
   sitemapIndexing?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -430,8 +426,6 @@ export interface Article {
      */
     image?: (string | null) | Media;
   };
-  titleTag?: string | null;
-  metaDescription?: string | null;
   sitemapIndexing?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -500,8 +494,6 @@ export interface Brand {
      */
     image?: (string | null) | Media;
   };
-  titleTag?: string | null;
-  metaDescription?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1615,8 +1607,6 @@ export interface PagesSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
-  titleTag?: T;
-  metaDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1973,8 +1963,6 @@ export interface ArticlesSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
-  titleTag?: T;
-  metaDescription?: T;
   sitemapIndexing?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1996,8 +1984,6 @@ export interface CategoriesSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
-  titleTag?: T;
-  metaDescription?: T;
   sitemapIndexing?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2030,8 +2016,6 @@ export interface BrandsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
-  titleTag?: T;
-  metaDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

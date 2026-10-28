@@ -29,7 +29,7 @@ async function run() {
     await payload.update({
       collection: 'brands',
       id: brand.id,
-      data: { titleTag, metaDescription },
+      data: { meta: { title: titleTag, description: metaDescription } },
       // Opdater den udgivne version direkte, uden at lave en ny kladde.
       draft: false,
     })

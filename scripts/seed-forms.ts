@@ -148,8 +148,7 @@ async function run() {
       data: {
         title: 'Nøgleformular',
         slug: 'noegleformular',
-        titleTag: title || undefined,
-        metaDescription: description || undefined,
+        meta: { title: title || undefined, description: description || undefined },
         layout: [{ blockType: 'formPage', heading: 'Nøgleformular', form: ids['Nøgleformular'] }],
         _status: 'published',
       } as any,

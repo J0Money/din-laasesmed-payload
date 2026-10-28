@@ -76,8 +76,8 @@ async function run() {
     const h1 = norm(doc.querySelector('.article_main_heading')?.textContent ?? '')
     const liveText = norm(doc.querySelector('.article_main_text .w-richtext')?.textContent ?? '')
     const ourText = norm(lexicalText(ourDoc.mainText))
-    if (title !== norm(ourDoc.titleTag ?? '')) diffs.push(`title: live "${title.slice(0, 60)}" / vores "${norm(ourDoc.titleTag ?? '').slice(0, 60)}"`)
-    if (desc !== norm(ourDoc.metaDescription ?? '')) diffs.push(`description ændret (${desc.length} / ${norm(ourDoc.metaDescription ?? '').length} tegn)`)
+    if (title !== norm(ourDoc.meta?.title ?? '')) diffs.push(`title: live "${title.slice(0, 60)}" / vores "${norm(ourDoc.meta?.title ?? '').slice(0, 60)}"`)
+    if (desc !== norm(ourDoc.meta?.description ?? '')) diffs.push(`description ændret (${desc.length} / ${norm(ourDoc.meta?.description ?? '').length} tegn)`)
     if (h1 !== norm(ourDoc.mainHeading ?? '')) diffs.push(`overskrift: live "${h1}" / vores "${norm(ourDoc.mainHeading ?? '')}"`)
     // Uden mellemrum, så forskelle i hvordan afsnit og lister samles ikke tæller; kun faktisk andre ord.
     const squash = (s: string) => s.replace(/\s+/g, '')

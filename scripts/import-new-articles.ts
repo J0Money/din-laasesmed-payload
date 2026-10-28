@@ -114,8 +114,10 @@ async function run() {
         mainText: toLexical(doc.querySelector('.article_main_text .w-richtext')?.innerHTML ?? ''),
         mainImage: imageUrl ? await uploadImage(imageUrl, imageEl?.getAttribute('alt') || name) : undefined,
         category: inNyheder ? nyheder.id : undefined,
-        titleTag: title || undefined,
-        metaDescription: doc.querySelector('meta[name="description"]')?.getAttribute('content')?.trim() || undefined,
+        meta: {
+          title: title || undefined,
+          description: doc.querySelector('meta[name="description"]')?.getAttribute('content')?.trim() || undefined,
+        },
         sitemapIndexing: inSitemap,
         publishedAt: new Date().toISOString(),
         _status: 'published',

@@ -31,7 +31,4 @@ export const seoFields: Field[] = [
       PreviewField({ hasGenerateFn: true, titlePath: 'meta.title', descriptionPath: 'meta.description' }),
     ],
   },
-  // De gamle felter, skjult. Bruges kun som reserve, indtil teksterne er flyttet til meta.* (scripts/migrate-seo-to-plugin.ts).
-  { name: 'titleTag', type: 'text', admin: { hidden: true } },
-  { name: 'metaDescription', type: 'textarea', admin: { hidden: true } },
 ]

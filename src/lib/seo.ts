@@ -39,19 +39,16 @@ export async function seoMetadata({
 
 type SeoDoc = {
   meta?: { description?: string | null; image?: Media | string | null; title?: string | null } | null
-  metaDescription?: string | null
-  titleTag?: string | null
 }
 
 /**
  * Metadata for en side, artikel, kategori eller et mærke ud fra SEO-fanen (SEO-pluginets meta.*).
- * De gamle felter titleTag og metaDescription bruges som reserve, indtil teksterne er flyttet (scripts/migrate-seo-to-plugin.ts).
  * Billede: SEO-fanens delingsbillede, ellers fallbackImage (fx hovedbilledet), ellers standardbilledet fra indstillingerne.
  */
 export function docSeoMetadata(doc: SeoDoc, { fallbackImage, fallbackTitle }: { fallbackImage?: string; fallbackTitle: string }) {
   return seoMetadata({
-    title: doc.meta?.title || doc.titleTag || fallbackTitle,
-    description: doc.meta?.description || doc.metaDescription,
+    title: doc.meta?.title || fallbackTitle,
+    description: doc.meta?.description,
     image: mediaUrl(doc.meta?.image, 'og') ?? fallbackImage,
   })
 }

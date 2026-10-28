@@ -122,8 +122,7 @@ async function run() {
         slug: row.Slug,
         mainHeading: row['Main heading'] || row.Name,
         mainText: htmlToLexical(row['Main text']),
-        titleTag: row['Title tag'] || undefined,
-        metaDescription: row['Meta description'] || undefined,
+        meta: { title: row['Title tag'] || undefined, description: row['Meta description'] || undefined },
         _status: isPublished(row),
       },
     })
@@ -201,8 +200,7 @@ async function run() {
         mainHeading: row['Main heading'] || row.Name,
         mainText: htmlToLexical(row['Main text']),
         brands: brandIds.length ? brandIds : undefined,
-        titleTag: row['Title tag'] || undefined,
-        metaDescription: row['Meta description'] || undefined,
+        meta: { title: row['Title tag'] || undefined, description: row['Meta description'] || undefined },
         // Webflows datoer bevares, da "Læs også" sorterer efter dem.
         publishedAt: row['Published On'] ? new Date(row['Published On']).toISOString() : undefined,
         createdAt: row['Created On'] ? new Date(row['Created On']).toISOString() : undefined,

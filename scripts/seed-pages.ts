@@ -199,8 +199,7 @@ async function run() {
       data: {
         title: spec.title,
         slug: spec.slug,
-        titleTag: title || undefined,
-        metaDescription: description || undefined,
+        meta: { title: title || undefined, description: description || undefined },
         layout,
         _status: 'published',
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
