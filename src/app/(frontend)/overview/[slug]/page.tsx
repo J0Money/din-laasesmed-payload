@@ -9,7 +9,7 @@ import { mediaAlt, mediaUrl } from '@/lib/media'
 import { getCms } from '@/lib/cms'
 import { firstParagraphText } from '@/lib/richtext'
 import { ROUTES } from '@/lib/routes'
-import { seoMetadata } from '@/lib/seo'
+import { docSeoMetadata } from '@/lib/seo'
 
 // Faneknapperne i introen er altid de tre hovedkategorier, også på fx "Nyheder" (hvor ingen er markeret).
 const TAB_SLUGS = ['mekanisk-sikring', 'elektronisk-sikring', 'service']
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const category = await getCategory(slug)
   if (!category) return {}
-  return seoMetadata({ title: category.titleTag || category.name, description: category.metaDescription })
+  return docSeoMetadata(category, { fallbackTitle: category.name })
 }
 
 /**

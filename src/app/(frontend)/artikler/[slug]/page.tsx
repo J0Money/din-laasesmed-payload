@@ -9,7 +9,7 @@ import { RichText } from '@/components/RichText'
 import { mediaAlt, mediaDimensions, mediaUrl, SIZES } from '@/lib/media'
 import { getCms } from '@/lib/cms'
 import { ROUTES } from '@/lib/routes'
-import { seoMetadata } from '@/lib/seo'
+import { docSeoMetadata } from '@/lib/seo'
 import type { Brand, Category } from '@/payload-types'
 
 async function getArticle(slug: string) {
@@ -32,11 +32,7 @@ export async function generateMetadata({
   const article = await getArticle(slug)
   if (!article) return {}
 
-  return seoMetadata({
-    title: article.titleTag || article.mainHeading,
-    description: article.metaDescription,
-    image: mediaUrl(article.mainImage, 'og'),
-  })
+  return docSeoMetadata(article, { fallbackTitle: article.mainHeading, fallbackImage: mediaUrl(article.mainImage, 'og') })
 }
 
 /**

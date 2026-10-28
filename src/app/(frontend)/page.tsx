@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { BlockRenderer } from '@/components/blocks/BlockRenderer'
 import { getCms } from '@/lib/cms'
 import { HOME_PAGE_SLUG } from '@/lib/routes'
-import { seoMetadata } from '@/lib/seo'
+import { docSeoMetadata } from '@/lib/seo'
 
 async function getHomePage() {
   const payload = await getCms()
@@ -19,7 +19,7 @@ async function getHomePage() {
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getHomePage()
   if (!page) return {}
-  return seoMetadata({ title: page.titleTag || page.title, description: page.metaDescription })
+  return docSeoMetadata(page, { fallbackTitle: page.title })
 }
 
 /** Forsiden er den udgivne Payload-side med slug "forside", bygget af blokke. */

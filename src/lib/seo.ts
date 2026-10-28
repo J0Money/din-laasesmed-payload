@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import { mediaUrl } from '@/lib/media'
 import { getCms } from '@/lib/cms'
+import type { Media } from '@/payload-types'
 
 /** Sitets offentlige adresse. Bruges til sitemap og delings-billeder; kan overstyres med SITE_URL. */
 export const SITE_URL = (process.env.SITE_URL || 'https://din-laasesmed.dk').replace(/\/$/, '')
@@ -34,4 +35,23 @@ export async function seoMetadata({
     openGraph: { type: 'website', title, description: desc, images: shareImage ? [shareImage] : undefined },
     twitter: { card: 'summary_large_image', title, description: desc, images: shareImage ? [shareImage] : undefined },
   }
+}
+
+type SeoDoc = {
+  meta?: { description?: string | null; image?: Media | string | null; title?: string | null } | null
+  metaDescription?: string | null
+  titleTag?: string | null
+}
+
+/**
+ * Metadata for en side, artikel, kategori eller et mærke ud fra SEO-fanen (SEO-pluginets meta.*).
+ * De gamle felter titleTag og metaDescription bruges som reserve, indtil teksterne er flyttet (scripts/migrate-seo-to-plugin.ts).
+ * Billede: SEO-fanens delingsbillede, ellers fallbackImage (fx hovedbilledet), ellers standardbilledet fra indstillingerne.
+ */
+export function docSeoMetadata(doc: SeoDoc, { fallbackImage, fallbackTitle }: { fallbackImage?: string; fallbackTitle: string }) {
+  return seoMetadata({
+    title: doc.meta?.title || doc.titleTag || fallbackTitle,
+    description: doc.meta?.description || doc.metaDescription,
+    image: mediaUrl(doc.meta?.image, 'og') ?? fallbackImage,
+  })
 }

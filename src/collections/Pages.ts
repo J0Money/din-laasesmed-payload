@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { allBlocks } from '@/blocks'
 import { blocksAdminDescription } from '@/blocks/fields/blockAdmin'
+import { seoFields } from '@/fields/seo'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -51,16 +52,7 @@ export const Pages: CollectionConfig = {
         {
           label: 'SEO',
           fields: [
-            {
-              name: 'titleTag',
-              type: 'text',
-              label: 'Title tag',
-            },
-            {
-              name: 'metaDescription',
-              type: 'textarea',
-              label: 'Meta description',
-            },
+            ...seoFields,
           ],
         },
       ],

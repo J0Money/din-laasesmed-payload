@@ -4,7 +4,7 @@ import { notFound, redirect } from 'next/navigation'
 import { BlockRenderer } from '@/components/blocks/BlockRenderer'
 import { getCms } from '@/lib/cms'
 import { HOME_PAGE_SLUG } from '@/lib/routes'
-import { seoMetadata } from '@/lib/seo'
+import { docSeoMetadata } from '@/lib/seo'
 
 async function getPage(slug: string) {
   const payload = await getCms()
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const page = await getPage(slug)
   if (!page) return {}
-  return seoMetadata({ title: page.titleTag || page.title, description: page.metaDescription })
+  return docSeoMetadata(page, { fallbackTitle: page.title })
 }
 
 export default async function StaticPage({ params }: { params: Promise<{ slug: string }> }) {

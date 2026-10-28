@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
+import { seoFields } from '@/fields/seo'
 import { publishWhenViaMcp } from '@/lib/publishViaMcp'
 
 export const Articles: CollectionConfig = {
@@ -83,16 +84,7 @@ export const Articles: CollectionConfig = {
         {
           label: 'SEO',
           fields: [
-            {
-              name: 'titleTag',
-              type: 'text',
-              label: 'Title tag',
-            },
-            {
-              name: 'metaDescription',
-              type: 'textarea',
-              label: 'Meta description',
-            },
+            ...seoFields,
             {
               name: 'sitemapIndexing',
               type: 'checkbox',

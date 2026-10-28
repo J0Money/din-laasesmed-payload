@@ -2,6 +2,7 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { mcpPlugin } from '@payloadcms/plugin-mcp'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import { s3Storage } from '@payloadcms/storage-s3'
 import { NodeHttpHandler } from '@smithy/node-http-handler'
 import { Agent as HttpsAgent } from 'https'
@@ -27,6 +28,7 @@ import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
 import { extendFormFields } from './lib/formBuilder'
 import { revalidateCmsPlugin } from './lib/revalidate'
+import { generateTitle, generateURL } from './lib/seoPlugin'
 import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -123,6 +125,8 @@ export default buildConfig({
         admin: { group: 'Forms' },
       },
     }),
+    // SEO-felterne lægges selv ind i indholdstypernes SEO-fane (fields/seo.ts); pluginet leverer "Generate" og forhåndsvisningen.
+    seoPlugin({ generateTitle, generateURL, uploadsCollection: 'media' }),
     // Skal stå sidst: rydder sitets cache, når indhold ændres (se lib/revalidate.ts).
     revalidateCmsPlugin,
   ],

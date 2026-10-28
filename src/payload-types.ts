@@ -204,6 +204,14 @@ export interface Page {
         | TextWithImageBlock
       )[]
     | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Shown when the page is shared (Facebook, LinkedIn etc.). Leave empty to use the main image or the default image from Site Settings.
+     */
+    image?: (string | null) | Media;
+  };
   titleTag?: string | null;
   metaDescription?: string | null;
   updatedAt: string;
@@ -306,50 +314,14 @@ export interface Category {
     };
     [k: string]: unknown;
   } | null;
-  titleTag?: string | null;
-  metaDescription?: string | null;
-  sitemapIndexing?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "articles".
- */
-export interface Article {
-  id: string;
-  name: string;
-  /**
-   * Used in the URL: /artikler/<slug>
-   */
-  slug: string;
-  /**
-   * Leave empty for articles without a category, e.g. location pages like "Låsesmed Aalborg".
-   */
-  category?: (string | null) | Category;
-  mainImage?: (string | null) | Media;
-  mainHeading: string;
-  mainText: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Shown when the page is shared (Facebook, LinkedIn etc.). Leave empty to use the main image or the default image from Site Settings.
+     */
+    image?: (string | null) | Media;
   };
-  /**
-   * Controls the order in "Læs også" (newest first).
-   */
-  publishedAt?: string | null;
-  brands?: (string | Brand)[] | null;
   titleTag?: string | null;
   metaDescription?: string | null;
   sitemapIndexing?: boolean | null;
@@ -415,6 +387,58 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: string;
+  name: string;
+  /**
+   * Used in the URL: /artikler/<slug>
+   */
+  slug: string;
+  /**
+   * Leave empty for articles without a category, e.g. location pages like "Låsesmed Aalborg".
+   */
+  category?: (string | null) | Category;
+  mainImage?: (string | null) | Media;
+  mainHeading: string;
+  mainText: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Controls the order in "Læs også" (newest first).
+   */
+  publishedAt?: string | null;
+  brands?: (string | Brand)[] | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Shown when the page is shared (Facebook, LinkedIn etc.). Leave empty to use the main image or the default image from Site Settings.
+     */
+    image?: (string | null) | Media;
+  };
+  titleTag?: string | null;
+  metaDescription?: string | null;
+  sitemapIndexing?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "brands".
  */
 export interface Brand {
@@ -468,6 +492,14 @@ export interface Brand {
         id?: string | null;
       }[]
     | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Shown when the page is shared (Facebook, LinkedIn etc.). Leave empty to use the main image or the default image from Site Settings.
+     */
+    image?: (string | null) | Media;
+  };
   titleTag?: string | null;
   metaDescription?: string | null;
   updatedAt: string;
@@ -1576,6 +1608,13 @@ export interface PagesSelect<T extends boolean = true> {
         text?: T | TextBlockSelect<T>;
         textWithImage?: T | TextWithImageBlockSelect<T>;
       };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   titleTag?: T;
   metaDescription?: T;
   updatedAt?: T;
@@ -1927,6 +1966,13 @@ export interface ArticlesSelect<T extends boolean = true> {
   mainText?: T;
   publishedAt?: T;
   brands?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   titleTag?: T;
   metaDescription?: T;
   sitemapIndexing?: T;
@@ -1943,6 +1989,13 @@ export interface CategoriesSelect<T extends boolean = true> {
   slug?: T;
   mainHeading?: T;
   mainText?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   titleTag?: T;
   metaDescription?: T;
   sitemapIndexing?: T;
@@ -1969,6 +2022,13 @@ export interface BrandsSelect<T extends boolean = true> {
         image?: T;
         text?: T;
         id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
       };
   titleTag?: T;
   metaDescription?: T;
