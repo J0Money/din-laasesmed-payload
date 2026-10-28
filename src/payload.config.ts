@@ -81,7 +81,7 @@ export default buildConfig({
           }),
         ]
       : []),
-    // MCP-adgang til indholdet (så fx Claude kan læse, oprette og rette). Kun de tre indholdstyper nedenfor er med:
+    // MCP-adgang til indholdet (så fx Claude kan læse, oprette og rette). Kun indholdstyperne nedenfor er med:
     // formularindsendelser og brugere (persondata) er bevidst udeladt, og intet kan slettes. Nøgler oprettes i admin
     // under "MCP > API-nøgler", hvor man pr. nøgle kan slå rettighederne fra.
     mcpPlugin({
@@ -98,6 +98,13 @@ export default buildConfig({
         categories: {
           description: 'Categories in the overview pages (Mekanisk sikring, Elektronisk sikring, Service, Nyheder). The content is written in Danish.',
           enabled: { find: true, create: true, update: true, delete: false },
+        },
+        // Kun læsning og rettelse af alt-tekster: ingen upload og ingen sletning af billeder via MCP.
+        media: {
+          description:
+            'Images used on the site. Only update the "alt" field: a short, factual Danish description of what the image shows (max ca. 125 characters). ' +
+            'Look at the image itself (the "url" field) before writing; never guess from the filename. Do not change other fields.',
+          enabled: { find: true, create: false, update: true, delete: false },
         },
       },
       mcp: {

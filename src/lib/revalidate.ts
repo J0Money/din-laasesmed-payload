@@ -1,14 +1,18 @@
 import { revalidateTag } from 'next/cache'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, GlobalAfterChangeHook, Plugin } from 'payload'
 
-import { CMS_CACHE_TAG } from '@/lib/cacheTag'
+import { bumpCmsCacheVersion, CMS_CACHE_TAG } from '@/lib/cacheTag'
 
 // Det sitet viser. Indsendelser, brugere og MCP-nøgler er udeladt, så en formularindsendelse ikke rydder cachen.
 const COLLECTIONS = ['pages', 'articles', 'categories', 'brands', 'employees', 'jobs', 'media', 'videos', 'forms']
 const GLOBALS = ['header', 'footer', 'siteSettings', 'alert']
 
-/** Rydder al cachet indhold med det samme (ingen gammel udgave serveres). Udenfor Next.js (scripts, seed) er der ingen cache at rydde. */
+/**
+ * Rydder al cachet indhold med det samme (ingen gammel udgave serveres). Versionen tælles altid op (virker også via MCP);
+ * revalidateTag fjerner desuden de gamle udgaver. Udenfor Next.js (scripts, seed) er der ingen cache at rydde.
+ */
 function clearCache() {
+  bumpCmsCacheVersion()
   try {
     revalidateTag(CMS_CACHE_TAG, { expire: 0 })
   } catch {

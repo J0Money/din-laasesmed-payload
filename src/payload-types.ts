@@ -1437,6 +1437,16 @@ export interface PayloadMcpApiKey {
      */
     update?: boolean | null;
   };
+  media?: {
+    /**
+     * Allow clients to find media.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to update media.
+     */
+    update?: boolean | null;
+  };
   updatedAt: string;
   createdAt: string;
   enableAPIKey?: boolean | null;
@@ -2332,6 +2342,12 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
     | {
         find?: T;
         create?: T;
+        update?: T;
+      };
+  media?:
+    | T
+    | {
+        find?: T;
         update?: T;
       };
   updatedAt?: T;
