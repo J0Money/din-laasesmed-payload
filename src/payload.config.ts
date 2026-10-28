@@ -22,6 +22,7 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Users } from './collections/Users'
 import { Videos } from './collections/Videos'
+import { Alert } from './globals/Alert'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
 import { extendFormFields } from './lib/formBuilder'
@@ -51,7 +52,7 @@ export default buildConfig({
       })
     : undefined,
   collections: [Pages, Articles, Categories, Brands, Employees, Jobs, Users, Media, Videos],
-  globals: [Header, Footer, SiteSettings],
+  globals: [Header, Footer, SiteSettings, Alert],
   folders: false,
   plugins: [
     // Billeder gemmes i en S3-kompatibel bucket (Railway Bucket), når S3_ENABLED=true (se .env.example). Ellers bruges mappen media.

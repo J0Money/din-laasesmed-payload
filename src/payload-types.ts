@@ -112,11 +112,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     siteSettings: SiteSetting;
+    alert: Alert;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     siteSettings: SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    alert: AlertSelect<false> | AlertSelect<true>;
   };
   locale: null;
   widgets: {
@@ -2580,6 +2582,48 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
+ * En bjælke øverst på alle sider, fx ved lukkedage eller ændrede åbningstider. Slå den fra, når den ikke skal vises.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "alert".
+ */
+export interface Alert {
+  id: string;
+  enabled?: boolean | null;
+  /**
+   * Hold den kort, så den kan være på én til to linjer på mobil.
+   */
+  message?: string | null;
+  hasLink?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    label: string;
+    /**
+     * Linket følger dokumentets URL automatisk — ret i dokumentet, ikke her.
+     */
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: string | Page;
+        } | null)
+      | ({
+          relationTo: 'categories';
+          value: string | Category;
+        } | null)
+      | ({
+          relationTo: 'articles';
+          value: string | Article;
+        } | null);
+    /**
+     * Fx en ekstern adresse eller et tel:-link.
+     */
+    url?: string | null;
+    newTab?: boolean | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -2715,6 +2759,27 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   defaultTitleTag?: T;
   defaultMetaDescription?: T;
   ogImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "alert_select".
+ */
+export interface AlertSelect<T extends boolean = true> {
+  enabled?: T;
+  message?: T;
+  hasLink?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        label?: T;
+        reference?: T;
+        url?: T;
+        newTab?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
