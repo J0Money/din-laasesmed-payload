@@ -88,20 +88,20 @@ export const PriceCalculator: GlobalConfig = {
               min: 0,
               max: 100,
               admin: {
-                description: 'The price is shown as a range around the calculated price. E.g. 15 gives 850 to 1.150 kr. for a price of 1.000 kr.',
+                description: 'Shows the price as a range around the calculated price. 0 shows the exact sum.',
               },
             },
             {
               name: 'disclaimer',
               type: 'textarea',
               label: 'Disclaimer',
-              admin: { description: 'Shown under the price, e.g. that the price is indicative and the final price is agreed on site.' },
+              admin: { description: 'Shown under the price.' },
             },
           ],
         },
         {
           label: 'VAT',
-          description: 'Private customers see prices including VAT. Business customers see prices excluding VAT.',
+          description: 'Private customers see prices including VAT. Business customers see them excluding VAT.',
           fields: [
             {
               name: 'vatPercent',
@@ -115,7 +115,7 @@ export const PriceCalculator: GlobalConfig = {
         },
         {
           label: 'Time surcharges',
-          description: 'The customer chooses when the job should be done. The surcharge is added before driving and VAT.',
+          description: 'Used for emergency help. Added before driving and VAT.',
           fields: [
             surchargeGroup('eveningNight', 'Evening and night (on-call service)', 'On-call service 16.00 to 08.00 on weekdays.'),
             surchargeGroup('weekendHoliday', 'Weekend and public holidays', 'All day on Saturdays, Sundays and public holidays.'),
@@ -124,7 +124,7 @@ export const PriceCalculator: GlobalConfig = {
         {
           label: 'Driving',
           description:
-            'The customer enters a postcode. The calculator measures the distance (as the crow flies) from the middle of the postcode to the nearest department and multiplies it by the price per km.',
+            'Distance (as the crow flies) from the postcode to the nearest department, multiplied by the price per km.',
           fields: [
             {
               name: 'departments',
@@ -136,7 +136,7 @@ export const PriceCalculator: GlobalConfig = {
                 {
                   type: 'row',
                   fields: [
-                    { name: 'name', type: 'text', label: 'Name', required: true, admin: { width: '50%', description: 'E.g. Aarhus.' } },
+                    { name: 'name', type: 'text', label: 'Name', required: true, admin: { width: '50%', description: 'Shown to the customer.' } },
                     { ...postcodeField('postcode', 'Postcode'), admin: { width: '50%' } },
                   ],
                 },
@@ -161,14 +161,14 @@ export const PriceCalculator: GlobalConfig = {
               label: 'Exceptions',
               labels: { singular: 'Exception', plural: 'Exceptions' },
               admin: {
-                description: 'Postcodes where the distance does not fit, e.g. islands that need a ferry. They get a fixed price or the text below.',
+                description: 'Postcodes where the distance does not fit, such as islands. They get a fixed price or the text below.',
               },
               fields: [
                 {
                   type: 'row',
                   fields: [
                     { ...postcodeField('postcode', 'Postcode'), admin: { width: '30%' } },
-                    { name: 'name', type: 'text', label: 'Name', admin: { width: '30%', description: 'For yourself, e.g. Samsø.' } },
+                    { name: 'name', type: 'text', label: 'Name', admin: { width: '30%', description: 'For yourself.' } },
                     {
                       name: 'surcharge',
                       type: 'number',
@@ -184,7 +184,7 @@ export const PriceCalculator: GlobalConfig = {
               name: 'outsideAreaText',
               type: 'textarea',
               label: 'Text when driving has no price',
-              admin: { description: 'E.g. that we also come there, but the price for driving is agreed by phone.' },
+              admin: { description: 'Shown when driving has no price.' },
             },
           ],
         },

@@ -84,8 +84,7 @@ export function PriceCalculatorClient({
   }, [])
 
   const drivingEnabled = hasDriving(settings)
-  const visible = services.filter((service) => !service.customerTypes?.length || service.customerTypes.includes(customerType))
-  const selections: Selection[] = visible
+  const selections: Selection[] = services
     .filter((service) => chosen[service.id])
     .map((service) => {
       const choice = chosen[service.id]
@@ -99,9 +98,9 @@ export function PriceCalculatorClient({
   // Ingen regnet pris (kun fra-pris eller køb i butikken), så tidspunktet er ligegyldigt.
   const needsVisit =
     selections.length > 0 &&
-    selections.every((s) => ['fromPrice', 'inStore'].includes(visible.find((v) => v.id === s.serviceId)?.pricingModel ?? ''))
+    selections.every((s) => ['fromPrice', 'inStore'].includes(services.find((service) => service.id === s.serviceId)?.pricingModel ?? ''))
 
-  const result = calculatePrice({ customerType, period, postcode, selections, services: visible, settings })
+  const result = calculatePrice({ customerType, period, postcode, selections, services, settings })
   // Kun butiksvarer valgt: intet tilbud at sende, og disclaimeren om montøren passer ikke.
   const needsQuote = result.lines.length > 0 || result.fromPrices.length > 0
   const onlyStore = !needsQuote && result.inStore.length > 0
@@ -131,7 +130,7 @@ export function PriceCalculatorClient({
   const categoryChoices = CATEGORIES.filter(
     (item) =>
       categories.includes(item.value) &&
-      (visible.some((service) => service.category === item.value) || (item.value === 'emergency' && Boolean(phone))),
+      (services.some((service) => service.category === item.value) || (item.value === 'emergency' && Boolean(phone))),
   )
   // Kun akut har tidstillæg (aften, nat og weekend). Planlagte opgaver regnes til almindelig tid.
   const emergency = category === 'emergency'
@@ -301,7 +300,7 @@ export function PriceCalculatorClient({
           )}
 
           {CATEGORIES.filter((group) => group.value === category).map((group) => {
-            const items = visible.filter((service) => service.category === group.value)
+            const items = services.filter((service) => service.category === group.value)
             return (
               <fieldset key={group.value} className={`mt-6 ${emergency ? '' : 'border-t border-[#e4e8ef] pt-6'}`}>
                 <legend className="sr-only">{group.label}</legend>

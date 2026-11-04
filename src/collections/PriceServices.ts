@@ -19,7 +19,7 @@ export const PriceServices: CollectionConfig = {
     useAsTitle: 'name',
     group: 'Price calculator',
     defaultColumns: ['name', 'category', 'pricingModel', 'enabled'],
-    description: 'The services customers can choose in the price calculator. Drag to change the order. All amounts are excluding VAT.',
+    description: 'Services in the price calculator. Drag to change the order. Amounts are excluding VAT.',
   },
   fields: [
     {
@@ -27,7 +27,7 @@ export const PriceServices: CollectionConfig = {
       type: 'text',
       required: true,
       label: 'Name',
-      admin: { description: 'E.g.: Change of lock cylinder. Shown to the customer.' },
+      admin: { description: 'Shown to the customer.' },
     },
     {
       name: 'category',
@@ -47,12 +47,6 @@ export const PriceServices: CollectionConfig = {
       maxLength: 200,
     },
     {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Image',
-    },
-    {
       name: 'pricingModel',
       type: 'select',
       required: true,
@@ -65,7 +59,7 @@ export const PriceServices: CollectionConfig = {
       ],
       admin: {
         description:
-          'With "From price" only "from X kr." is shown, and the customer is sent to the quote form. With "In store" the text below is shown instead of a price.',
+          'From price: shows "from X kr." and sends the customer to the quote form. In store: shows a text instead of a price.',
       },
     },
     // Stykpris
@@ -120,7 +114,7 @@ export const PriceServices: CollectionConfig = {
       label: 'Text instead of a price',
       admin: {
         condition: isModel('inStore'),
-        description: 'Shown in the price box when the service is chosen, e.g. that the customer can come to the store and see the selection.',
+        description: 'Shown in the price box when the service is chosen.',
       },
     },
     {
@@ -130,7 +124,7 @@ export const PriceServices: CollectionConfig = {
       defaultValue: true,
       admin: {
         condition: isCalculated,
-        description: 'The call-out fee is only added once, even if the customer chooses several services.',
+        description: 'The call-out fee is added once, however many services are chosen.',
       },
     },
     {
@@ -140,7 +134,7 @@ export const PriceServices: CollectionConfig = {
       defaultValue: false,
       admin: {
         condition: isCalculated,
-        description: 'The add-ons become a choice of exactly one, and the price is shown when one is chosen.',
+        description: 'The add-ons become a choice of one. The price is shown when one is chosen.',
       },
     },
     {
@@ -150,7 +144,7 @@ export const PriceServices: CollectionConfig = {
       labels: { singular: 'Add-on', plural: 'Add-ons' },
       admin: {
         condition: isCalculated,
-        description: 'Choices the customer can tick, e.g. "Approved security cylinder" or "Same key for all doors".',
+        description: 'Choices the customer can tick.',
       },
       fields: [
         {
@@ -170,14 +164,14 @@ export const PriceServices: CollectionConfig = {
               type: 'number',
               label: 'Show from quantity',
               min: 2,
-              admin: { width: '20%', description: 'E.g. 2: only shown when the customer has chosen 2 or more. Empty: always.' },
+              admin: { width: '20%', description: 'Only shown from this quantity. Empty: always.' },
             },
             {
               name: 'requiresQuote',
               type: 'checkbox',
               label: 'No price, customer contacts us',
               defaultValue: false,
-              admin: { width: '20%', description: 'If chosen, no price is calculated for the service. The customer is asked to ask for a quote.' },
+              admin: { width: '20%', description: 'No price is calculated. The customer asks for a quote.' },
             },
           ],
         },
@@ -188,19 +182,7 @@ export const PriceServices: CollectionConfig = {
       type: 'checkbox',
       label: 'Show in the price calculator',
       defaultValue: true,
-      admin: { position: 'sidebar', description: 'Turn off to hide the service without deleting it.' },
-    },
-    {
-      name: 'customerTypes',
-      type: 'select',
-      hasMany: true,
-      label: 'Customer types',
-      defaultValue: ['private', 'business'],
-      options: [
-        { label: 'Private', value: 'private' },
-        { label: 'Business', value: 'business' },
-      ],
-      admin: { position: 'sidebar', description: 'Who can choose the service.' },
+      admin: { position: 'sidebar', description: 'Turn off to hide the service.' },
     },
   ],
 }

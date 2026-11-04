@@ -1159,11 +1159,11 @@ export interface PriceCalculatorBlock {
   heading: string;
   intro?: string | null;
   /**
-   * Which services the calculator shows. Prices are set under "Price calculator".
+   * Which services the calculator shows.
    */
   categories?: ('emergency' | 'mechanical' | 'electronic')[] | null;
   /**
-   * The customer's choices and the calculated price are sent with the form. Empty uses the form from Site Settings.
+   * The customer's choices and price are sent with the form. Empty uses the form from Site Settings.
    */
   form?: (string | null) | Form;
   /**
@@ -1365,7 +1365,7 @@ export interface Job {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * The services customers can choose in the price calculator. Drag to change the order. All amounts are excluding VAT.
+ * Services in the price calculator. Drag to change the order. Amounts are excluding VAT.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "priceServices".
@@ -1374,14 +1374,13 @@ export interface PriceService {
   id: string;
   _order?: string | null;
   /**
-   * E.g.: Change of lock cylinder. Shown to the customer.
+   * Shown to the customer.
    */
   name: string;
   category: 'emergency' | 'mechanical' | 'electronic';
   description?: string | null;
-  image?: (string | null) | Media;
   /**
-   * With "From price" only "from X kr." is shown, and the customer is sent to the quote form. With "In store" the text below is shown instead of a price.
+   * From price: shows "from X kr." and sends the customer to the quote form. In store: shows a text instead of a price.
    */
   pricingModel: 'perUnit' | 'fromPrice' | 'inStore';
   unit?: ('piece' | 'door' | 'key' | 'window' | 'lock') | null;
@@ -1394,19 +1393,19 @@ export interface PriceService {
   minutesPerUnit?: number | null;
   fromPrice?: number | null;
   /**
-   * Shown in the price box when the service is chosen, e.g. that the customer can come to the store and see the selection.
+   * Shown in the price box when the service is chosen.
    */
   storeText?: string | null;
   /**
-   * The call-out fee is only added once, even if the customer chooses several services.
+   * The call-out fee is added once, however many services are chosen.
    */
   includeCallOutFee?: boolean | null;
   /**
-   * The add-ons become a choice of exactly one, and the price is shown when one is chosen.
+   * The add-ons become a choice of one. The price is shown when one is chosen.
    */
   chooseOneOption?: boolean | null;
   /**
-   * Choices the customer can tick, e.g. "Approved security cylinder" or "Same key for all doors".
+   * Choices the customer can tick.
    */
   options?:
     | {
@@ -1417,24 +1416,20 @@ export interface PriceService {
          */
         perUnit?: boolean | null;
         /**
-         * E.g. 2: only shown when the customer has chosen 2 or more. Empty: always.
+         * Only shown from this quantity. Empty: always.
          */
         showFromQuantity?: number | null;
         /**
-         * If chosen, no price is calculated for the service. The customer is asked to ask for a quote.
+         * No price is calculated. The customer asks for a quote.
          */
         requiresQuote?: boolean | null;
         id?: string | null;
       }[]
     | null;
   /**
-   * Turn off to hide the service without deleting it.
+   * Turn off to hide the service.
    */
   enabled?: boolean | null;
-  /**
-   * Who can choose the service.
-   */
-  customerTypes?: ('private' | 'business')[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2319,7 +2314,6 @@ export interface PriceServicesSelect<T extends boolean = true> {
   name?: T;
   category?: T;
   description?: T;
-  image?: T;
   pricingModel?: T;
   unit?: T;
   minQuantity?: T;
@@ -2341,7 +2335,6 @@ export interface PriceServicesSelect<T extends boolean = true> {
         id?: T;
       };
   enabled?: T;
-  customerTypes?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2881,7 +2874,7 @@ export interface Header {
       }[]
     | null;
   /**
-   * Optional white button before the contact button, e.g. "Beregn pris". Leave the link text empty to hide it.
+   * Optional white button before the contact button. Leave the link text empty to hide it.
    */
   secondaryCta?: {
     link?: {
@@ -3084,11 +3077,11 @@ export interface PriceCalculator {
    */
   callOutFee?: number | null;
   /**
-   * The price is shown as a range around the calculated price. E.g. 15 gives 850 to 1.150 kr. for a price of 1.000 kr.
+   * Shows the price as a range around the calculated price. 0 shows the exact sum.
    */
   priceRangePercent?: number | null;
   /**
-   * Shown under the price, e.g. that the price is indicative and the final price is agreed on site.
+   * Shown under the price.
    */
   disclaimer?: string | null;
   vatPercent?: number | null;
@@ -3118,7 +3111,7 @@ export interface PriceCalculator {
   departments?:
     | {
         /**
-         * E.g. Aarhus.
+         * Shown to the customer.
          */
         name: string;
         postcode: string;
@@ -3131,13 +3124,13 @@ export interface PriceCalculator {
    */
   maxKm?: number | null;
   /**
-   * Postcodes where the distance does not fit, e.g. islands that need a ferry. They get a fixed price or the text below.
+   * Postcodes where the distance does not fit, such as islands. They get a fixed price or the text below.
    */
   exceptions?:
     | {
         postcode: string;
         /**
-         * For yourself, e.g. Samsø.
+         * For yourself.
          */
         name?: string | null;
         /**
@@ -3148,7 +3141,7 @@ export interface PriceCalculator {
       }[]
     | null;
   /**
-   * E.g. that we also come there, but the price for driving is agreed by phone.
+   * Shown when driving has no price.
    */
   outsideAreaText?: string | null;
   updatedAt?: string | null;

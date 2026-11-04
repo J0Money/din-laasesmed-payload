@@ -40,7 +40,7 @@ export const Header: GlobalConfig = {
       type: 'group',
       label: 'Second button',
       admin: {
-        description: 'Optional white button before the contact button, e.g. "Beregn pris". Leave the link text empty to hide it.',
+        description: 'Optional white button before the contact button. Leave the link text empty to hide it.',
       },
       fields: [optionalLink],
     },
