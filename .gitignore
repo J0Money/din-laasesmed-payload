@@ -29,3 +29,9 @@ pnpm-debug.log*
 !.vscode/extensions.json
 .idea
 .claude/map/
+
+# Genereres af Next.js (dev og build skifter stierne), skal ikke i git
+next-env.d.ts
+
+# Output fra scripts/sync-to-railway.ts
+media-sync.txt

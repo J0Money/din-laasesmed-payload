@@ -7,7 +7,7 @@ import { writeFileSync } from 'node:fs'
 
 import { MongoClient } from 'mongodb'
 
-const GLOBALS = ['header', 'footer', 'siteSettings']
+const GLOBALS = ['header', 'footer', 'siteSettings', 'priceCalculator']
 
 /** Indhold der erstattes dokument for dokument (på _id). Dokumenter kun på Railway slettes ikke. */
 const COLLECTIONS = [
@@ -18,6 +18,7 @@ const COLLECTIONS = [
   'employees',
   'jobs', '_jobs_versions',
   'forms',
+  'priceServices',
   'videos',
 ]
 
