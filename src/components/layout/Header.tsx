@@ -30,6 +30,9 @@ export async function Header() {
       : [{ href: resolveLinkHref(item.link), label: item.link?.label ?? '' }],
   )
   const mobileCta = header.cta?.link?.label ? { href: resolveLinkHref(header.cta.link), label: header.cta.link.label } : undefined
+  const secondaryCta = header.secondaryCta?.link?.label
+    ? { href: resolveLinkHref(header.secondaryCta.link), label: header.secondaryCta.link.label }
+    : undefined
 
   return (
     <>
@@ -86,10 +89,11 @@ export async function Header() {
               <Logo className="h-auto w-full overflow-visible" />
             </Link>
 
-            <div className="flex items-center gap-10 self-stretch">
-              <MobileMenu cta={mobileCta} links={mobileLinks} main={mobileMain} />
+            {/* Under 1200px er der ikke plads til begge knapper med originalens 40px mellemrum, så det mindskes. */}
+            <div className="flex items-center gap-10 self-stretch min-[992px]:max-[1199px]:gap-5">
+              <MobileMenu cta={mobileCta} links={mobileLinks} main={mobileMain} secondaryCta={secondaryCta} />
 
-              <nav className="hidden items-center gap-10 self-stretch font-heading text-[0.9rem] font-medium min-[992px]:flex">
+              <nav className="hidden items-center gap-10 self-stretch font-heading text-[0.9rem] font-medium min-[992px]:flex min-[992px]:max-[1199px]:gap-5">
                 {(header.navItems ?? []).map((item, index) => {
                   const Icon = NAV_ICON_BY_CATEGORY_SLUG[linkCategorySlug(item.link) ?? '']
                   const categoryHref = resolveLinkHref(item.link)
@@ -147,11 +151,18 @@ export async function Header() {
                 })}
               </nav>
 
-              {header.cta?.link?.label && (
-                <Link href={resolveLinkHref(header.cta.link)} className="button max-[991px]:hidden">
-                  {header.cta.link.label}
-                </Link>
-              )}
+              <div className="flex items-center gap-3 max-[991px]:hidden">
+                {secondaryCta && (
+                  <Link href={secondaryCta.href} className="button-outline whitespace-nowrap min-[992px]:max-[1199px]:px-4">
+                    {secondaryCta.label}
+                  </Link>
+                )}
+                {header.cta?.link?.label && (
+                  <Link href={resolveLinkHref(header.cta.link)} className="button">
+                    {header.cta.link.label}
+                  </Link>
+                )}
+              </div>
 
             </div>
           </div>

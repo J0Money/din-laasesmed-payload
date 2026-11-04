@@ -21,11 +21,13 @@ import { Employees } from './collections/Employees'
 import { Jobs } from './collections/Jobs'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
+import { PriceServices } from './collections/PriceServices'
 import { Users } from './collections/Users'
 import { Videos } from './collections/Videos'
 import { Alert } from './globals/Alert'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
+import { PriceCalculator } from './globals/PriceCalculator'
 import { extendFormFields } from './lib/formBuilder'
 import { revalidateCmsPlugin } from './lib/revalidate'
 import { generateTitle, generateURL } from './lib/seoPlugin'
@@ -54,8 +56,8 @@ export default buildConfig({
         },
       })
     : undefined,
-  collections: [Pages, Articles, Categories, Brands, Employees, Jobs, Users, Media, Videos],
-  globals: [Header, Footer, SiteSettings, Alert],
+  collections: [Pages, Articles, Categories, Brands, Employees, Jobs, PriceServices, Users, Media, Videos],
+  globals: [Header, Footer, SiteSettings, Alert, PriceCalculator],
   folders: false,
   plugins: [
     // Billeder gemmes i en S3-kompatibel bucket (Railway Bucket), når S3_ENABLED=true (se .env.example). Ellers bruges mappen media.
@@ -81,8 +83,8 @@ export default buildConfig({
           }),
         ]
       : []),
-    // MCP-adgang til indholdet (så fx Claude kan læse, oprette og rette). Kun indholdstyperne nedenfor er med:
-    // formularindsendelser og brugere (persondata) er bevidst udeladt, og intet kan slettes. Nøgler oprettes i admin
+    // MCP-adgang til indholdet (så fx Claude kan læse, oprette og rette). Alt indhold og alle globals er med, undtagen
+    // formularindsendelser og brugere (persondata og adgangskoder), som bevidst er udeladt. Intet kan slettes. Nøgler oprettes i admin
     // under "MCP > API-nøgler", hvor man pr. nøgle kan slå rettighederne fra.
     mcpPlugin({
       userCollection: 'users',
@@ -105,6 +107,46 @@ export default buildConfig({
             'Images used on the site. Only update the "alt" field: a short, factual Danish description of what the image shows (max ca. 125 characters). ' +
             'Look at the image itself (the "url" field) before writing; never guess from the filename. Do not change other fields.',
           enabled: { find: true, create: false, update: true, delete: false },
+        },
+        pages: {
+          description:
+            'Fixed pages (front page, contact, about, brands overview and so on). A page is a list of blocks in "layout": fetch the page first and change only the fields that need changing, keeping the other blocks exactly as they are. The content is written in Danish.',
+          enabled: { find: true, create: false, update: true, delete: false },
+        },
+        employees: {
+          description: 'Employees shown on the About page (name, title and photo). The content is written in Danish.',
+          enabled: { find: true, create: true, update: true, delete: false },
+        },
+        jobs: {
+          description: 'Open positions shown on "Ledige stillinger". The content is written in Danish.',
+          enabled: { find: true, create: true, update: true, delete: false },
+        },
+        videos: {
+          description: 'Videos used on the site. Read and update text fields only; do not change the video files. The content is written in Danish.',
+          enabled: { find: true, create: false, update: true, delete: false },
+        },
+        priceServices: {
+          description:
+            'Services in the price calculator (name, category, pricing model, prices and add-ons). The content is written in Danish. ' +
+            'Only enter prices and times the user gives; never estimate them.',
+          enabled: { find: true, create: true, update: true, delete: false },
+        },
+        forms: {
+          description: 'Form setups (fields, button text and confirmation). Form submissions are not available.',
+          enabled: { find: true, create: false, update: true, delete: false },
+        },
+      },
+      globals: {
+        header: { description: 'Menu and buttons in the site header.', enabled: { find: true, update: true } },
+        footer: { description: 'Content and links in the site footer.', enabled: { find: true, update: true } },
+        siteSettings: {
+          description: 'Contact details, social links, default SEO text and share image for the whole site. Phone, address and CVR must only be changed when the user gives the new value.',
+          enabled: { find: true, update: true },
+        },
+        alert: { description: 'The alert bar shown at the top of the site.', enabled: { find: true, update: true } },
+        priceCalculator: {
+          description: 'Hourly rate, call-out fee, time surcharges, VAT and driving (departments, price per km and exceptions) for the price calculator. Only enter amounts the user gives.',
+          enabled: { find: true, update: true },
         },
       },
       mcp: {

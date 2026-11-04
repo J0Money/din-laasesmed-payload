@@ -17,6 +17,7 @@ import { JobList } from '@/blocks/JobList'
 import { OverviewIntro } from '@/blocks/OverviewIntro'
 import { ParallaxBand } from '@/blocks/ParallaxBand'
 import { People } from '@/blocks/People'
+import { PriceCalculator } from '@/blocks/PriceCalculator'
 import { Text } from '@/blocks/Text'
 import { ThanksMessage } from '@/blocks/ThanksMessage'
 import { TextWithImage } from '@/blocks/TextWithImage'
@@ -58,6 +59,8 @@ function renderBlock(block: LayoutBlock): React.ReactNode {
       return <BrandGrid />
     case 'formPage':
       return <FormPage {...block} />
+    case 'priceCalculator':
+      return <PriceCalculator {...block} />
     case 'jobList':
       return <JobList {...block} />
     case 'thanksMessage':

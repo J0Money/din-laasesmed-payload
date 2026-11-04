@@ -135,6 +135,10 @@
     @apply inline-flex h-12 items-center justify-center rounded-lg border-[0.8px] border-brand-500 bg-brand-500 px-6 font-heading text-sm leading-none font-normal text-white transition-colors duration-200 hover:border-ink-800 hover:bg-ink-800 hover:text-white;
   }
 
+  .button-outline {
+    @apply inline-flex h-12 items-center justify-center rounded-lg border-[0.8px] border-brand-500 bg-white px-6 font-heading text-sm leading-none font-normal text-brand-500 transition-colors duration-200 hover:border-ink-800 hover:bg-ink-800 hover:text-white;
+  }
+
   .button-accent {
     @apply inline-flex h-12 items-center justify-center rounded-lg border-[0.8px] border-accent-red bg-accent-red px-6 font-heading text-sm leading-none font-normal text-white transition-colors duration-200 hover:border-ink-800 hover:bg-ink-800 hover:text-[#f2f5f9];
   }

@@ -10,10 +10,11 @@ type MobileMenuProps = {
   cta?: { href: string; label: string }
   links: { href: string; label: string }[]
   main: { href: string; iconSlug?: string; label: string }[]
+  secondaryCta?: { href: string; label: string }
 }
 
 /** Hamburger og venstre-skuffe under 992px (som originalens Webflow-nav, "medium"): 320px bred, glider ind over 0,4s. */
-export function MobileMenu({ cta, links, main }: MobileMenuProps) {
+export function MobileMenu({ cta, links, main, secondaryCta }: MobileMenuProps) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
@@ -68,6 +69,13 @@ export function MobileMenu({ cta, links, main }: MobileMenuProps) {
               </Link>
             </li>
           ))}
+          {secondaryCta && (
+            <li>
+              <Link href={secondaryCta.href} className="button-outline w-full">
+                {secondaryCta.label}
+              </Link>
+            </li>
+          )}
           {cta && (
             <li>
               <Link href={cta.href} className="button w-full">

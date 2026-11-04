@@ -1,7 +1,15 @@
-import type { GlobalConfig } from 'payload'
+import type { GlobalConfig, GroupField } from 'payload'
 
 import { linkField } from '../fields/link'
 import { navItemFields } from '../fields/navItem'
+
+// Samme link-felt, men uden krav om linktekst, så knappen kan være tom (skjult).
+const optionalLink: GroupField = {
+  ...(linkField as GroupField),
+  fields: (linkField as GroupField).fields.map((field) =>
+    'name' in field && field.name === 'label' ? { ...field, required: false } : field,
+  ) as GroupField['fields'],
+}
 
 export const Header: GlobalConfig = {
   slug: 'header',
@@ -26,6 +34,15 @@ export const Header: GlobalConfig = {
         description: 'Used for dropdown menus, e.g. under Mekanisk sikring.',
       },
       fields: navItemFields,
+    },
+    {
+      name: 'secondaryCta',
+      type: 'group',
+      label: 'Second button',
+      admin: {
+        description: 'Optional white button before the contact button, e.g. "Beregn pris". Leave the link text empty to hide it.',
+      },
+      fields: [optionalLink],
     },
     {
       name: 'cta',

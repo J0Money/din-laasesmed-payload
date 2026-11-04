@@ -4,8 +4,8 @@ import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, GlobalAfterC
 import { bumpCmsCacheVersion, CMS_CACHE_TAG } from '@/lib/cacheTag'
 
 // Det sitet viser. Indsendelser, brugere og MCP-nøgler er udeladt, så en formularindsendelse ikke rydder cachen.
-const COLLECTIONS = ['pages', 'articles', 'categories', 'brands', 'employees', 'jobs', 'media', 'videos', 'forms']
-const GLOBALS = ['header', 'footer', 'siteSettings', 'alert']
+const COLLECTIONS = ['pages', 'articles', 'categories', 'brands', 'employees', 'jobs', 'priceServices', 'media', 'videos', 'forms']
+const GLOBALS = ['header', 'footer', 'siteSettings', 'alert', 'priceCalculator']
 
 /**
  * Rydder al cachet indhold med det samme (ingen gammel udgave serveres). Versionen tælles altid op (virker også via MCP);

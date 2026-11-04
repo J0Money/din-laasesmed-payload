@@ -40,10 +40,13 @@ const PAGE_INPUT =
  * Felter med "vis kun når" vises først, når det angivne afkrydsningsfelt er markeret, og sendes ellers ikke med.
  */
 export function DynamicForm({
+  extraData,
   form,
   variant,
   heading,
 }: {
+  /** Sendes med uden at være felter i formularen, fx prisberegnerens valg. */
+  extraData?: { field: string; value: string }[]
   form: Form
   heading?: string
   variant: 'card' | 'page'
@@ -77,7 +80,7 @@ export function DynamicForm({
         return { field: name, value: typeof value === 'boolean' ? (value ? 'Ja' : 'Nej') : String(value ?? '') }
       })
     // Originalen sender også hvilken side formularen blev udfyldt på.
-    submissionData.push({ field: 'side', value: window.location.pathname })
+    submissionData.push({ field: 'side', value: window.location.pathname }, ...(extraData ?? []))
 
     try {
       const response = await fetch('/api/form-submissions', {

@@ -74,6 +74,7 @@ export interface Config {
     brands: Brand;
     employees: Employee;
     jobs: Job;
+    priceServices: PriceService;
     users: User;
     media: Media;
     videos: Video;
@@ -93,6 +94,7 @@ export interface Config {
     brands: BrandsSelect<false> | BrandsSelect<true>;
     employees: EmployeesSelect<false> | EmployeesSelect<true>;
     jobs: JobsSelect<false> | JobsSelect<true>;
+    priceServices: PriceServicesSelect<false> | PriceServicesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     videos: VideosSelect<false> | VideosSelect<true>;
@@ -113,12 +115,14 @@ export interface Config {
     footer: Footer;
     siteSettings: SiteSetting;
     alert: Alert;
+    priceCalculator: PriceCalculator;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     siteSettings: SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     alert: AlertSelect<false> | AlertSelect<true>;
+    priceCalculator: PriceCalculatorSelect<false> | PriceCalculatorSelect<true>;
   };
   locale: null;
   widgets: {
@@ -179,7 +183,7 @@ export interface Page {
    */
   parent?: (string | null) | Page;
   /**
-   * Choose from: Home page hero, Home page intro, Testimonials, Stats band, Focus cards, Business customers, Video band, Intro band, Contact cards, Article with form, Parallax band, Employees, Image slider, Brand overview, Job list, Form page, Thank-you message, Text, Text with image.
+   * Choose from: Home page hero, Home page intro, Testimonials, Stats band, Focus cards, Business customers, Video band, Intro band, Contact cards, Article with form, Parallax band, Employees, Image slider, Brand overview, Job list, Form page, Price calculator, Thank-you message, Text, Text with image.
    */
   layout?:
     | (
@@ -199,6 +203,7 @@ export interface Page {
         | BrandGridBlock
         | JobListBlock
         | FormPageBlock
+        | PriceCalculatorBlock
         | ThanksMessageBlock
         | TextBlock
         | TextWithImageBlock
@@ -1148,6 +1153,33 @@ export interface FormPageBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PriceCalculatorBlock".
+ */
+export interface PriceCalculatorBlock {
+  heading: string;
+  intro?: string | null;
+  /**
+   * Which services the calculator shows. Prices are set under "Price calculator".
+   */
+  categories?: ('emergency' | 'mechanical' | 'electronic')[] | null;
+  /**
+   * The customer's choices and the calculated price are sent with the form. Empty uses the form from Site Settings.
+   */
+  form?: (string | null) | Form;
+  /**
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
+   */
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
+  /**
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
+   */
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'priceCalculator';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ThanksMessageBlock".
  */
 export interface ThanksMessageBlock {
@@ -1333,6 +1365,80 @@ export interface Job {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * The services customers can choose in the price calculator. Drag to change the order. All amounts are excluding VAT.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "priceServices".
+ */
+export interface PriceService {
+  id: string;
+  _order?: string | null;
+  /**
+   * E.g.: Change of lock cylinder. Shown to the customer.
+   */
+  name: string;
+  category: 'emergency' | 'mechanical' | 'electronic';
+  description?: string | null;
+  image?: (string | null) | Media;
+  /**
+   * With "From price" only "from X kr." is shown, and the customer is sent to the quote form. With "In store" the text below is shown instead of a price.
+   */
+  pricingModel: 'perUnit' | 'fromPrice' | 'inStore';
+  unit?: ('piece' | 'door' | 'key' | 'window' | 'lock') | null;
+  minQuantity?: number | null;
+  maxQuantity?: number | null;
+  unitPrice?: number | null;
+  /**
+   * Mounting time, multiplied by the hourly rate.
+   */
+  minutesPerUnit?: number | null;
+  fromPrice?: number | null;
+  /**
+   * Shown in the price box when the service is chosen, e.g. that the customer can come to the store and see the selection.
+   */
+  storeText?: string | null;
+  /**
+   * The call-out fee is only added once, even if the customer chooses several services.
+   */
+  includeCallOutFee?: boolean | null;
+  /**
+   * The add-ons become a choice of exactly one, and the price is shown when one is chosen.
+   */
+  chooseOneOption?: boolean | null;
+  /**
+   * Choices the customer can tick, e.g. "Approved security cylinder" or "Same key for all doors".
+   */
+  options?:
+    | {
+        name: string;
+        price?: number | null;
+        /**
+         * Multiplied by the quantity.
+         */
+        perUnit?: boolean | null;
+        /**
+         * E.g. 2: only shown when the customer has chosen 2 or more. Empty: always.
+         */
+        showFromQuantity?: number | null;
+        /**
+         * If chosen, no price is calculated for the service. The customer is asked to ask for a quote.
+         */
+        requiresQuote?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Turn off to hide the service without deleting it.
+   */
+  enabled?: boolean | null;
+  /**
+   * Who can choose the service.
+   */
+  customerTypes?: ('private' | 'business')[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -1447,6 +1553,128 @@ export interface PayloadMcpApiKey {
      */
     update?: boolean | null;
   };
+  pages?: {
+    /**
+     * Allow clients to find pages.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to update pages.
+     */
+    update?: boolean | null;
+  };
+  employees?: {
+    /**
+     * Allow clients to find employees.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create employees.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update employees.
+     */
+    update?: boolean | null;
+  };
+  jobs?: {
+    /**
+     * Allow clients to find jobs.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create jobs.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update jobs.
+     */
+    update?: boolean | null;
+  };
+  videos?: {
+    /**
+     * Allow clients to find videos.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to update videos.
+     */
+    update?: boolean | null;
+  };
+  priceServices?: {
+    /**
+     * Allow clients to find priceServices.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to create priceServices.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update priceServices.
+     */
+    update?: boolean | null;
+  };
+  forms?: {
+    /**
+     * Allow clients to find forms.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to update forms.
+     */
+    update?: boolean | null;
+  };
+  header?: {
+    /**
+     * Allow clients to find header global.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to update header global.
+     */
+    update?: boolean | null;
+  };
+  footer?: {
+    /**
+     * Allow clients to find footer global.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to update footer global.
+     */
+    update?: boolean | null;
+  };
+  siteSettings?: {
+    /**
+     * Allow clients to find siteSettings global.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to update siteSettings global.
+     */
+    update?: boolean | null;
+  };
+  alert?: {
+    /**
+     * Allow clients to find alert global.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to update alert global.
+     */
+    update?: boolean | null;
+  };
+  priceCalculator?: {
+    /**
+     * Allow clients to find priceCalculator global.
+     */
+    find?: boolean | null;
+    /**
+     * Allow clients to update priceCalculator global.
+     */
+    update?: boolean | null;
+  };
   updatedAt: string;
   createdAt: string;
   enableAPIKey?: boolean | null;
@@ -1502,6 +1730,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'jobs';
         value: string | Job;
+      } | null)
+    | ({
+        relationTo: 'priceServices';
+        value: string | PriceService;
       } | null)
     | ({
         relationTo: 'users';
@@ -1606,6 +1838,7 @@ export interface PagesSelect<T extends boolean = true> {
         brandGrid?: T | BrandGridBlockSelect<T>;
         jobList?: T | JobListBlockSelect<T>;
         formPage?: T | FormPageBlockSelect<T>;
+        priceCalculator?: T | PriceCalculatorBlockSelect<T>;
         thanksMessage?: T | ThanksMessageBlockSelect<T>;
         text?: T | TextBlockSelect<T>;
         textWithImage?: T | TextWithImageBlockSelect<T>;
@@ -1914,6 +2147,20 @@ export interface FormPageBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PriceCalculatorBlock_select".
+ */
+export interface PriceCalculatorBlockSelect<T extends boolean = true> {
+  heading?: T;
+  intro?: T;
+  categories?: T;
+  form?: T;
+  spacingBefore?: T;
+  spacingAfter?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ThanksMessageBlock_select".
  */
 export interface ThanksMessageBlockSelect<T extends boolean = true> {
@@ -2062,6 +2309,41 @@ export interface JobsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "priceServices_select".
+ */
+export interface PriceServicesSelect<T extends boolean = true> {
+  _order?: T;
+  name?: T;
+  category?: T;
+  description?: T;
+  image?: T;
+  pricingModel?: T;
+  unit?: T;
+  minQuantity?: T;
+  maxQuantity?: T;
+  unitPrice?: T;
+  minutesPerUnit?: T;
+  fromPrice?: T;
+  storeText?: T;
+  includeCallOutFee?: T;
+  chooseOneOption?: T;
+  options?:
+    | T
+    | {
+        name?: T;
+        price?: T;
+        perUnit?: T;
+        showFromQuantity?: T;
+        requiresQuote?: T;
+        id?: T;
+      };
+  enabled?: T;
+  customerTypes?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2350,6 +2632,75 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
         find?: T;
         update?: T;
       };
+  pages?:
+    | T
+    | {
+        find?: T;
+        update?: T;
+      };
+  employees?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+      };
+  jobs?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+      };
+  videos?:
+    | T
+    | {
+        find?: T;
+        update?: T;
+      };
+  priceServices?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+      };
+  forms?:
+    | T
+    | {
+        find?: T;
+        update?: T;
+      };
+  header?:
+    | T
+    | {
+        find?: T;
+        update?: T;
+      };
+  footer?:
+    | T
+    | {
+        find?: T;
+        update?: T;
+      };
+  siteSettings?:
+    | T
+    | {
+        find?: T;
+        update?: T;
+      };
+  alert?:
+    | T
+    | {
+        find?: T;
+        update?: T;
+      };
+  priceCalculator?:
+    | T
+    | {
+        find?: T;
+        update?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   enableAPIKey?: T;
@@ -2529,6 +2880,36 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Optional white button before the contact button, e.g. "Beregn pris". Leave the link text empty to hide it.
+   */
+  secondaryCta?: {
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      label?: string | null;
+      /**
+       * The link follows the document URL automatically. Edit it in the document, not here.
+       */
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: string | Page;
+          } | null)
+        | ({
+            relationTo: 'categories';
+            value: string | Category;
+          } | null)
+        | ({
+            relationTo: 'articles';
+            value: string | Article;
+          } | null);
+      /**
+       * E.g. an external address or a tel: link.
+       */
+      url?: string | null;
+      newTab?: boolean | null;
+    };
+  };
   cta: {
     link: {
       type?: ('reference' | 'custom') | null;
@@ -2690,6 +3071,91 @@ export interface Alert {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "priceCalculator".
+ */
+export interface PriceCalculator {
+  id: string;
+  /**
+   * Used for the estimated time on each service.
+   */
+  hourlyRate?: number | null;
+  /**
+   * Added once per visit, for services that include a call-out.
+   */
+  callOutFee?: number | null;
+  /**
+   * The price is shown as a range around the calculated price. E.g. 15 gives 850 to 1.150 kr. for a price of 1.000 kr.
+   */
+  priceRangePercent?: number | null;
+  /**
+   * Shown under the price, e.g. that the price is indicative and the final price is agreed on site.
+   */
+  disclaimer?: string | null;
+  vatPercent?: number | null;
+  /**
+   * On-call service 16.00 to 08.00 on weekdays.
+   */
+  eveningNight?: {
+    type?: ('amount' | 'percent') | null;
+    /**
+     * Leave empty for no surcharge.
+     */
+    value?: number | null;
+  };
+  /**
+   * All day on Saturdays, Sundays and public holidays.
+   */
+  weekendHoliday?: {
+    type?: ('amount' | 'percent') | null;
+    /**
+     * Leave empty for no surcharge.
+     */
+    value?: number | null;
+  };
+  /**
+   * Where we drive from. The postcode is used as the location.
+   */
+  departments?:
+    | {
+        /**
+         * E.g. Aarhus.
+         */
+        name: string;
+        postcode: string;
+        id?: string | null;
+      }[]
+    | null;
+  pricePerKm?: number | null;
+  /**
+   * Farther away shows the text below instead of a price. Empty for no limit.
+   */
+  maxKm?: number | null;
+  /**
+   * Postcodes where the distance does not fit, e.g. islands that need a ferry. They get a fixed price or the text below.
+   */
+  exceptions?:
+    | {
+        postcode: string;
+        /**
+         * For yourself, e.g. Samsø.
+         */
+        name?: string | null;
+        /**
+         * Leave empty to show the text below instead of a price.
+         */
+        surcharge?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * E.g. that we also come there, but the price for driving is agreed by phone.
+   */
+  outsideAreaText?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2748,6 +3214,19 @@ export interface HeaderSelect<T extends boolean = true> {
               id?: T;
             };
         id?: T;
+      };
+  secondaryCta?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              label?: T;
+              reference?: T;
+              url?: T;
+              newTab?: T;
+            };
       };
   cta?:
     | T
@@ -2845,6 +3324,50 @@ export interface AlertSelect<T extends boolean = true> {
         url?: T;
         newTab?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "priceCalculator_select".
+ */
+export interface PriceCalculatorSelect<T extends boolean = true> {
+  hourlyRate?: T;
+  callOutFee?: T;
+  priceRangePercent?: T;
+  disclaimer?: T;
+  vatPercent?: T;
+  eveningNight?:
+    | T
+    | {
+        type?: T;
+        value?: T;
+      };
+  weekendHoliday?:
+    | T
+    | {
+        type?: T;
+        value?: T;
+      };
+  departments?:
+    | T
+    | {
+        name?: T;
+        postcode?: T;
+        id?: T;
+      };
+  pricePerKm?: T;
+  maxKm?: T;
+  exceptions?:
+    | T
+    | {
+        postcode?: T;
+        name?: T;
+        surcharge?: T;
+        id?: T;
+      };
+  outsideAreaText?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
