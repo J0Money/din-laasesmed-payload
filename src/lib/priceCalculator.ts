@@ -5,7 +5,7 @@ import { POSTCODE_COORDINATES } from './postcodes'
 /**
  * Prisberegnerens regnestykke, samlet her så blokken og evt. tests bruger det samme:
  * akutgebyr (kun akutte ydelser, én gang) + tid × timepris + materialer + tilvalg, derefter tidstillæg, kørsel og til sidst moms.
- * Tomme beløb tæller som 0. Ydelser med fra-pris regnes ikke med i intervallet, de vises for sig.
+ * Tomme beløb tæller som 0.
  */
 
 export type CustomerType = 'business' | 'private'
@@ -25,8 +25,6 @@ export type PriceResult = {
   drivingAmount: number | null
   /** Kørsel er sat op, men ikke regnet med (intet postnummer, ukendt postnummer eller uden for området). */
   drivingUnknown: boolean
-  /** Ydelser med fra-pris. De regnes ikke med i totalen. */
-  fromPrices: { amount: number | null; label: string }[]
   /** Ydelser, der købes i butikken: ingen pris, kun en tekst. */
   inStore: { label: string; text: string | null }[]
   high: number
@@ -157,7 +155,6 @@ export function calculatePrice({
 
   // amount er ekskl. moms her. keep: vises også ved 0 kr. (ydelsens navn, så antal og tilvalg har noget at stå under).
   const lines: (PriceLine & { exact?: boolean; keep?: boolean })[] = []
-  const fromPrices: PriceResult['fromPrices'] = []
   const inStore: PriceResult['inStore'] = []
   // Ydelser med prisinterval (med moms for private), hver med sin laveste og højeste pris.
   const ranges: { from: number; to: number }[] = []
@@ -171,10 +168,6 @@ export function calculatePrice({
 
     if (service.pricingModel === 'inStore') {
       inStore.push({ label: service.name, text: service.storeText ?? null })
-      continue
-    }
-    if (service.pricingModel === 'fromPrice') {
-      fromPrices.push({ label: service.name, amount: service.fromPrice == null ? null : round(service.fromPrice * vat) })
       continue
     }
     if (service.pricingModel === 'priceRange') {
@@ -238,7 +231,6 @@ export function calculatePrice({
     driving,
     drivingAmount: driving?.status === 'price' ? Math.round(driving.amount * vat) : null,
     drivingUnknown: Boolean(lines.length && hasDriving(settings) && driving?.status !== 'price'),
-    fromPrices,
     inStore,
     high: round(calculated * (1 + range)) + rangeTo,
     includesVat,

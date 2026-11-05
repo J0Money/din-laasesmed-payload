@@ -1,12 +1,12 @@
 import type { CollectionConfig } from 'payload'
 
-type Data = { pricingModel?: 'fromPrice' | 'inStore' | 'perUnit' | 'priceRange' }
+type Data = { pricingModel?: 'inStore' | 'perUnit' | 'priceRange' }
 
 const isModel = (model: Data['pricingModel']) => (data: Data) => data?.pricingModel === model
 
 /**
  * Ydelser i prisberegneren. Prisen regnes som akutgebyr (kun akut) + tid × timepris + materialer + tilvalg, derefter tidstillæg, kørsel og moms
- * (timepris, akutgebyr, tillæg og kørsel står i globalen "Price calculator"). Ydelser med fra-pris eller prisinterval kræver besigtigelse og sendes til formularen.
+ * (timepris, akutgebyr, tillæg og kørsel står i globalen "Price calculator"). Ydelser med prisinterval kræver besigtigelse og sendes til formularen.
  */
 export const PriceServices: CollectionConfig = {
   slug: 'priceServices',
@@ -51,13 +51,12 @@ export const PriceServices: CollectionConfig = {
       defaultValue: 'perUnit',
       options: [
         { label: 'Price per unit and time', value: 'perUnit' },
-        { label: 'From price, requires inspection', value: 'fromPrice' },
         { label: 'Price range, requires inspection', value: 'priceRange' },
         { label: 'In store, no price', value: 'inStore' },
       ],
       admin: {
         description:
-          'From price: shows "from X kr.". Price range: shows "X to Y kr.". Both send the customer to the quote form. In store: shows a text instead of a price.',
+          'Price range: shows "X to Y kr." and sends the customer to the quote form. In store: shows a text instead of a price.',
       },
     },
     // Stykpris
@@ -97,20 +96,14 @@ export const PriceServices: CollectionConfig = {
         },
       ],
     },
-    // Fra-pris og prisinterval
+    // Prisinterval
     {
-      name: 'fromPrice',
-      type: 'number',
-      label: 'From price (kr.)',
-      min: 0,
-      admin: { condition: (data: Data) => data?.pricingModel === 'fromPrice' || data?.pricingModel === 'priceRange' },
-    },
-    {
-      name: 'toPrice',
-      type: 'number',
-      label: 'To price (kr.)',
-      min: 0,
+      type: 'row',
       admin: { condition: isModel('priceRange') },
+      fields: [
+        { name: 'fromPrice', type: 'number', label: 'From price (kr.)', min: 0, admin: { width: '50%' } },
+        { name: 'toPrice', type: 'number', label: 'To price (kr.)', min: 0, admin: { width: '50%' } },
+      ],
     },
     // I butikken
     {

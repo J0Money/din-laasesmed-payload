@@ -204,7 +204,7 @@ const paramFor = <T extends string>(map: Record<string, T>, value: T) => Object.
 
 /**
  * Prisopdelingen: totalen, linjerne og ydelser, der kræver besigtigelse. Bruges i prisboksen og i tilbudspop-up'en, så de viser det samme.
- * showLines false skjuler totalen og linjerne (prisboksen, mens postnummeret mangler), men ikke ydelser med fra-pris.
+ * showLines false skjuler totalen og linjerne (prisboksen, mens postnummeret mangler).
  */
 function PriceBreakdown({
   outsideText,
@@ -253,19 +253,6 @@ function PriceBreakdown({
         </div>
       )}
 
-      {result.fromPrices.length > 0 && (
-        <div className={result.lines.length && showLines ? 'border-t border-[#e4e8ef] pt-4' : ''}>
-          <p className="text-xs font-medium tracking-[0.08em] text-ink-muted uppercase">Kræver besigtigelse</p>
-          <dl className="mt-2 flex flex-col gap-2 text-sm">
-            {result.fromPrices.map((item) => (
-              <div key={item.label} className="flex justify-between gap-4">
-                <dt className="text-text-body">{item.label}</dt>
-                <dd className="shrink-0 text-ink-800">{item.amount == null ? 'Efter aftale' : `fra ${formatKr(item.amount)}`}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      )}
     </>
   )
 }
@@ -371,14 +358,14 @@ export function PriceCalculatorClient({
       })
       return { serviceId: service.id, quantity: choice.quantity, optionIds }
     })
-  // Ingen regnet pris (kun fra-pris, prisinterval eller køb i butikken), så tidspunktet er ligegyldigt.
+  // Ingen regnet pris (kun prisinterval eller køb i butikken), så tidspunktet er ligegyldigt.
   const needsVisit =
     selections.length > 0 &&
-    selections.every((s) => ['fromPrice', 'inStore', 'priceRange'].includes(services.find((service) => service.id === s.serviceId)?.pricingModel ?? ''))
+    selections.every((s) => ['inStore', 'priceRange'].includes(services.find((service) => service.id === s.serviceId)?.pricingModel ?? ''))
 
   const result = calculatePrice({ customerType, period, postcode, selections, services, settings })
   // Kun butiksvarer valgt: intet tilbud at sende, og disclaimeren om montøren passer ikke.
-  const needsQuote = result.lines.length > 0 || result.fromPrices.length > 0
+  const needsQuote = result.lines.length > 0
   const onlyStore = !needsQuote && result.inStore.length > 0
   const storeTexts = [...new Set(result.inStore.flatMap((item) => (item.text ? [item.text] : [])))]
   const driving = result.driving
@@ -392,16 +379,7 @@ export function PriceCalculatorClient({
   const vatLabel = result.includesVat ? 'inkl. moms' : 'ekskl. moms'
   // Totalen som ét beløb eller et interval (procent-intervallet fra globalen og ydelser med prisinterval).
   const totalText = result.low === result.high ? formatKr(result.total) : `${formatKr(result.low)} til ${formatKr(result.high)}`
-  const lowestFrom = Math.min(...result.fromPrices.flatMap((item) => (item.amount == null ? [] : [item.amount])))
-  const barPrice = awaitingPostcode
-    ? 'Indtast postnummer'
-    : result.lines.length
-      ? totalText
-      : Number.isFinite(lowestFrom)
-        ? `Fra ${formatKr(lowestFrom)}`
-        : result.fromPrices.length
-          ? 'Efter besigtigelse'
-          : 'Køb i butikken'
+  const barPrice = awaitingPostcode ? 'Indtast postnummer' : result.lines.length ? totalText : 'Køb i butikken'
 
   // En kategori vises, hvis der er ydelser i den; akut også med blot et telefonnummer.
   const categoryChoices = CATEGORIES.filter(
@@ -453,7 +431,6 @@ export function PriceCalculatorClient({
     ...result.lines.map((line) =>
       line.amount == null ? (line.text ? `${line.label}: ${line.text}` : line.label) : `${line.label}: ${formatKr(line.amount)}`,
     ),
-    ...result.fromPrices.map((item) => `${item.label}: ${item.amount == null ? 'pris efter besigtigelse' : `fra ${formatKr(item.amount)}`}`),
     ...result.inStore.map((item) => `${item.label}: køb i butikken`),
     emergency ? `Tidspunkt: ${PERIODS.find((p) => p.value === period)?.label}` : '',
     postcode
@@ -501,7 +478,7 @@ export function PriceCalculatorClient({
           </div>
         </fieldset>
 
-        {/* Altid vist, også ved ydelser med fra-pris: postnummeret er nyttigt for tilbuddet, og trinnumrene skal ikke skifte undervejs. */}
+        {/* Altid vist, også ved ydelser uden regnet pris: postnummeret er nyttigt for tilbuddet, og trinnumrene skal ikke skifte undervejs. */}
         {drivingEnabled && (
           <div className={CARD}>
             <label htmlFor="price-postcode" className={STEP_HEADING}>

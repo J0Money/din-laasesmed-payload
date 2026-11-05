@@ -1380,9 +1380,9 @@ export interface PriceService {
   category: 'emergency' | 'mechanical' | 'electronic';
   description?: string | null;
   /**
-   * From price: shows "from X kr.". Price range: shows "X to Y kr.". Both send the customer to the quote form. In store: shows a text instead of a price.
+   * Price range: shows "X to Y kr." and sends the customer to the quote form. In store: shows a text instead of a price.
    */
-  pricingModel: 'perUnit' | 'fromPrice' | 'priceRange' | 'inStore';
+  pricingModel: 'perUnit' | 'priceRange' | 'inStore';
   unit?: ('piece' | 'door' | 'key' | 'window' | 'lock') | null;
   minQuantity?: number | null;
   maxQuantity?: number | null;
