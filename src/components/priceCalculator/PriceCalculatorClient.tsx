@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 import { DynamicForm } from '@/components/forms/DynamicForm'
@@ -12,6 +13,7 @@ import {
   formatKr,
   hasDriving,
   type Period,
+  type PriceResult,
   PERIODS,
   type Selection,
   unitLabel,
@@ -195,6 +197,79 @@ function PriceCount({ high, low, total }: { high: number; low: number; total: nu
   )
 }
 
+// Værdierne i adressen: /prisberegner?type=erhverv&kategori=akut&postnummer=8000
+const CUSTOMER_PARAMS: Record<string, CustomerType> = { privat: 'private', erhverv: 'business' }
+const CATEGORY_PARAMS: Record<string, Category> = { akut: 'emergency', mekanisk: 'mechanical', elektronisk: 'electronic' }
+const paramFor = <T extends string>(map: Record<string, T>, value: T) => Object.keys(map).find((key) => map[key] === value)
+
+/**
+ * Prisopdelingen: totalen, linjerne og ydelser, der kræver besigtigelse. Bruges i prisboksen og i tilbudspop-up'en, så de viser det samme.
+ * showLines false skjuler totalen og linjerne (prisboksen, mens postnummeret mangler), men ikke ydelser med fra-pris.
+ */
+function PriceBreakdown({
+  outsideText,
+  result,
+  showLines,
+  totalText,
+  vatLabel,
+}: {
+  outsideText: string
+  result: PriceResult
+  showLines: boolean
+  totalText: string
+  vatLabel: string
+}) {
+  const driving = result.driving
+  return (
+    <>
+      {result.lines.length > 0 && showLines && (
+        <div>
+          <p className="font-heading text-[32px] leading-[1.2] font-light tracking-[-0.03em] text-ink-800 tabular-nums">
+            <PriceCount low={result.low} high={result.high} total={result.total} />
+          </p>
+          <p className="mt-1 text-xs text-text-body">{vatLabel}</p>
+          <dl className="mt-5 flex flex-col gap-2 border-t border-[#e4e8ef] pt-4 text-sm">
+            {/* Alle linjer på samme niveau: ydelsen med produktprisen, antal på sin egen linje og al arbejdstid samlet til sidst. */}
+            {result.lines.map((line, index) => (
+              <div key={index} className="flex justify-between gap-4">
+                <dt className="text-text-body">{line.label}</dt>
+                <dd className="shrink-0 text-ink-800">{line.amount == null ? (line.text ?? '') : formatKr(line.amount)}</dd>
+              </div>
+            ))}
+            <div className="mt-1 flex justify-between gap-4 border-t border-[#e4e8ef] pt-3 font-medium text-ink-800">
+              <dt>I alt</dt>
+              <dd className="shrink-0">{totalText}</dd>
+            </div>
+          </dl>
+          {result.drivingUnknown && (
+            <p className="mt-3 text-xs text-text-body">
+              {driving?.status === 'outside'
+                ? `Kørsel er ikke regnet med. ${outsideText}`
+                : driving?.status === 'unknown'
+                  ? 'Kørsel er ikke regnet med, postnummeret blev ikke fundet.'
+                  : 'Kørsel er ikke regnet med, indtast et postnummer.'}
+            </p>
+          )}
+        </div>
+      )}
+
+      {result.fromPrices.length > 0 && (
+        <div className={result.lines.length && showLines ? 'border-t border-[#e4e8ef] pt-4' : ''}>
+          <p className="text-xs font-medium tracking-[0.08em] text-ink-muted uppercase">Kræver besigtigelse</p>
+          <dl className="mt-2 flex flex-col gap-2 text-sm">
+            {result.fromPrices.map((item) => (
+              <div key={item.label} className="flex justify-between gap-4">
+                <dt className="text-text-body">{item.label}</dt>
+                <dd className="shrink-0 text-ink-800">{item.amount == null ? 'Efter aftale' : `fra ${formatKr(item.amount)}`}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      )}
+    </>
+  )
+}
+
 type Chosen = Record<string, { optionIds: string[]; quantity: number }>
 
 /** Prisberegnerens trin og den løbende pris. Selve regnestykket står i lib/priceCalculator.ts. */
@@ -213,15 +288,60 @@ export function PriceCalculatorClient({
   services: PriceService[]
   settings: PriceCalculator
 }) {
-  const [customerType, setCustomerType] = useState<CustomerType>('private')
-  const [category, setCategory] = useState<Category | null>(null)
+  // Adressen kan udfylde beregneren: ?type=erhverv&kategori=akut&postnummer=7000. Ukendte værdier ignoreres,
+  // og bogstaver og overskydende cifre i postnummeret også.
+  const searchParams = useSearchParams()
+  const [customerType, setCustomerType] = useState<CustomerType>(() => CUSTOMER_PARAMS[searchParams.get('type') ?? ''] ?? 'private')
+  const [category, setCategory] = useState<Category | null>(() => {
+    const fromUrl = CATEGORY_PARAMS[searchParams.get('kategori') ?? '']
+    return fromUrl && categories.includes(fromUrl) ? fromUrl : null
+  })
   const [chosen, setChosen] = useState<Chosen>({})
   const [period, setPeriod] = useState<Period>('day')
-  const [postcode, setPostcode] = useState('')
+  const [postcode, setPostcode] = useState(() => (searchParams.get('postnummer') ?? '').replace(/\D/g, '').slice(0, 4))
   const [showForm, setShowForm] = useState(false)
+  const dialogRef = useRef<HTMLDialogElement>(null)
   // Under 992px ligger prisboksen nederst, så en bjælke viser prisen, indtil boksen selv er i billedet.
   const summaryRef = useRef<HTMLElement>(null)
   const [summaryInView, setSummaryInView] = useState(false)
+
+  useEffect(() => {
+    // Adressen følger valgene, så et link kan deles og overleve en genindlæsning. replaceState i stedet for push, så tilbage-knappen
+    // ikke skal gennem hvert klik. Privat er standard og står ikke i adressen; et delvist postnummer skrives ikke.
+    const params = new URLSearchParams(window.location.search)
+    if (customerType === 'business') params.set('type', 'erhverv')
+    else if (params.get('type') === 'erhverv') params.delete('type')
+    if (category) params.set('kategori', paramFor(CATEGORY_PARAMS, category)!)
+    if (postcode.length === 4) params.set('postnummer', postcode)
+    else if (params.get('postnummer')?.length === 4) params.delete('postnummer')
+
+    const query = params.toString()
+    if (query !== window.location.search.replace(/^\?/, '')) {
+      window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`)
+    }
+  }, [customerType, category, postcode])
+
+  useEffect(() => {
+    // Pop-up'en åbnes som modal (fokus låses, og Esc lukker), og siden bagved scroller ikke.
+    const dialog = dialogRef.current
+    if (!dialog) return
+    if (showForm && !dialog.open) dialog.showModal()
+    if (!showForm && dialog.open) dialog.close()
+    document.body.style.overflow = showForm ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [showForm])
+
+  useEffect(() => {
+    // ?postnummer= uden (hele) postnummeret: send besøgende til trin 2, med markøren i det første tomme felt. Kun ved indlæsning.
+    if (!searchParams.has('postnummer') || postcode.length === 4) return
+    const fields = document.getElementById('price-postcode')?.parentElement?.querySelectorAll('input')
+    const field = fields?.[postcode.length]
+    field?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    field?.focus({ preventScroll: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     // Også skjult, når man er scrollet forbi boksen (fx ned i footeren). En scroll-lytter i stedet for IntersectionObserver,
@@ -617,50 +737,7 @@ export function PriceCalculatorClient({
 
         {awaitingPostcode && <p className="text-sm text-text-body">Skriv dit postnummer i trin 2 for at se prisen. Kørslen er en del af prisen.</p>}
 
-        {result.lines.length > 0 && !awaitingPostcode && (
-          <div>
-            <p className="font-heading text-[32px] leading-[1.2] font-light tracking-[-0.03em] text-ink-800 tabular-nums">
-              <PriceCount low={result.low} high={result.high} total={result.total} />
-            </p>
-            <p className="mt-1 text-xs text-text-body">{vatLabel}</p>
-            <dl className="mt-5 flex flex-col gap-2 border-t border-[#e4e8ef] pt-4 text-sm">
-              {/* Alle linjer på samme niveau: ydelsen med produktprisen, antal på sin egen linje og al arbejdstid samlet til sidst. */}
-              {result.lines.map((line, index) => (
-                <div key={index} className="flex justify-between gap-4">
-                  <dt className="text-text-body">{line.label}</dt>
-                  <dd className="shrink-0 text-ink-800">{line.amount == null ? (line.text ?? '') : formatKr(line.amount)}</dd>
-                </div>
-              ))}
-              <div className="mt-1 flex justify-between gap-4 border-t border-[#e4e8ef] pt-3 font-medium text-ink-800">
-                <dt>I alt</dt>
-                <dd className="shrink-0">{totalText}</dd>
-              </div>
-            </dl>
-            {result.drivingUnknown && (
-              <p className="mt-3 text-xs text-text-body">
-                {driving?.status === 'outside'
-                  ? `Kørsel er ikke regnet med. ${outsideText}`
-                  : driving?.status === 'unknown'
-                    ? 'Kørsel er ikke regnet med, postnummeret blev ikke fundet.'
-                    : 'Kørsel er ikke regnet med, indtast et postnummer.'}
-              </p>
-            )}
-          </div>
-        )}
-
-        {result.fromPrices.length > 0 && (
-          <div className={result.lines.length ? 'border-t border-[#e4e8ef] pt-4' : ''}>
-            <p className="text-xs font-medium tracking-[0.08em] text-ink-muted uppercase">Kræver besigtigelse</p>
-            <dl className="mt-2 flex flex-col gap-2 text-sm">
-              {result.fromPrices.map((item) => (
-                <div key={item.label} className="flex justify-between gap-4">
-                  <dt className="text-text-body">{item.label}</dt>
-                  <dd className="shrink-0 text-ink-800">{item.amount == null ? 'Efter aftale' : `fra ${formatKr(item.amount)}`}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        )}
+        <PriceBreakdown result={result} vatLabel={vatLabel} totalText={totalText} outsideText={outsideText} showLines={!awaitingPostcode} />
 
         {/* Kun butiksvarer: overskriften siger det, så kun teksten og en vej til butikken. */}
         {onlyStore && (
@@ -704,17 +781,59 @@ export function PriceCalculatorClient({
           </a>
         )}
 
-        {form && needsQuote && !awaitingPostcode && !emergency && !showForm && (
+        {form && needsQuote && !awaitingPostcode && !emergency && (
           <button type="button" onClick={() => setShowForm(true)} className="button-accent h-[52px] w-full text-base">
             Få et uforpligtende tilbud
           </button>
         )}
-        {form && showForm && (
-          <div className="border-t border-[#e4e8ef]">
-            <DynamicForm form={form} variant="card" extraData={[{ field: 'prisberegning', value: summary }]} />
-          </div>
-        )}
       </aside>
+
+      {/* Tilbudsformularen i en pop-up: det valgte og prisen øverst, så kunden kan se, hvad der sendes. Indholdet findes kun, mens den er åben. */}
+      {form && (
+        <dialog
+          ref={dialogRef}
+          onClose={() => setShowForm(false)}
+          onClick={(event) => {
+            if (event.target === event.currentTarget) setShowForm(false)
+          }}
+          aria-labelledby="price-quote-title"
+          className="m-auto max-h-[calc(100dvh-32px)] w-[min(920px,calc(100%-32px))] max-w-none overflow-y-auto rounded-2xl border border-[#e4e8ef] bg-white p-0 text-ink-800 shadow-[0_8px_32px_rgba(0,0,0,0.2)] backdrop:bg-ink-900/60 max-sm:h-dvh max-sm:max-h-none max-sm:w-full max-sm:rounded-none max-sm:border-0"
+        >
+          {showForm && (
+            <div className="p-(--fluid-form-pad)">
+              <div className="flex items-start justify-between gap-4">
+                <h2 id="price-quote-title" className="font-heading text-xl leading-[26px] font-light text-ink-800">
+                  Få et uforpligtende tilbud
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setShowForm(false)}
+                  aria-label="Luk"
+                  className="-mt-1 -mr-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-2xl leading-none text-text-body hover:bg-[#f2f5f9] hover:text-ink-800"
+                >
+                  ×
+                </button>
+              </div>
+              {/* Prisen først på mobil, og til højre på desktop: samme opdeling som i prisboksen. */}
+              <div className="mt-2 grid gap-6 min-[820px]:grid-cols-[minmax(0,1fr)_320px] min-[820px]:gap-10">
+                <DynamicForm
+                  form={form}
+                  variant="card"
+                  defaults={{ postnummer: postcode }}
+                  extraData={[{ field: 'prisberegning', value: summary }]}
+                />
+                <div className="order-first flex flex-col gap-4 self-start rounded-xl bg-[#f9fafb] p-5 min-[820px]:sticky min-[820px]:top-0 min-[820px]:order-last min-[820px]:mt-6">
+                  <p className="text-xs font-medium tracking-[0.08em] text-ink-muted uppercase">
+                    Vejledende pris · {customerType === 'private' ? 'Privat' : 'Erhverv'}
+                  </p>
+                  <PriceBreakdown result={result} vatLabel={vatLabel} totalText={totalText} outsideText={outsideText} showLines />
+                  {settings.disclaimer && <p className="text-xs leading-[18px] text-text-body">{settings.disclaimer}</p>}
+                </div>
+              </div>
+            </div>
+          )}
+        </dialog>
+      )}
 
       {selections.length > 0 && !summaryInView && (
         <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e4e8ef] bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.05)] min-[992px]:hidden">

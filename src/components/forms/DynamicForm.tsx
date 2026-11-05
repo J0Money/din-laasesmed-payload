@@ -40,11 +40,14 @@ const PAGE_INPUT =
  * Felter med "vis kun når" vises først, når det angivne afkrydsningsfelt er markeret, og sendes ellers ikke med.
  */
 export function DynamicForm({
+  defaults,
   extraData,
   form,
   variant,
   heading,
 }: {
+  /** Felter, der er udfyldt på forhånd (feltnavn og værdi), fx postnummeret fra prisberegneren. */
+  defaults?: Record<string, string>
   /** Sendes med uden at være felter i formularen, fx prisberegnerens valg. */
   extraData?: { field: string; value: string }[]
   form: Form
@@ -59,7 +62,9 @@ export function DynamicForm({
         .filter((field) => 'name' in field && field.name)
         .map((field) => [
           (field as { name: string }).name,
-          field.blockType === 'checkbox' ? Boolean((field as { defaultValue?: boolean }).defaultValue) : '',
+          field.blockType === 'checkbox'
+            ? Boolean((field as { defaultValue?: boolean }).defaultValue)
+            : (defaults?.[(field as { name: string }).name] ?? ''),
         ]),
     ),
   )
@@ -125,15 +130,26 @@ export function DynamicForm({
         const renderCheckbox = (box: FormField) => {
           if (box.blockType !== 'checkbox') return null
           return (
-            <label key={box.id ?? box.name} className="flex cursor-pointer items-center gap-2 self-start text-sm leading-[21px] text-ink-800">
+            <label
+              key={box.id ?? box.name}
+              // Et påkrævet afkrydsningsfelt (fx samtykke) står i en ramme, så det ikke overses.
+              className={`flex cursor-pointer gap-2 text-sm leading-[21px] text-ink-800 ${
+                box.required ? 'mt-2 items-start gap-3 self-stretch rounded-lg border border-[#ced5e1] bg-[#f9fafb] p-3' : 'items-center self-start'
+              }`}
+            >
               <input
                 type="checkbox"
                 name={box.name}
+                required={Boolean(box.required)}
                 checked={values[box.name] === true}
                 onChange={(event) => set(box.name, event.target.checked)}
                 className="peer sr-only"
               />
-              <span className="flex h-[19px] w-[19px] shrink-0 items-center justify-center rounded-md border border-[rgba(34,41,59,0.25)] text-transparent peer-checked:bg-ink-800 peer-checked:text-white peer-focus-visible:border-ink-800">
+              <span
+                className={`flex h-[19px] w-[19px] shrink-0 items-center justify-center rounded-md border border-[rgba(34,41,59,0.25)] text-transparent peer-checked:bg-ink-800 peer-checked:text-white peer-focus-visible:border-ink-800 ${
+                  box.required ? 'mt-px bg-white' : ''
+                }`}
+              >
                 <svg viewBox="0 0 12 9" fill="none" className="h-2 w-[11px]" aria-hidden>
                   <path d="M1 4.5 4.2 7.5 11 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -217,13 +233,16 @@ export function DynamicForm({
           )
         }
 
-        const type = field.blockType === 'email' ? 'email' : field.blockType === 'number' ? 'number' : name.startsWith('tele') ? 'tel' : 'text'
+        // Navnet afgør typen for tekstfelter: "tele…" er telefon og "dato…" en datovælger (fra i dag og frem).
+        const type =
+          field.blockType === 'email' ? 'email' : field.blockType === 'number' ? 'number' : name.startsWith('tele') ? 'tel' : name.startsWith('dato') ? 'date' : 'text'
         return (
           <label key={key} className={wrapper}>
             <span className={labelClass}>{label}</span>
             <input
               name={name}
               type={type}
+              min={type === 'date' ? new Date().toLocaleDateString('sv-SE') : undefined}
               required={required}
               placeholder={field.placeholder ?? undefined}
               value={String(values[name] ?? '')}

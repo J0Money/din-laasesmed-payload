@@ -17,7 +17,7 @@ export type Selection = { optionIds: string[]; quantity: number; serviceId: stri
  * En linje i prisboksen. Alle linjer står på samme niveau.
  * amount null: linjen har ingen pris, men en tekst (fx "Antal", "2 stk.") eller er en ydelse uden produktpris.
  */
-export type PriceLine = { amount: number | null; label: string; text?: string }
+type PriceLine = { amount: number | null; label: string; text?: string }
 
 export type PriceResult = {
   driving: Driving | null
@@ -99,7 +99,7 @@ export function departmentDistances(settings: PriceCalculator, postcode: string)
   })
 }
 
-export function findDriving(settings: PriceCalculator, postcode: string): Driving | null {
+function findDriving(settings: PriceCalculator, postcode: string): Driving | null {
   if (!hasDriving(settings) || !/^\d{4}$/.test(postcode)) return null
   const point = POSTCODE_COORDINATES[postcode]
   if (!point) return { status: 'unknown' }
@@ -130,7 +130,7 @@ const n = (value: number | null | undefined) => value ?? 0
 const round = (value: number) => Math.round(value)
 
 /** Minutter som "30 min", "1 t" eller "1 t 30 min". */
-export function formatMinutes(minutes: number): string {
+function formatMinutes(minutes: number): string {
   const hours = Math.floor(minutes / 60)
   const rest = Math.round(minutes % 60)
   return [hours ? `${hours} t` : '', rest || !hours ? `${rest} min` : ''].filter(Boolean).join(' ')
