@@ -1380,9 +1380,9 @@ export interface PriceService {
   category: 'emergency' | 'mechanical' | 'electronic';
   description?: string | null;
   /**
-   * From price: shows "from X kr." and sends the customer to the quote form. In store: shows a text instead of a price.
+   * From price: shows "from X kr.". Price range: shows "X to Y kr.". Both send the customer to the quote form. In store: shows a text instead of a price.
    */
-  pricingModel: 'perUnit' | 'fromPrice' | 'inStore';
+  pricingModel: 'perUnit' | 'fromPrice' | 'priceRange' | 'inStore';
   unit?: ('piece' | 'door' | 'key' | 'window' | 'lock') | null;
   minQuantity?: number | null;
   maxQuantity?: number | null;
@@ -1392,18 +1392,11 @@ export interface PriceService {
    */
   minutesPerUnit?: number | null;
   fromPrice?: number | null;
+  toPrice?: number | null;
   /**
    * Shown in the price box when the service is chosen.
    */
   storeText?: string | null;
-  /**
-   * The call-out fee is added once, however many services are chosen.
-   */
-  includeCallOutFee?: boolean | null;
-  /**
-   * The add-ons become a choice of one. The price is shown when one is chosen.
-   */
-  chooseOneOption?: boolean | null;
   /**
    * Choices the customer can tick.
    */
@@ -1419,10 +1412,6 @@ export interface PriceService {
          * Only shown from this quantity. Empty: always.
          */
         showFromQuantity?: number | null;
-        /**
-         * No price is calculated. The customer asks for a quote.
-         */
-        requiresQuote?: boolean | null;
         id?: string | null;
       }[]
     | null;
@@ -2321,9 +2310,8 @@ export interface PriceServicesSelect<T extends boolean = true> {
   unitPrice?: T;
   minutesPerUnit?: T;
   fromPrice?: T;
+  toPrice?: T;
   storeText?: T;
-  includeCallOutFee?: T;
-  chooseOneOption?: T;
   options?:
     | T
     | {
@@ -2331,7 +2319,6 @@ export interface PriceServicesSelect<T extends boolean = true> {
         price?: T;
         perUnit?: T;
         showFromQuantity?: T;
-        requiresQuote?: T;
         id?: T;
       };
   enabled?: T;
@@ -3073,7 +3060,7 @@ export interface PriceCalculator {
    */
   hourlyRate?: number | null;
   /**
-   * Added once per visit, for services that include a call-out.
+   * Added once to emergency services.
    */
   callOutFee?: number | null;
   /**

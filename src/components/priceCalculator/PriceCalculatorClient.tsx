@@ -1,13 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { DynamicForm } from '@/components/forms/DynamicForm'
 import {
   calculatePrice,
   CUSTOMER_TYPES,
   type CustomerType,
+  departmentDistances,
   formatKr,
   hasDriving,
   type Period,
@@ -36,6 +37,161 @@ function StepNumber({ children }: { children: React.ReactNode }) {
     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-500 font-sans text-sm font-medium text-white">
       {children}
     </span>
+  )
+}
+
+/**
+ * Postnummeret som en pinkode: fire felter med ét ciffer hver. Markøren hopper selv videre og tilbage,
+ * og et indsat postnummer fordeles over felterne. Det første felt har id "price-postcode", så trinnets label peger på det.
+ */
+function PostcodePin({
+  onChange,
+  status,
+  value,
+}: {
+  onChange: (value: string) => void
+  /** "valid": kendt postnummer (grønne felter). "invalid": ukendt (røde felter, der ryster). */
+  status: 'invalid' | 'valid' | null
+  value: string
+}) {
+  const inputs = useRef<(HTMLInputElement | null)[]>([])
+  // Den seneste værdi, også før React har tegnet felterne igen, så hurtige tryk (fx en holdt backspace) ikke går tabt.
+  const current = useRef(value)
+  current.current = value
+  const set = (next: string) => {
+    current.current = next
+    onChange(next)
+  }
+  const focus = (index: number) => inputs.current[Math.max(0, Math.min(3, index))]?.focus()
+
+  // Ryster hver gang et ukendt postnummer er skrevet færdigt (klassen fjernes og sættes igen, så animationen starter forfra).
+  const group = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const element = group.current
+    if (status !== 'invalid' || !element) return
+    element.classList.remove('animate-shake')
+    void element.offsetWidth
+    element.classList.add('animate-shake')
+  }, [status, value])
+
+  const fieldColor =
+    status === 'valid'
+      ? 'border-green-600 bg-green-50 text-green-800'
+      : status === 'invalid'
+        ? 'border-accent-red bg-red-50 text-accent-red'
+        : 'border-[#ced5e1] bg-[#f9fafb] text-ink-800 hover:border-ink-muted'
+
+  return (
+    <div ref={group} className="flex gap-2" role="group" aria-label="Postnummer, fire cifre" aria-invalid={status === 'invalid' || undefined}>
+      {[0, 1, 2, 3].map((index) => (
+        <input
+          key={index}
+          ref={(element) => {
+            inputs.current[index] = element
+          }}
+          id={index === 0 ? 'price-postcode' : undefined}
+          aria-label={index === 0 ? undefined : `Ciffer ${index + 1}`}
+          inputMode="numeric"
+          autoComplete={index === 0 ? 'postal-code' : 'off'}
+          maxLength={4}
+          value={value[index] ?? ''}
+          onFocus={(event) => {
+            // Man kan ikke springe et tomt felt over: fokus går til det første tomme.
+            if (index > current.current.length) focus(current.current.length)
+            else event.target.select()
+          }}
+          onChange={(event) => {
+            const digits = event.target.value.replace(/\D/g, '')
+            if (!digits) return
+            // Et helt postnummer (autofyld) erstatter det hele.
+            if (digits.length === 4) {
+              set(digits)
+              focus(3)
+              return
+            }
+            // Det, der blev skrevet, erstatter cifrene fra dette felt og frem.
+            const typed = ((event.nativeEvent as InputEvent).data ?? digits).replace(/\D/g, '')
+            if (!typed) return
+            const old = current.current
+            set((old.slice(0, index) + typed + old.slice(index + typed.length)).slice(0, 4))
+            focus(index + typed.length)
+          }}
+          onKeyDown={(event) => {
+            const old = current.current
+            if (event.key === 'Backspace') {
+              event.preventDefault()
+              if (old[index]) set(old.slice(0, index) + old.slice(index + 1))
+              else if (index > 0) {
+                set(old.slice(0, index - 1))
+                focus(index - 1)
+              }
+            } else if (event.key === 'ArrowLeft') focus(index - 1)
+            else if (event.key === 'ArrowRight') focus(index + 1)
+          }}
+          onPaste={(event) => {
+            event.preventDefault()
+            const digits = event.clipboardData.getData('text').replace(/\D/g, '').slice(0, 4)
+            if (digits) {
+              set(digits)
+              focus(digits.length)
+            }
+          }}
+          className={`h-14 w-12 rounded-lg border text-center font-heading text-2xl font-light outline-none transition-colors ${fieldColor} ${status ? '' : 'focus:border-brand-500 focus:bg-white focus:shadow-[inset_0_0_0_1px_var(--color-brand-500)]'}`}
+          suppressHydrationWarning
+        />
+      ))}
+    </div>
+  )
+}
+
+/**
+ * Et beløb, der tæller fra det forrige til det nye på ca. et halvt sekund (hurtigt først, blødt til sidst).
+ * Første gang tæller det fra 0. Afbrydes en optælling af en ny pris, fortsætter den fra det viste tal.
+ */
+function CountUpKr({ value }: { value: number }) {
+  const [shown, setShown] = useState(0)
+  const from = useRef(0)
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      from.current = value
+      setShown(value)
+      return
+    }
+    const start = from.current
+    const startedAt = performance.now()
+    let frame = 0
+    const tick = (now: number) => {
+      const progress = Math.min(1, (now - startedAt) / 500)
+      const eased = 1 - (1 - progress) ** 3
+      const next = Math.round(start + (value - start) * eased)
+      from.current = next
+      setShown(next)
+      if (progress < 1) frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [value])
+
+  return <>{formatKr(shown)}</>
+}
+
+/** Totalprisen (eller intervallet) med optælling. Skærmlæsere får kun slutbeløbet, ikke hvert tal undervejs. */
+function PriceCount({ high, low, total }: { high: number; low: number; total: number }) {
+  const exact = low === high
+  return (
+    <>
+      <span aria-hidden>
+        {exact ? (
+          <CountUpKr value={total} />
+        ) : (
+          <>
+            <CountUpKr value={low} /> til <CountUpKr value={high} />
+          </>
+        )}
+      </span>
+      <span className="sr-only">{exact ? formatKr(total) : `${formatKr(low)} til ${formatKr(high)}`}</span>
+    </>
   )
 }
 
@@ -95,10 +251,10 @@ export function PriceCalculatorClient({
       })
       return { serviceId: service.id, quantity: choice.quantity, optionIds }
     })
-  // Ingen regnet pris (kun fra-pris eller køb i butikken), så tidspunktet er ligegyldigt.
+  // Ingen regnet pris (kun fra-pris, prisinterval eller køb i butikken), så tidspunktet er ligegyldigt.
   const needsVisit =
     selections.length > 0 &&
-    selections.every((s) => ['fromPrice', 'inStore'].includes(services.find((service) => service.id === s.serviceId)?.pricingModel ?? ''))
+    selections.every((s) => ['fromPrice', 'inStore', 'priceRange'].includes(services.find((service) => service.id === s.serviceId)?.pricingModel ?? ''))
 
   const result = calculatePrice({ customerType, period, postcode, selections, services, settings })
   // Kun butiksvarer valgt: intet tilbud at sende, og disclaimeren om montøren passer ikke.
@@ -107,24 +263,25 @@ export function PriceCalculatorClient({
   const storeTexts = [...new Set(result.inStore.flatMap((item) => (item.text ? [item.text] : [])))]
   const driving = result.driving
   // Kørsel er en del af prisen, så summen vises først, når postnummeret er skrevet.
-  const postcodeDone = !drivingEnabled || /^[0-9]{4}$/.test(postcode)
+  // Et ukendt postnummer låser ikke op: uden det kan kørslen ikke regnes.
+  const postcodeDone = !drivingEnabled || (/^[0-9]{4}$/.test(postcode) && driving?.status !== 'unknown')
   const awaitingPostcode = drivingEnabled && result.lines.length > 0 && driving === null
   const outsideText = settings.outsideAreaText || 'Kørsel aftales, når vi kontakter dig.'
   const drivingNote =
     driving?.status === 'outside' ? outsideText : driving?.status === 'unknown' ? 'Vi kan ikke finde postnummeret. Tjek, at det er skrevet rigtigt.' : null
   const vatLabel = result.includesVat ? 'inkl. moms' : 'ekskl. moms'
+  // Totalen som ét beløb eller et interval (procent-intervallet fra globalen og ydelser med prisinterval).
+  const totalText = result.low === result.high ? formatKr(result.total) : `${formatKr(result.low)} til ${formatKr(result.high)}`
   const lowestFrom = Math.min(...result.fromPrices.flatMap((item) => (item.amount == null ? [] : [item.amount])))
   const barPrice = awaitingPostcode
     ? 'Indtast postnummer'
     : result.lines.length
-    ? result.low === result.high
-      ? formatKr(result.total)
-      : `${formatKr(result.low)} til ${formatKr(result.high)}`
-    : Number.isFinite(lowestFrom)
-      ? `Fra ${formatKr(lowestFrom)}`
-      : result.fromPrices.length
-        ? 'Efter besigtigelse'
-        : 'Køb i butikken'
+      ? totalText
+      : Number.isFinite(lowestFrom)
+        ? `Fra ${formatKr(lowestFrom)}`
+        : result.fromPrices.length
+          ? 'Efter besigtigelse'
+          : 'Køb i butikken'
 
   // En kategori vises, hvis der er ydelser i den; akut også med blot et telefonnummer.
   const categoryChoices = CATEGORIES.filter(
@@ -160,12 +317,9 @@ export function PriceCalculatorClient({
     setChosen((current) => ({ ...current, [service.id]: { ...current[service.id], quantity: Math.min(max, Math.max(min, quantity)) } }))
   }
 
-  const toggleOption = (service: PriceService, optionId: string) =>
+  const toggleOption = (serviceId: string, optionId: string) =>
     setChosen((current) => {
-      const serviceId = service.id
       const ids = current[serviceId].optionIds
-      // Et påkrævet valg er et enten/eller: det valgte tilvalg erstatter det forrige.
-      if (service.chooseOneOption) return { ...current, [serviceId]: { ...current[serviceId], optionIds: [optionId] } }
       return {
         ...current,
         [serviceId]: { ...current[serviceId], optionIds: ids.includes(optionId) ? ids.filter((id) => id !== optionId) : [...ids, optionId] },
@@ -175,13 +329,10 @@ export function PriceCalculatorClient({
   // Det, der sendes med formularen, så montøren kan se hvad kunden har valgt og fået vist.
   const summary = [
     `Kundetype: ${CUSTOMER_TYPES.find((t) => t.value === customerType)?.label}`,
-    // Som i prisboksen: en linje pr. ydelse med totalen, og produkt, arbejdstid og tilvalg indrykket under.
-    ...result.lines.flatMap((line, index) => {
-      if (!line.group) return [`${line.label}: ${formatKr(line.amount)}`]
-      const first = line.group !== result.lines[index - 1]?.group
-      const total = result.lines.filter((item) => item.group === line.group).reduce((sum, item) => sum + item.amount, 0)
-      return [...(first ? [`${line.group}: ${formatKr(total)}`] : []), `  ${line.label}: ${formatKr(line.amount)}`]
-    }),
+    // Som i prisboksen: alle linjer på samme niveau, i samme rækkefølge.
+    ...result.lines.map((line) =>
+      line.amount == null ? (line.text ? `${line.label}: ${line.text}` : line.label) : `${line.label}: ${formatKr(line.amount)}`,
+    ),
     ...result.fromPrices.map((item) => `${item.label}: ${item.amount == null ? 'pris efter besigtigelse' : `fra ${formatKr(item.amount)}`}`),
     ...result.inStore.map((item) => `${item.label}: køb i butikken`),
     emergency ? `Tidspunkt: ${PERIODS.find((p) => p.value === period)?.label}` : '',
@@ -195,7 +346,7 @@ export function PriceCalculatorClient({
         }`
       : '',
     result.lines.length
-      ? `Vejledende pris: ${result.low === result.high ? formatKr(result.total) : `${formatKr(result.low)} til ${formatKr(result.high)}`} ${vatLabel}`
+      ? `Vejledende pris: ${totalText} ${vatLabel}`
       : '',
   ]
     .filter(Boolean)
@@ -237,30 +388,47 @@ export function PriceCalculatorClient({
               <StepNumber>{step++}</StepNumber>
               Hvor skal vi komme ud?
             </label>
-            <div className="mt-5 flex flex-col gap-2 min-[480px]:flex-row min-[480px]:items-center min-[480px]:gap-4">
-              <input
-                id="price-postcode"
-                inputMode="numeric"
-                autoComplete="postal-code"
-                maxLength={4}
-                placeholder="Postnummer"
+            <div className="mt-5 flex flex-col gap-4">
+              <PostcodePin
                 value={postcode}
-                onChange={(event) => setPostcode(event.target.value.replace(/\D/g, '').slice(0, 4))}
-                className="h-10 w-full rounded-md border border-[#ced5e1] bg-[#f9fafb] px-3 text-sm text-ink-800 outline-none placeholder:text-text-body/60 hover:border-ink-muted focus:border-brand-500 min-[480px]:w-40"
-                suppressHydrationWarning
+                onChange={setPostcode}
+                status={postcode.length < 4 ? null : driving?.status === 'unknown' ? 'invalid' : 'valid'}
               />
-              <p aria-live="polite" className="text-sm text-text-body">
-                {driving?.status === 'price' && driving.department && `Vi kører fra vores afdeling i ${driving.department}.`}                {drivingNote}
-              </p>
+              {drivingNote && (
+                <p aria-live="polite" className="text-sm text-text-body">
+                  {drivingNote}
+                </p>
+              )}
+              {/* Afdelingerne fra admin. Den nærmeste (som vi kører fra) lyser op, når postnummeret er kendt. */}
+              <ul className="grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] gap-3" aria-live="polite">
+                {departmentDistances(settings, postcode).map((department) => {
+                  const nearest = driving != null && driving.status !== 'unknown' && driving.department === department.name
+                  return (
+                    <li
+                      key={department.name}
+                      className={`flex min-h-[92px] flex-col gap-1.5 rounded-xl border px-4 py-4 text-sm transition-colors duration-300 ${
+                        nearest ? 'border-brand-500 bg-brand-500/5 shadow-[inset_0_0_0_1px_var(--color-brand-500)]' : 'border-[#e4e8ef] bg-[#f9fafb]'
+                      }`}
+                    >
+                      <span className={`flex items-center gap-2 text-base font-medium ${nearest ? 'text-brand-500' : 'text-ink-800'}`}>
+                        <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 shrink-0" aria-hidden>
+                          <path
+                            d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21Z"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinejoin="round"
+                          />
+                          <circle cx="12" cy="9.5" r="2.5" stroke="currentColor" strokeWidth="1.8" />
+                        </svg>
+                        {department.name}
+                      </span>
+                      <span className="text-sm text-text-body">{department.km == null ? 'Afdeling' : department.km < 1 ? 'Under 1 km' : `Ca. ${department.km} km`}</span>
+                      {nearest && <span className="text-sm font-medium text-brand-500">Nærmeste</span>}
+                    </li>
+                  )
+                })}
+              </ul>
             </div>
-            {/* Krævet af licensen (CC BY 4.0) for postnummerdata, se lib/postcodes.ts. */}
-            <p className="mt-3 text-[11px] leading-4 text-text-body/70">
-              Kørselsafstand beregnet med postnummerdata fra{' '}
-              <a href="https://www.geonames.org/" target="_blank" rel="noopener noreferrer" className="underline hover:text-ink-800">
-                GeoNames
-              </a>
-              .
-            </p>
           </div>
         )}
 
@@ -364,14 +532,13 @@ export function PriceCalculatorClient({
                               option.id && selected.quantity >= (option.showFromQuantity ?? 1) ? (
                                 <label key={option.id} className="flex cursor-pointer items-center gap-2 text-xs text-ink-800">
                                   <input
-                                    type={service.chooseOneOption ? 'radio' : 'checkbox'}
+                                    type="checkbox"
                                     name={`option-${service.id}`}
                                     checked={selected.optionIds.includes(option.id)}
-                                    onChange={() => toggleOption(service, option.id!)}
+                                    onChange={() => toggleOption(service.id, option.id!)}
                                     className="h-4 w-4 accent-brand-500"
                                   />
                                   {option.name}
-                                  {option.requiresQuote && <span className="text-text-body">(skræddersyet, kontakt os)</span>}
                                 </label>
                               ) : null,
                             )}
@@ -421,20 +588,22 @@ export function PriceCalculatorClient({
         className={`${CARD} flex scroll-mt-24 flex-col gap-5 min-[992px]:sticky min-[992px]:top-28`}
         aria-live="polite"
       >
-        <h2 className="font-heading text-xl leading-[26px] font-light text-ink-800">{onlyStore ? 'Køb i butikken' : 'Vejledende pris'}</h2>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="font-heading text-xl leading-[26px] font-light text-ink-800">{onlyStore ? 'Køb i butikken' : 'Vejledende pris'}</h2>
+          {/* Viser altid, hvilken kundetype og moms prisen gælder for. */}
+          {!onlyStore && (
+            <span className="rounded-full bg-brand-500/10 px-3 py-1 text-xs font-medium text-brand-500">
+              {CUSTOMER_TYPES.find((type) => type.value === customerType)?.label} · {customerType === 'private' ? 'inkl. moms' : 'ekskl. moms'}
+            </span>
+          )}
+        </div>
 
         {!selections.length && (
           <p className="text-sm text-text-body">{!postcodeDone ? 'Skriv dit postnummer for at komme videre.' : category ? 'Vælg en eller flere ydelser for at se en pris.' : 'Vælg hvad der skal laves for at se en pris.'}</p>
         )}
 
         {/* Kørslen vises i prisboksen, så snart postnummeret er skrevet. Med en regnet pris står den som linje i listen. */}
-        {result.pending.map((name) => (
-          <p key={name} className="text-sm text-text-body">
-            Vælg en mulighed under {name} for at se prisen.
-          </p>
-        ))}
-
-        {!result.lines.length && !onlyStore && !result.pending.length && result.drivingAmount ? (
+        {!result.lines.length && !onlyStore && result.drivingAmount ? (
           <div>
             <dl className="flex flex-col gap-2 border-t border-[#e4e8ef] pt-4 text-sm">
               <div className="flex justify-between gap-4">
@@ -450,30 +619,21 @@ export function PriceCalculatorClient({
 
         {result.lines.length > 0 && !awaitingPostcode && (
           <div>
-            <p className="font-heading text-[32px] leading-[1.2] font-light tracking-[-0.03em] text-ink-800">
-              {result.low === result.high ? formatKr(result.total) : `${formatKr(result.low)} til ${formatKr(result.high)}`}
+            <p className="font-heading text-[32px] leading-[1.2] font-light tracking-[-0.03em] text-ink-800 tabular-nums">
+              <PriceCount low={result.low} high={result.high} total={result.total} />
             </p>
             <p className="mt-1 text-xs text-text-body">{vatLabel}</p>
             <dl className="mt-5 flex flex-col gap-2 border-t border-[#e4e8ef] pt-4 text-sm">
+              {/* Alle linjer på samme niveau: ydelsen med produktprisen, antal på sin egen linje og al arbejdstid samlet til sidst. */}
               {result.lines.map((line, index) => (
-                <Fragment key={index}>
-                  {line.group && line.group !== result.lines[index - 1]?.group && (
-                    <div className="mt-1 flex justify-between gap-4 text-ink-800">
-                      <dt>{line.group}</dt>
-                      <dd className="shrink-0">
-                        {formatKr(result.lines.filter((item) => item.group === line.group).reduce((sum, item) => sum + item.amount, 0))}
-                      </dd>
-                    </div>
-                  )}
-                  <div className={`flex justify-between gap-4 ${line.group ? 'pl-3 text-xs text-text-body' : ''}`}>
-                    <dt className="text-text-body">{line.label}</dt>
-                    <dd className={`shrink-0 ${line.group ? 'text-text-body' : 'text-ink-800'}`}>{formatKr(line.amount)}</dd>
-                  </div>
-                </Fragment>
+                <div key={index} className="flex justify-between gap-4">
+                  <dt className="text-text-body">{line.label}</dt>
+                  <dd className="shrink-0 text-ink-800">{line.amount == null ? (line.text ?? '') : formatKr(line.amount)}</dd>
+                </div>
               ))}
               <div className="mt-1 flex justify-between gap-4 border-t border-[#e4e8ef] pt-3 font-medium text-ink-800">
                 <dt>I alt</dt>
-                <dd className="shrink-0">{formatKr(result.total)}</dd>
+                <dd className="shrink-0">{totalText}</dd>
               </div>
             </dl>
             {result.drivingUnknown && (
@@ -561,7 +721,9 @@ export function PriceCalculatorClient({
           <div className="site-container flex items-center justify-between gap-4 py-3">
             <div className="min-w-0">
               <p className="text-xs text-text-body">Vejledende pris{result.lines.length && !awaitingPostcode ? `, ${vatLabel}` : ''}</p>
-              <p className="truncate font-heading text-lg leading-6 font-light text-ink-800">{barPrice}</p>
+              <p className="truncate font-heading text-lg leading-6 font-light text-ink-800 tabular-nums">
+                {result.lines.length && !awaitingPostcode ? <PriceCount low={result.low} high={result.high} total={result.total} /> : barPrice}
+              </p>
             </div>
             <a
               href="#price-summary"

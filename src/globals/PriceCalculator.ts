@@ -75,9 +75,9 @@ export const PriceCalculator: GlobalConfig = {
                 {
                   name: 'callOutFee',
                   type: 'number',
-                  label: 'Call-out fee (kr.)',
+                  label: 'Emergency fee (kr.)',
                   min: 0,
-                  admin: { width: '50%', description: 'Added once per visit, for services that include a call-out.' },
+                  admin: { width: '50%', description: 'Added once to emergency services.' },
                 },
               ],
             },

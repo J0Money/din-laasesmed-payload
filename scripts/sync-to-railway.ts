@@ -18,7 +18,7 @@ const COLLECTIONS = [
   'employees',
   'jobs', '_jobs_versions',
   'forms',
-  'priceServices',
+  'priceservices',
   'videos',
 ]
 

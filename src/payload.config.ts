@@ -145,7 +145,7 @@ export default buildConfig({
         },
         alert: { description: 'The alert bar shown at the top of the site.', enabled: { find: true, update: true } },
         priceCalculator: {
-          description: 'Hourly rate, call-out fee, time surcharges, VAT and driving (departments, price per km and exceptions) for the price calculator. Only enter amounts the user gives.',
+          description: 'Hourly rate, emergency fee, time surcharges, VAT and driving (departments, price per km and exceptions) for the price calculator. Only enter amounts the user gives.',
           enabled: { find: true, update: true },
         },
       },

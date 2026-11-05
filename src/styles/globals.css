@@ -18,6 +18,18 @@
   --color-surface-form: #edf0f3;
   --color-background: #f2f5f9;
   --color-text-body: #4b556a;
+
+  /* Kort rysten, fx ved et ukendt postnummer i prisberegneren. */
+  --animate-shake: shake 0.4s ease-in-out;
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-shake { animation: none; }
 }
 
 /*

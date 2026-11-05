@@ -1,15 +1,12 @@
 import type { CollectionConfig } from 'payload'
 
-type Data = { pricingModel?: 'perUnit' | 'fromPrice' | 'inStore' }
-
-// Tillæg og udkald giver kun mening, når prisen regnes.
-const isCalculated = (data: Data) => data?.pricingModel !== 'fromPrice' && data?.pricingModel !== 'inStore'
+type Data = { pricingModel?: 'fromPrice' | 'inStore' | 'perUnit' | 'priceRange' }
 
 const isModel = (model: Data['pricingModel']) => (data: Data) => data?.pricingModel === model
 
 /**
- * Ydelser i prisberegneren. Prisen regnes som udkald + tid × timepris + materialer + tilvalg, derefter tidstillæg, kørsel og moms
- * (timepris, udkald, tillæg og zoner står i globalen "Price calculator"). Ydelser med fra-pris kræver besigtigelse og sendes til formularen.
+ * Ydelser i prisberegneren. Prisen regnes som akutgebyr (kun akut) + tid × timepris + materialer + tilvalg, derefter tidstillæg, kørsel og moms
+ * (timepris, akutgebyr, tillæg og kørsel står i globalen "Price calculator"). Ydelser med fra-pris eller prisinterval kræver besigtigelse og sendes til formularen.
  */
 export const PriceServices: CollectionConfig = {
   slug: 'priceServices',
@@ -55,11 +52,12 @@ export const PriceServices: CollectionConfig = {
       options: [
         { label: 'Price per unit and time', value: 'perUnit' },
         { label: 'From price, requires inspection', value: 'fromPrice' },
+        { label: 'Price range, requires inspection', value: 'priceRange' },
         { label: 'In store, no price', value: 'inStore' },
       ],
       admin: {
         description:
-          'From price: shows "from X kr." and sends the customer to the quote form. In store: shows a text instead of a price.',
+          'From price: shows "from X kr.". Price range: shows "X to Y kr.". Both send the customer to the quote form. In store: shows a text instead of a price.',
       },
     },
     // Stykpris
@@ -99,13 +97,20 @@ export const PriceServices: CollectionConfig = {
         },
       ],
     },
-    // Fra-pris
+    // Fra-pris og prisinterval
     {
       name: 'fromPrice',
       type: 'number',
       label: 'From price (kr.)',
       min: 0,
-      admin: { condition: isModel('fromPrice') },
+      admin: { condition: (data: Data) => data?.pricingModel === 'fromPrice' || data?.pricingModel === 'priceRange' },
+    },
+    {
+      name: 'toPrice',
+      type: 'number',
+      label: 'To price (kr.)',
+      min: 0,
+      admin: { condition: isModel('priceRange') },
     },
     // I butikken
     {
@@ -118,32 +123,12 @@ export const PriceServices: CollectionConfig = {
       },
     },
     {
-      name: 'includeCallOutFee',
-      type: 'checkbox',
-      label: 'Include call-out fee',
-      defaultValue: true,
-      admin: {
-        condition: isCalculated,
-        description: 'The call-out fee is added once, however many services are chosen.',
-      },
-    },
-    {
-      name: 'chooseOneOption',
-      type: 'checkbox',
-      label: 'Customer must choose one add-on',
-      defaultValue: false,
-      admin: {
-        condition: isCalculated,
-        description: 'The add-ons become a choice of one. The price is shown when one is chosen.',
-      },
-    },
-    {
       name: 'options',
       type: 'array',
       label: 'Add-ons',
       labels: { singular: 'Add-on', plural: 'Add-ons' },
       admin: {
-        condition: isCalculated,
+        condition: isModel('perUnit'),
         description: 'Choices the customer can tick.',
       },
       fields: [
@@ -165,13 +150,6 @@ export const PriceServices: CollectionConfig = {
               label: 'Show from quantity',
               min: 2,
               admin: { width: '20%', description: 'Only shown from this quantity. Empty: always.' },
-            },
-            {
-              name: 'requiresQuote',
-              type: 'checkbox',
-              label: 'No price, customer contacts us',
-              defaultValue: false,
-              admin: { width: '20%', description: 'No price is calculated. The customer asks for a quote.' },
             },
           ],
         },

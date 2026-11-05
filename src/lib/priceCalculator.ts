@@ -4,7 +4,7 @@ import { POSTCODE_COORDINATES } from './postcodes'
 
 /**
  * Prisberegnerens regnestykke, samlet her så blokken og evt. tests bruger det samme:
- * udkald (én gang) + tid × timepris + materialer + tilvalg, derefter tidstillæg, kørsel og til sidst moms.
+ * akutgebyr (kun akutte ydelser, én gang) + tid × timepris + materialer + tilvalg, derefter tidstillæg, kørsel og til sidst moms.
  * Tomme beløb tæller som 0. Ydelser med fra-pris regnes ikke med i intervallet, de vises for sig.
  */
 
@@ -13,8 +13,11 @@ export type Period = 'day' | 'eveningNight' | 'weekendHoliday'
 
 export type Selection = { optionIds: string[]; quantity: number; serviceId: string }
 
-/** Linjer med samme gruppe vises under en fælles overskrift (fx ydelsens navn med produkt og arbejdstid under). */
-export type PriceLine = { amount: number; group?: string; label: string }
+/**
+ * En linje i prisboksen. Alle linjer står på samme niveau.
+ * amount null: linjen har ingen pris, men en tekst (fx "Antal", "2 stk.") eller er en ydelse uden produktpris.
+ */
+export type PriceLine = { amount: number | null; label: string; text?: string }
 
 export type PriceResult = {
   driving: Driving | null
@@ -22,11 +25,10 @@ export type PriceResult = {
   drivingAmount: number | null
   /** Kørsel er sat op, men ikke regnet med (intet postnummer, ukendt postnummer eller uden for området). */
   drivingUnknown: boolean
+  /** Ydelser med fra-pris. De regnes ikke med i totalen. */
   fromPrices: { amount: number | null; label: string }[]
   /** Ydelser, der købes i butikken: ingen pris, kun en tekst. */
   inStore: { label: string; text: string | null }[]
-  /** Ydelser, hvor kunden endnu ikke har valgt det påkrævede tilvalg (fx systemtype). */
-  pending: string[]
   high: number
   includesVat: boolean
   lines: PriceLine[]
@@ -85,6 +87,18 @@ function distanceKm([lat1, lng1]: [number, number], [lat2, lng2]: [number, numbe
   return 2 * 6371 * Math.asin(Math.sqrt(a))
 }
 
+/**
+ * Alle afdelinger i admins rækkefølge, med afstanden (luftlinje, hele km) fra postnummeret.
+ * km er null, når postnummeret ikke er skrevet helt eller ikke findes. Bruges til afdelingskortene i trin 2.
+ */
+export function departmentDistances(settings: PriceCalculator, postcode: string): { km: number | null; name: string }[] {
+  const point = /^\d{4}$/.test(postcode) ? POSTCODE_COORDINATES[postcode] : undefined
+  return (settings.departments ?? []).map((department) => {
+    const location = POSTCODE_COORDINATES[department.postcode.trim()]
+    return { name: department.name, km: point && location ? Math.round(distanceKm(point, location)) : null }
+  })
+}
+
 export function findDriving(settings: PriceCalculator, postcode: string): Driving | null {
   if (!hasDriving(settings) || !/^\d{4}$/.test(postcode)) return null
   const point = POSTCODE_COORDINATES[postcode]
@@ -115,6 +129,13 @@ const n = (value: number | null | undefined) => value ?? 0
 // Hele kroner, så linjerne og summen passer sammen.
 const round = (value: number) => Math.round(value)
 
+/** Minutter som "30 min", "1 t" eller "1 t 30 min". */
+export function formatMinutes(minutes: number): string {
+  const hours = Math.floor(minutes / 60)
+  const rest = Math.round(minutes % 60)
+  return [hours ? `${hours} t` : '', rest || !hours ? `${rest} min` : ''].filter(Boolean).join(' ')
+}
+
 export function calculatePrice({
   customerType,
   period,
@@ -134,11 +155,15 @@ export function calculatePrice({
   const vat = includesVat ? 1 + n(settings.vatPercent) / 100 : 1
   const hourly = n(settings.hourlyRate)
 
-  const lines: (PriceLine & { exact?: boolean })[] = []
+  // amount er ekskl. moms her. keep: vises også ved 0 kr. (ydelsens navn, så antal og tilvalg har noget at stå under).
+  const lines: (PriceLine & { exact?: boolean; keep?: boolean })[] = []
   const fromPrices: PriceResult['fromPrices'] = []
   const inStore: PriceResult['inStore'] = []
-  const pending: string[] = []
-  let callOut = false
+  // Ydelser med prisinterval (med moms for private), hver med sin laveste og højeste pris.
+  const ranges: { from: number; to: number }[] = []
+  let emergencyFee = false
+  // Al arbejdstid på tværs af ydelserne samles i én linje.
+  let minutes = 0
 
   for (const selection of selections) {
     const service = services.find((s) => s.id === selection.serviceId)
@@ -152,35 +177,35 @@ export function calculatePrice({
       fromPrices.push({ label: service.name, amount: service.fromPrice == null ? null : round(service.fromPrice * vat) })
       continue
     }
+    if (service.pricingModel === 'priceRange') {
+      // En linje med intervallet som tekst. Intervallet lægges til både den lave og den høje sum nedenfor.
+      const from = round(n(service.fromPrice) * vat)
+      const to = round(n(service.toPrice) * vat)
+      ranges.push({ from, to })
+      lines.push({ label: service.name, amount: null, text: `${formatKr(from)} til ${formatKr(to)}`, keep: true })
+      continue
+    }
 
     const quantity = selection.quantity
     const chosen = (service.options ?? []).filter((option) => option.id && selection.optionIds.includes(option.id))
 
-    if (service.chooseOneOption) {
-      if (!chosen.length) {
-        pending.push(service.name)
-        continue
-      }
-      if (chosen[0].requiresQuote) {
-        fromPrices.push({ label: `${service.name}, ${chosen[0].name}`, amount: null })
-        continue
-      }
-    }
-
-    // Ydelser med højst 1 stk. (fx døråbning) vises uden antal.
+    // Ydelsens linje viser produktprisen for alle styk. Ydelser med højst 1 stk. (fx døråbning) vises uden antal.
     const single = (service.maxQuantity ?? 99) <= (service.minQuantity ?? 1)
-    const group = single ? service.name : `${service.name}, ${quantity} ${unitLabel(service.unit, quantity)}`
     lines.push(
-      { group, label: 'Produkt', amount: n(service.unitPrice) * quantity },
-      { group, label: 'Arbejdstid', amount: ((n(service.minutesPerUnit) * quantity) / 60) * hourly },
-      ...chosen.map((option) => ({ group, label: option.name, amount: n(option.price) * (option.perUnit ? quantity : 1) })),
+      { label: service.name, amount: n(service.unitPrice) * quantity, keep: true },
+      ...(single ? [] : [{ label: 'Antal', amount: null, text: `${quantity} stk.` }]),
+      ...chosen.map((option) => ({ label: option.name, amount: n(option.price) * (option.perUnit ? quantity : 1) })),
     )
-    if (service.includeCallOutFee) callOut = true
+    minutes += n(service.minutesPerUnit) * quantity
+    // Akutgebyret hører til akutte ydelser og lægges på én gang.
+    if (service.category === 'emergency') emergencyFee = true
   }
 
-  if (lines.length && callOut && settings.callOutFee) lines.unshift({ label: 'Udkald', amount: settings.callOutFee })
+  if (lines.length && minutes) lines.push({ label: `Arbejdstid (${formatMinutes(minutes)})`, amount: (minutes / 60) * hourly })
+  // Feltet hedder stadig callOutFee i databasen, men vises i admin som "Emergency fee".
+  if (lines.length && emergencyFee && settings.callOutFee) lines.unshift({ label: 'Akutgebyr', amount: settings.callOutFee })
 
-  const work = lines.reduce((sum, line) => sum + line.amount, 0)
+  const work = lines.reduce((sum, line) => sum + n(line.amount), 0)
   if (lines.length && period !== 'day') {
     const surcharge = settings[period]
     const amount = surcharge?.type === 'percent' ? (work * n(surcharge.value)) / 100 : n(surcharge?.value)
@@ -192,11 +217,22 @@ export function calculatePrice({
   if (lines.length && driving?.status === 'price' && driving.amount) lines.unshift({ label: 'Kørsel', amount: driving.amount, exact: true })
 
   // Linjer, der rundes ned til 0 kr. (fx få km kørsel), vises ikke.
-  const shown = lines
-    .map(({ amount, group, label, exact }) => ({ group, label, amount: exact ? Math.round(amount * vat) : round(amount * vat) }))
-    .filter((line) => line.amount > 0)
-  const total = shown.reduce((sum, line) => sum + line.amount, 0)
+  const shown: PriceLine[] = lines
+    .map(({ amount, label, text, exact, keep }) => ({
+      label,
+      text,
+      keep,
+      amount: amount == null ? null : exact ? Math.round(amount * vat) : round(amount * vat),
+    }))
+    .filter((line) => line.keep || line.amount !== 0)
+    // En ydelse uden produktpris eller med prisinterval står uden beløb.
+    .map(({ keep: _keep, amount, ...line }) => ({ ...line, amount: amount || null }))
+  // Totalen af de regnede linjer. Procent-intervallet fra globalen lægges kun på dem; ydelsernes egne intervaller lægges til bagefter.
+  const calculated = shown.reduce((sum, line) => sum + n(line.amount), 0)
   const range = n(settings.priceRangePercent) / 100
+  const rangeFrom = ranges.reduce((sum, item) => sum + item.from, 0)
+  const rangeTo = ranges.reduce((sum, item) => sum + item.to, 0)
+  const total = calculated + rangeFrom
 
   return {
     driving,
@@ -204,11 +240,10 @@ export function calculatePrice({
     drivingUnknown: Boolean(lines.length && hasDriving(settings) && driving?.status !== 'price'),
     fromPrices,
     inStore,
-    pending,
-    high: round(total * (1 + range)),
+    high: round(calculated * (1 + range)) + rangeTo,
     includesVat,
     lines: shown,
-    low: Math.max(0, round(total * (1 - range))),
+    low: Math.max(0, round(calculated * (1 - range))) + rangeFrom,
     total,
   }
 }
