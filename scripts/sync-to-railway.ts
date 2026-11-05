@@ -76,16 +76,12 @@ async function run() {
     if (apply && writes.length) await dst.collection(name).bulkWrite(writes)
   }
 
-  // Medier: nye dokumenter oprettes, og ændrede erstattes (fx et billede der er byttet ud). Dokumenter kun på Railway slettes ikke.
+  // Medier: kun nye dokumenter oprettes. Eksisterende røres ikke, så alttekster rettet på Railway ikke overskrives.
   const dstMedia = new Map((await dst.collection('media').find({}).toArray()).map((d) => [String(d._id), d]))
   const srcMedia = await src.collection('media').find({}).toArray()
   const newMedia = srcMedia.filter((d) => !dstMedia.has(String(d._id)))
-  const changedMedia = srcMedia.filter((d) => dstMedia.has(String(d._id)) && !sameDoc(dstMedia.get(String(d._id))!, d))
-  console.log(`media                    nye dokumenter: ${newMedia.length} | ændrede: ${changedMedia.length}`)
-  for (const d of changedMedia) {
-    console.log(`  ændret: ${d._id} ${dstMedia.get(String(d._id))?.filename} -> ${d.filename} (${d.width}x${d.height})`)
-  }
-  const files = [...newMedia, ...changedMedia].flatMap((d) => [
+  console.log(`media                    nye dokumenter: ${newMedia.length}`)
+  const files = newMedia.flatMap((d) => [
     d.filename,
     ...Object.values((d.sizes ?? {}) as Record<string, { filename?: string }>).map((s) => s?.filename),
   ]).filter(Boolean)
@@ -94,9 +90,6 @@ async function run() {
   writeFileSync('media-sync.txt', files.join('\n'))
   console.log(`  ${files.length} filer skrevet til media-sync.txt`)
   if (apply && newMedia.length) await dst.collection('media').insertMany(newMedia)
-  if (apply && changedMedia.length) {
-    await dst.collection('media').bulkWrite(changedMedia.map((d) => ({ replaceOne: { filter: { _id: d._id }, replacement: d } })))
-  }
 
   await Promise.all([source.close(), target.close()])
   console.log(apply ? 'Anvendt.' : 'Kun visning, kør med --apply for at skrive.')
