@@ -20,6 +20,19 @@ function plainText(node: unknown): string {
   return n.type === 'root' ? inner.join(' ') : inner.join('')
 }
 
+/** Tekst med links skrevet som [tekst](/side) eller [tekst](https://…), fx "Læs [privatlivspolitikken](/cookie-og-privatlivspolitik)". Links åbner i en ny fane. */
+function withLinks(text: string): React.ReactNode[] {
+  return text.split(/(\[[^\]]+\]\([^)\s]+\))/g).map((part, index) => {
+    const match = /^\[([^\]]+)\]\(([^)\s]+)\)$/.exec(part)
+    if (!match || !/^(\/|https:\/\/)/.test(match[2])) return part
+    return (
+      <a key={index} href={match[2]} target="_blank" rel="noopener noreferrer" className="underline hover:text-brand-500">
+        {match[1]}
+      </a>
+    )
+  })
+}
+
 function redirectTarget(form: Form): string | undefined {
   const redirect = form.redirect
   if (!redirect) return undefined
@@ -154,7 +167,7 @@ export function DynamicForm({
                   <path d="M1 4.5 4.2 7.5 11 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
-              {box.label ?? box.name}
+              <span>{withLinks(box.label ?? box.name)}</span>
             </label>
           )
         }

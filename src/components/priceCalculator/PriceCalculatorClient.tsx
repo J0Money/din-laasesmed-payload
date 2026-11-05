@@ -24,9 +24,9 @@ import type { Form, PriceCalculator, PriceService } from '@/payload-types'
 type Category = PriceService['category']
 
 const CATEGORIES: { hint: string; label: string; value: Category }[] = [
-  { label: 'Akut hjælp', hint: 'Låst ude eller brug for hjælp nu', value: 'emergency' },
+  { label: 'Akut hjælp', hint: 'Låst ude eller akut brug for hjælp', value: 'emergency' },
   { label: 'Mekanisk sikring', hint: 'Låse, cylindre og nøgler', value: 'mechanical' },
-  { label: 'Elektronisk sikring', hint: 'Adgangskontrol, dørtelefoni og video', value: 'electronic' },
+  { label: 'Elektronisk sikring', hint: 'Adgangskontrol, dørtelefoni og videoovervågning', value: 'electronic' },
 ]
 
 const CARD = 'rounded-2xl border border-[#e4e8ef] bg-white p-(--fluid-form-pad) shadow-[0_2px_8px_rgba(0,0,0,0.05)]'
@@ -244,10 +244,10 @@ function PriceBreakdown({
           {result.drivingUnknown && (
             <p className="mt-3 text-xs text-text-body">
               {driving?.status === 'outside'
-                ? `Kørsel er ikke regnet med. ${outsideText}`
+                ? `Kørsel er ikke medregnet. ${outsideText}`
                 : driving?.status === 'unknown'
-                  ? 'Kørsel er ikke regnet med, postnummeret blev ikke fundet.'
-                  : 'Kørsel er ikke regnet med, indtast et postnummer.'}
+                  ? 'Kørsel er ikke medregnet, postnummeret blev ikke fundet.'
+                  : 'Kørsel er ikke medregnet, indtast et postnummer.'}
             </p>
           )}
         </div>
@@ -543,7 +543,7 @@ export function PriceCalculatorClient({
                         {department.name}
                       </span>
                       <span className="text-sm text-text-body">{department.km == null ? 'Afdeling' : department.km < 1 ? 'Under 1 km' : `Ca. ${department.km} km`}</span>
-                      {nearest && <span className="text-sm font-medium text-brand-500">Nærmeste</span>}
+                      {nearest && <span className="text-sm font-medium text-brand-500">Nærmeste afdeling</span>}
                     </li>
                   )
                 })}
@@ -579,11 +579,11 @@ export function PriceCalculatorClient({
           {/* Den, der står låst ude, vil måske hellere ringe end regne. Knappen står i prisboksen. */}
           {emergency && phone && (
             <p className="mt-6 border-t border-[#e4e8ef] pt-6 text-sm leading-[21px] text-ink-800">
-              <span className="font-medium">Står du låst ude?</span> Ring til os på{' '}
+              <span className="font-medium">Står du låst ude?</span> Ring til vores døgnvagt på{' '}
               <a href={`tel:${phone.replace(/\s/g, '')}`} className="whitespace-nowrap underline hover:text-brand-500">
                 {phone}
               </a>
-              , vi har døgnvagt. Eller få et vejledende prisoverslag her.
+              , så hjælper vi dig. Du kan også få et vejledende prisoverslag her.
             </p>
           )}
 
@@ -719,7 +719,7 @@ export function PriceCalculatorClient({
         </div>
 
         {!selections.length && (
-          <p className="text-sm text-text-body">{!postcodeDone ? 'Skriv dit postnummer for at komme videre.' : category ? 'Vælg en eller flere ydelser for at se en pris.' : 'Vælg hvad der skal laves for at se en pris.'}</p>
+          <p className="text-sm text-text-body">{!postcodeDone ? 'Indtast dit postnummer for at komme videre.' : category ? 'Vælg en eller flere ydelser for at se prisen.' : 'Vælg, hvad du har brug for hjælp til, for at se prisen.'}</p>
         )}
 
         {/* Kørslen vises i prisboksen, så snart postnummeret er skrevet. Med en regnet pris står den som linje i listen. */}
@@ -735,7 +735,7 @@ export function PriceCalculatorClient({
           </div>
         ) : null}
 
-        {awaitingPostcode && <p className="text-sm text-text-body">Skriv dit postnummer i trin 2 for at se prisen. Kørslen er en del af prisen.</p>}
+        {awaitingPostcode && <p className="text-sm text-text-body">Indtast dit postnummer i trin 2 for at se prisen. Kørsel er en del af prisen.</p>}
 
         <PriceBreakdown result={result} vatLabel={vatLabel} totalText={totalText} outsideText={outsideText} showLines={!awaitingPostcode} />
 
@@ -802,9 +802,12 @@ export function PriceCalculatorClient({
           {showForm && (
             <div className="p-(--fluid-form-pad)">
               <div className="flex items-start justify-between gap-4">
-                <h2 id="price-quote-title" className="font-heading text-xl leading-[26px] font-light text-ink-800">
-                  Få et uforpligtende tilbud
-                </h2>
+                <div>
+                  <h2 id="price-quote-title" className="font-heading text-xl leading-[26px] font-light text-ink-800">
+                    Få et uforpligtende tilbud
+                  </h2>
+                  <p className="mt-1 text-sm text-text-body">Vi kontakter dig inden for 24 timer</p>
+                </div>
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
