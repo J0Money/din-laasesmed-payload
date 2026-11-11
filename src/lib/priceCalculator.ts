@@ -45,19 +45,6 @@ export const PERIODS: { hint: string; label: string; value: Period }[] = [
   { label: 'Weekend og helligdag', hint: 'Lørdag, søndag og helligdage', value: 'weekendHoliday' },
 ]
 
-const UNITS: Record<NonNullable<PriceService['unit']>, [string, string]> = {
-  piece: ['stk.', 'stk.'],
-  door: ['dør', 'døre'],
-  key: ['nøgle', 'nøgler'],
-  window: ['vindue', 'vinduer'],
-  lock: ['lås', 'låse'],
-}
-
-export function unitLabel(unit: PriceService['unit'], quantity: number): string {
-  const [one, many] = UNITS[unit ?? 'piece']
-  return quantity === 1 ? one : many
-}
-
 export function formatKr(amount: number): string {
   return `${new Intl.NumberFormat('da-DK', { maximumFractionDigits: 0 }).format(amount)} kr.`
 }

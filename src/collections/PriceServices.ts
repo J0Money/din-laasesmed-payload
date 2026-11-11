@@ -64,22 +64,8 @@ export const PriceServices: CollectionConfig = {
       type: 'row',
       admin: { condition: isModel('perUnit') },
       fields: [
-        {
-          name: 'unit',
-          type: 'select',
-          label: 'Unit',
-          defaultValue: 'piece',
-          options: [
-            { label: 'Piece (stk.)', value: 'piece' },
-            { label: 'Door (dør)', value: 'door' },
-            { label: 'Key (nøgle)', value: 'key' },
-            { label: 'Window (vindue)', value: 'window' },
-            { label: 'Lock (lås)', value: 'lock' },
-          ],
-          admin: { width: '34%' },
-        },
-        { name: 'minQuantity', type: 'number', label: 'Min. quantity', defaultValue: 1, min: 1, admin: { width: '33%' } },
-        { name: 'maxQuantity', type: 'number', label: 'Max. quantity', defaultValue: 10, min: 1, admin: { width: '33%' } },
+        { name: 'minQuantity', type: 'number', label: 'Min. quantity', defaultValue: 1, min: 1, admin: { width: '50%' } },
+        { name: 'maxQuantity', type: 'number', label: 'Max. quantity', defaultValue: 10, min: 1, admin: { width: '50%' } },
       ],
     },
     {

@@ -1383,7 +1383,6 @@ export interface PriceService {
    * Price range: shows "X to Y kr." and sends the customer to the quote form. In store: shows a text instead of a price.
    */
   pricingModel: 'perUnit' | 'priceRange' | 'inStore';
-  unit?: ('piece' | 'door' | 'key' | 'window' | 'lock') | null;
   minQuantity?: number | null;
   maxQuantity?: number | null;
   unitPrice?: number | null;
@@ -2304,7 +2303,6 @@ export interface PriceServicesSelect<T extends boolean = true> {
   category?: T;
   description?: T;
   pricingModel?: T;
-  unit?: T;
   minQuantity?: T;
   maxQuantity?: T;
   unitPrice?: T;

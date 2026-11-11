@@ -16,7 +16,6 @@ import {
   type PriceResult,
   PERIODS,
   type Selection,
-  unitLabel,
 } from '@/lib/priceCalculator'
 import { ROUTES } from '@/lib/routes'
 import type { Form, PriceCalculator, PriceService } from '@/payload-types'
@@ -485,29 +484,32 @@ export function PriceCalculatorClient({
               <StepNumber>{step++}</StepNumber>
               Hvor skal vi komme ud?
             </label>
-            <div className="mt-5 flex flex-col gap-4">
-              <PostcodePin
-                value={postcode}
-                onChange={setPostcode}
-                status={postcode.length < 4 ? null : driving?.status === 'unknown' ? 'invalid' : 'valid'}
-              />
-              {drivingNote && (
-                <p aria-live="polite" className="text-sm text-text-body">
-                  {drivingNote}
-                </p>
-              )}
+            {/* Pinkoden og afdelingerne står ved siden af hinanden fra 768px, under hinanden på mobil. */}
+            <div className="mt-5 flex flex-col gap-4 min-[768px]:flex-row min-[768px]:items-start min-[768px]:gap-6">
+              <div className="flex flex-col gap-4 min-[768px]:w-[220px] min-[768px]:shrink-0">
+                <PostcodePin
+                  value={postcode}
+                  onChange={setPostcode}
+                  status={postcode.length < 4 ? null : driving?.status === 'unknown' ? 'invalid' : 'valid'}
+                />
+                {drivingNote && (
+                  <p aria-live="polite" className="text-sm text-text-body">
+                    {drivingNote}
+                  </p>
+                )}
+              </div>
               {/* Afdelingerne fra admin. Den nærmeste (som vi kører fra) lyser op, når postnummeret er kendt. */}
-              <ul className="grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] gap-3" aria-live="polite">
+              <ul className="grid grid-cols-[repeat(auto-fit,minmax(130px,1fr))] gap-3 min-[768px]:flex-1" aria-live="polite">
                 {departmentDistances(settings, postcode).map((department) => {
                   const nearest = driving != null && driving.status !== 'unknown' && driving.department === department.name
                   return (
                     <li
                       key={department.name}
-                      className={`flex min-h-[92px] flex-col gap-1.5 rounded-xl border px-4 py-4 text-sm transition-colors duration-300 ${
+                      className={`flex min-h-[92px] min-w-0 flex-col gap-1.5 rounded-xl border px-4 py-4 text-sm transition-colors duration-300 ${
                         nearest ? 'border-brand-500 bg-brand-500/5 shadow-[inset_0_0_0_1px_var(--color-brand-500)]' : 'border-[#e4e8ef] bg-[#f9fafb]'
                       }`}
                     >
-                      <span className={`flex items-center gap-2 text-base font-medium ${nearest ? 'text-brand-500' : 'text-ink-800'}`}>
+                      <span className={`flex items-center gap-2 text-base font-medium [overflow-wrap:anywhere] ${nearest ? 'text-brand-500' : 'text-ink-800'}`}>
                         <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 shrink-0" aria-hidden>
                           <path
                             d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21Z"
@@ -599,7 +601,7 @@ export function PriceCalculatorClient({
                           <div className="flex flex-col gap-3 border-t border-[#e4e8ef] px-4 py-3">
                             {perUnit && (
                               <div className="flex items-center justify-between gap-3">
-                                <span className="text-xs text-text-body">Antal {unitLabel(service.unit, 2)}</span>
+                                <span className="text-xs text-text-body">Antal</span>
                                 <div className="flex items-center gap-1">
                                   <button
                                     type="button"
