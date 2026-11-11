@@ -3066,12 +3066,11 @@ export interface PriceCalculator {
    */
   priceRangePercent?: number | null;
   /**
-   * Shown under the price.
+   * Private customers see prices including VAT. Business customers see them excluding VAT.
    */
-  disclaimer?: string | null;
   vatPercent?: number | null;
   /**
-   * On-call service 16.00 to 08.00 on weekdays.
+   * On-call service 16.00 to 08.00 on weekdays. Emergency help only, added before driving and VAT.
    */
   eveningNight?: {
     type?: ('amount' | 'percent') | null;
@@ -3081,7 +3080,7 @@ export interface PriceCalculator {
     value?: number | null;
   };
   /**
-   * All day on Saturdays, Sundays and public holidays.
+   * All day on Saturdays, Sundays and public holidays. Emergency help only, added before driving and VAT.
    */
   weekendHoliday?: {
     type?: ('amount' | 'percent') | null;
@@ -3090,6 +3089,10 @@ export interface PriceCalculator {
      */
     value?: number | null;
   };
+  /**
+   * Shown under the price.
+   */
+  disclaimer?: string | null;
   /**
    * Where we drive from. The postcode is used as the location.
    */
@@ -3314,7 +3317,6 @@ export interface PriceCalculatorSelect<T extends boolean = true> {
   hourlyRate?: T;
   callOutFee?: T;
   priceRangePercent?: T;
-  disclaimer?: T;
   vatPercent?: T;
   eveningNight?:
     | T
@@ -3328,6 +3330,7 @@ export interface PriceCalculatorSelect<T extends boolean = true> {
         type?: T;
         value?: T;
       };
+  disclaimer?: T;
   departments?:
     | T
     | {

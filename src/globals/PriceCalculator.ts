@@ -92,33 +92,30 @@ export const PriceCalculator: GlobalConfig = {
               },
             },
             {
-              name: 'disclaimer',
-              type: 'textarea',
-              label: 'Disclaimer',
-              admin: { description: 'Shown under the price.' },
-            },
-          ],
-        },
-        {
-          label: 'VAT',
-          description: 'Private customers see prices including VAT. Business customers see them excluding VAT.',
-          fields: [
-            {
               name: 'vatPercent',
               type: 'number',
               label: 'VAT (%)',
               defaultValue: 25,
               min: 0,
               max: 100,
+              admin: { description: 'Private customers see prices including VAT. Business customers see them excluding VAT.' },
             },
-          ],
-        },
-        {
-          label: 'Time surcharges',
-          description: 'Used for emergency help. Added before driving and VAT.',
-          fields: [
-            surchargeGroup('eveningNight', 'Evening and night (on-call service)', 'On-call service 16.00 to 08.00 on weekdays.'),
-            surchargeGroup('weekendHoliday', 'Weekend and public holidays', 'All day on Saturdays, Sundays and public holidays.'),
+            surchargeGroup(
+              'eveningNight',
+              'Evening and night (on-call service)',
+              'On-call service 16.00 to 08.00 on weekdays. Emergency help only, added before driving and VAT.',
+            ),
+            surchargeGroup(
+              'weekendHoliday',
+              'Weekend and public holidays',
+              'All day on Saturdays, Sundays and public holidays. Emergency help only, added before driving and VAT.',
+            ),
+            {
+              name: 'disclaimer',
+              type: 'textarea',
+              label: 'Disclaimer',
+              admin: { description: 'Shown under the price.' },
+            },
           ],
         },
         {
