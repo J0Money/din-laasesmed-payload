@@ -5,11 +5,11 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
 import { DynamicForm } from '@/components/forms/DynamicForm'
+import { DenmarkMap } from '@/components/priceCalculator/DenmarkMap'
 import {
   calculatePrice,
   CUSTOMER_TYPES,
   type CustomerType,
-  departmentDistances,
   formatKr,
   hasDriving,
   type Period,
@@ -83,7 +83,7 @@ function PostcodePin({
         : 'border-[#ced5e1] bg-[#f9fafb] text-ink-800 hover:border-ink-muted'
 
   return (
-    <div ref={group} className="flex gap-2" role="group" aria-label="Postnummer, fire cifre" aria-invalid={status === 'invalid' || undefined}>
+    <div ref={group} className="flex gap-3" role="group" aria-label="Postnummer, fire cifre" aria-invalid={status === 'invalid' || undefined}>
       {[0, 1, 2, 3].map((index) => (
         <input
           key={index}
@@ -137,7 +137,7 @@ function PostcodePin({
               focus(digits.length)
             }
           }}
-          className={`h-14 w-12 rounded-lg border text-center font-heading text-2xl font-light outline-none transition-colors ${fieldColor} ${status ? '' : 'focus:border-brand-500 focus:bg-white focus:shadow-[inset_0_0_0_1px_var(--color-brand-500)]'}`}
+          className={`h-16 w-14 rounded-lg border text-center font-heading text-3xl font-light outline-none transition-colors ${fieldColor} ${status ? '' : 'focus:border-brand-500 focus:bg-white focus:shadow-[inset_0_0_0_1px_var(--color-brand-500)]'}`}
           suppressHydrationWarning
         />
       ))}
@@ -373,8 +373,17 @@ export function PriceCalculatorClient({
   const postcodeDone = !drivingEnabled || (/^[0-9]{4}$/.test(postcode) && driving?.status !== 'unknown')
   const awaitingPostcode = drivingEnabled && result.lines.length > 0 && driving === null
   const outsideText = settings.outsideAreaText || 'Kørsel aftales, når vi kontakter dig.'
-  const drivingNote =
-    driving?.status === 'outside' ? outsideText : driving?.status === 'unknown' ? 'Vi kan ikke finde postnummeret. Tjek, at det er skrevet rigtigt.' : null
+  // Feltet ved siden af pinkoden har altid samme størrelse og opbygning, og kun teksten skifter, så trinnet ikke hopper.
+  const nearestDepartment = driving && driving.status !== 'unknown' && driving.department ? driving : null
+  const postcodeValue =
+    driving?.status === 'unknown'
+      ? 'Vi kan ikke finde postnummeret'
+      : nearestDepartment
+        ? `${nearestDepartment.department}${nearestDepartment.distanceKm != null ? ` · ca. ${nearestDepartment.distanceKm} km` : ''}`
+        : driving?.status === 'outside'
+          ? 'Uden for vores område'
+          : 'Skriv dit postnummer'
+  const postcodeFound = driving?.status === 'price' || driving?.status === 'outside'
   const vatLabel = result.includesVat ? 'inkl. moms' : 'ekskl. moms'
   // Totalen som ét beløb eller et interval (procent-intervallet fra globalen og ydelser med prisinterval).
   const totalText = result.low === result.high ? formatKr(result.total) : `${formatKr(result.low)} til ${formatKr(result.high)}`
@@ -484,44 +493,28 @@ export function PriceCalculatorClient({
               <StepNumber>{step++}</StepNumber>
               Hvor skal vi komme ud?
             </label>
-            {/* Pinkoden og afdelingerne står ved siden af hinanden fra 768px, under hinanden på mobil. */}
-            <div className="mt-5 flex flex-col gap-4 min-[768px]:flex-row min-[768px]:items-start min-[768px]:gap-6">
-              <div className="flex flex-col gap-4 min-[768px]:w-[220px] min-[768px]:shrink-0">
+            {/* To lige brede kolonner som i trin 1: pinkoden med nærmeste afdeling under til venstre, kortet til højre (under på mobil). Alt har fast størrelse, så trinnet ikke hopper. */}
+            <div className="mt-5 grid gap-6 min-[768px]:grid-cols-2 min-[768px]:items-center min-[768px]:gap-3">
+              <div className="flex flex-col gap-3">
                 <PostcodePin
                   value={postcode}
                   onChange={setPostcode}
                   status={postcode.length < 4 ? null : driving?.status === 'unknown' ? 'invalid' : 'valid'}
                 />
-                {drivingNote && (
-                  <p aria-live="polite" className="text-sm text-text-body">
-                    {drivingNote}
-                  </p>
-                )}
+                <div aria-live="polite" className="flex h-16 items-center gap-3">
+                  <svg viewBox="0 0 24 24" fill="none" className={`h-5 w-5 shrink-0 transition-colors duration-300 ${postcodeFound ? 'text-brand-500' : 'text-ink-muted'}`} aria-hidden>
+                    <path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+                    <circle cx="12" cy="9.5" r="2.5" stroke="currentColor" strokeWidth="1.8" />
+                  </svg>
+                  <div className="flex min-w-0 flex-col leading-tight">
+                    <span className="text-xs text-text-body">Nærmeste afdeling</span>
+                    <span className={`truncate text-sm font-medium ${postcodeFound ? 'text-ink-800' : 'text-ink-muted'}`}>{postcodeValue}</span>
+                  </div>
+                </div>
               </div>
-              {/* Afdelingerne fra admin. Den nærmeste (som vi kører fra) lyser op, når postnummeret er kendt. */}
-              <ul className="flex flex-wrap gap-2 min-[768px]:flex-1 min-[768px]:self-center" aria-live="polite">
-                {departmentDistances(settings, postcode).map((department) => {
-                  const nearest = driving != null && driving.status !== 'unknown' && driving.department === department.name
-                  return (
-                    <li
-                      key={department.name}
-                      className={`flex max-w-full items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition-colors duration-300 ${
-                        nearest ? 'border-brand-500 bg-brand-500/5 text-brand-500' : 'border-[#e4e8ef] bg-[#f9fafb] text-text-body'
-                      }`}
-                    >
-                      <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 shrink-0" aria-hidden>
-                        <path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-                        <circle cx="12" cy="9.5" r="2.5" stroke="currentColor" strokeWidth="1.8" />
-                      </svg>
-                      <span className="[overflow-wrap:anywhere]">
-                        <span className="font-medium">{department.name}</span>
-                        {department.km != null && ` · ${department.km < 1 ? 'under 1' : department.km} km`}
-                        {nearest && ' · nærmeste'}
-                      </span>
-                    </li>
-                  )
-                })}
-              </ul>
+              <div className="w-full max-w-[294px] rounded-xl border border-[#e4e8ef] bg-[#f9fafb] p-4">
+                <DenmarkMap departments={settings.departments} nearest={nearestDepartment?.department ?? null} postcode={postcode} />
+              </div>
             </div>
           </div>
         )}

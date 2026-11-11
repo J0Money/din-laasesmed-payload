@@ -72,18 +72,6 @@ function distanceKm([lat1, lng1]: [number, number], [lat2, lng2]: [number, numbe
   return 2 * 6371 * Math.asin(Math.sqrt(a))
 }
 
-/**
- * Alle afdelinger i admins rækkefølge, med afstanden (luftlinje, hele km) fra postnummeret.
- * km er null, når postnummeret ikke er skrevet helt eller ikke findes. Bruges til afdelingskortene i trin 2.
- */
-export function departmentDistances(settings: PriceCalculator, postcode: string): { km: number | null; name: string }[] {
-  const point = /^\d{4}$/.test(postcode) ? POSTCODE_COORDINATES[postcode] : undefined
-  return (settings.departments ?? []).map((department) => {
-    const location = POSTCODE_COORDINATES[department.postcode.trim()]
-    return { name: department.name, km: point && location ? Math.round(distanceKm(point, location)) : null }
-  })
-}
-
 function findDriving(settings: PriceCalculator, postcode: string): Driving | null {
   if (!hasDriving(settings) || !/^\d{4}$/.test(postcode)) return null
   const point = POSTCODE_COORDINATES[postcode]
