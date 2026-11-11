@@ -137,7 +137,7 @@ function PostcodePin({
               focus(digits.length)
             }
           }}
-          className={`h-16 w-14 rounded-lg border text-center font-heading text-3xl font-light outline-none transition-colors ${fieldColor} ${status ? '' : 'focus:border-brand-500 focus:bg-white focus:shadow-[inset_0_0_0_1px_var(--color-brand-500)]'}`}
+          className={`h-14 w-14 min-w-0 shrink rounded-lg border text-center font-heading text-3xl font-light outline-none transition-colors ${fieldColor} ${status ? '' : 'focus:border-brand-500 focus:bg-white focus:shadow-[inset_0_0_0_1px_var(--color-brand-500)]'}`}
           suppressHydrationWarning
         />
       ))}
@@ -488,20 +488,19 @@ export function PriceCalculatorClient({
 
         {/* Altid vist, også ved ydelser uden regnet pris: postnummeret er nyttigt for tilbuddet, og trinnumrene skal ikke skifte undervejs. */}
         {drivingEnabled && (
-          <div className={CARD}>
+          <div className={`${CARD} grid min-[768px]:grid-cols-2 min-[768px]:gap-x-3`}>
             <label htmlFor="price-postcode" className={STEP_HEADING}>
               <StepNumber>{step++}</StepNumber>
               Hvor skal vi komme ud?
             </label>
-            {/* To lige brede kolonner som i trin 1: pinkoden med nærmeste afdeling under til venstre, kortet til højre (under på mobil). Alt har fast størrelse, så trinnet ikke hopper. */}
-            <div className="mt-5 grid gap-6 min-[768px]:grid-cols-2 min-[768px]:items-center min-[768px]:gap-3">
-              <div className="flex flex-col gap-3">
+            {/* To lige brede kolonner som i trin 1: overskrift og pinkode med nærmeste afdeling til venstre, kortet til højre over hele kortets højde, så det har samme afstand til kanterne hele vejen rundt (under på mobil). Alt har fast størrelse, så trinnet ikke hopper. */}
+            <div className="mt-5 flex flex-col gap-3 min-[768px]:col-start-1 min-[768px]:row-start-2">
                 <PostcodePin
                   value={postcode}
                   onChange={setPostcode}
                   status={postcode.length < 4 ? null : driving?.status === 'unknown' ? 'invalid' : 'valid'}
                 />
-                <div aria-live="polite" className="flex h-16 items-center gap-3">
+                <div aria-live="polite" className="flex h-12 items-center gap-3">
                   <svg viewBox="0 0 24 24" fill="none" className={`h-5 w-5 shrink-0 transition-colors duration-300 ${postcodeFound ? 'text-brand-500' : 'text-ink-muted'}`} aria-hidden>
                     <path d="M12 21s-7-6.2-7-11.5a7 7 0 1 1 14 0C19 14.8 12 21 12 21Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
                     <circle cx="12" cy="9.5" r="2.5" stroke="currentColor" strokeWidth="1.8" />
@@ -511,8 +510,9 @@ export function PriceCalculatorClient({
                     <span className={`truncate text-sm font-medium ${postcodeFound ? 'text-ink-800' : 'text-ink-muted'}`}>{postcodeValue}</span>
                   </div>
                 </div>
-              </div>
-              <div className="w-full max-w-[294px] rounded-xl border border-[#e4e8ef] bg-[#f9fafb] p-4">
+            </div>
+            <div className="mt-3 flex items-center rounded-xl border border-[#e4e8ef] bg-[#f9fafb] p-4 min-[768px]:col-start-2 min-[768px]:row-span-2 min-[768px]:row-start-1 min-[768px]:mt-0">
+              <div className="mx-auto w-full max-w-[260px]">
                 <DenmarkMap departments={settings.departments} nearest={nearestDepartment?.department ?? null} postcode={postcode} />
               </div>
             </div>

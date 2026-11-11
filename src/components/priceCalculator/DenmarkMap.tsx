@@ -51,10 +51,10 @@ export function DenmarkMap({
             {active && <circle cx={mark.point[0]} cy={mark.point[1]} r="20" className="fill-brand-500/15" />}
             <circle cx={mark.point[0]} cy={mark.point[1]} r={active ? 10 : 8} className={active ? 'fill-brand-500' : 'fill-ink-800'} />
             <text
-              x={mark.point[0] + (mark.point[0] > MAP_WIDTH * 0.6 ? -16 : 16)}
-              y={mark.point[1] + 8}
+              x={mark.point[0]}
+              y={mark.point[1] - (active ? 20 : 16)}
               fontSize="24"
-              textAnchor={mark.point[0] > MAP_WIDTH * 0.6 ? 'end' : 'start'}
+              textAnchor="middle"
               className={active ? 'fill-brand-500 font-semibold' : 'fill-ink-800'}
             >
               {mark.name}
