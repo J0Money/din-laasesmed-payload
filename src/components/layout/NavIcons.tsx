@@ -54,6 +54,17 @@ export function GridIcon({ className = 'h-4 w-4' }: IconProps) {
   )
 }
 
+/** Lommeregner til "Beregn pris" (egen tegning, findes ikke på originalen). */
+export function CalculatorIcon({ className = 'h-5 w-5' }: IconProps) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true" className={`shrink-0 ${className}`}>
+      <rect x="5" y="3" width="14" height="18" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
+      <rect x="8" y="6" width="8" height="3.5" rx="1" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M8.5 13h.01M12 13h.01M15.5 13h.01M8.5 16.5h.01M12 16.5h.01M15.5 16.5h.01" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 /** Ikon pr. kategori-slug, matcher de tre faste hovedkategorier på din-laasesmed.dk. */
 export const NAV_ICON_BY_CATEGORY_SLUG: Record<string, (props: IconProps) => React.ReactElement> = {
   'elektronisk-sikring': SignalIcon,

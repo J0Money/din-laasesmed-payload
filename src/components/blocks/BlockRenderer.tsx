@@ -18,6 +18,7 @@ import { OverviewIntro } from '@/blocks/OverviewIntro'
 import { ParallaxBand } from '@/blocks/ParallaxBand'
 import { People } from '@/blocks/People'
 import { PriceCalculator } from '@/blocks/PriceCalculator'
+import { PriceCta } from '@/blocks/PriceCta'
 import { Text } from '@/blocks/Text'
 import { ThanksMessage } from '@/blocks/ThanksMessage'
 import { TextWithImage } from '@/blocks/TextWithImage'
@@ -61,6 +62,8 @@ function renderBlock(block: LayoutBlock): React.ReactNode {
       return <FormPage {...block} />
     case 'priceCalculator':
       return <PriceCalculator {...block} />
+    case 'priceCta':
+      return <PriceCta {...block} />
     case 'jobList':
       return <JobList {...block} />
     case 'thanksMessage':

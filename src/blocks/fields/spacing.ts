@@ -23,6 +23,7 @@ export const BLOCK_SPACING: Record<string, BlockSpacing> = {
   parallaxBand: { before: 'medium', after: 'medium' },
   people: { before: 'small', after: 'small' },
   priceCalculator: { before: 'small', after: 'small' },
+  priceCta: { before: 'small', after: 'small' },
   text: { before: 'small', after: 'small' },
   textWithImage: { before: 'small', after: 'small' },
   thanksMessage: { before: 'small', after: 'small' },

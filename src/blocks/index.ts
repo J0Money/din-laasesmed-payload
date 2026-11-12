@@ -16,6 +16,7 @@ import { overviewIntroBlock } from './OverviewIntro'
 import { parallaxBandBlock } from './ParallaxBand'
 import { peopleBlock } from './People'
 import { priceCalculatorBlock } from './PriceCalculator'
+import { priceCtaBlock } from './PriceCta'
 import { prepareBlocks } from './fields/blockRowLabel'
 import { textBlock } from './Text'
 import { thanksMessageBlock } from './ThanksMessage'
@@ -40,6 +41,7 @@ const blocks: Block[] = [
   jobListBlock,
   formPageBlock,
   priceCalculatorBlock,
+  priceCtaBlock,
   thanksMessageBlock,
   textBlock,
   textWithImageBlock,

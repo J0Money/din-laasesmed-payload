@@ -183,7 +183,7 @@ export interface Page {
    */
   parent?: (string | null) | Page;
   /**
-   * Choose from: Home page hero, Home page intro, Testimonials, Stats band, Focus cards, Business customers, Video band, Intro band, Contact cards, Article with form, Parallax band, Employees, Image slider, Brand overview, Job list, Form page, Price calculator, Thank-you message, Text, Text with image.
+   * Choose from: Home page hero, Home page intro, Testimonials, Stats band, Focus cards, Business customers, Video band, Intro band, Contact cards, Article with form, Parallax band, Employees, Image slider, Brand overview, Job list, Form page, Price calculator, Price calculator button, Thank-you message, Text, Text with image.
    */
   layout?:
     | (
@@ -204,6 +204,7 @@ export interface Page {
         | JobListBlock
         | FormPageBlock
         | PriceCalculatorBlock
+        | PriceCtaBlock
         | ThanksMessageBlock
         | TextBlock
         | TextWithImageBlock
@@ -1241,6 +1242,46 @@ export interface PriceCalculatorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PriceCtaBlock".
+ */
+export interface PriceCtaBlock {
+  heading: string;
+  text?: string | null;
+  buttonLabel: string;
+  /**
+   * A second button to the contact page. Empty: no second button.
+   */
+  contactLabel?: string | null;
+  /**
+   * Shown to the right of the text. Empty: text only.
+   */
+  image?: (string | null) | Media;
+  /**
+   * The calculator opens with this service already chosen. Empty: the calculator opens without a choice.
+   */
+  priceService?: (string | null) | PriceService;
+  /**
+   * The space at the top of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
+   */
+  spacingBefore?: ('none' | 'small' | 'medium' | 'large') | null;
+  /**
+   * The space at the bottom of the section. Same scale as the original site: Small 80px, Medium 112px and Large 160px on large screens, smaller on mobile.
+   */
+  spacingAfter?: ('none' | 'small' | 'medium' | 'large') | null;
+  /**
+   * Gives the section a muted gray background instead of the default one. Use it to create visual separation between sections.
+   */
+  mutedBackground?: boolean | null;
+  /**
+   * Optional. Only for special layout needs, not for regular content editing.
+   */
+  blockClass?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'priceCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ThanksMessageBlock".
  */
 export interface ThanksMessageBlock {
@@ -1826,6 +1867,7 @@ export interface PagesSelect<T extends boolean = true> {
         jobList?: T | JobListBlockSelect<T>;
         formPage?: T | FormPageBlockSelect<T>;
         priceCalculator?: T | PriceCalculatorBlockSelect<T>;
+        priceCta?: T | PriceCtaBlockSelect<T>;
         thanksMessage?: T | ThanksMessageBlockSelect<T>;
         text?: T | TextBlockSelect<T>;
         textWithImage?: T | TextWithImageBlockSelect<T>;
@@ -2143,6 +2185,24 @@ export interface PriceCalculatorBlockSelect<T extends boolean = true> {
   form?: T;
   spacingBefore?: T;
   spacingAfter?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PriceCtaBlock_select".
+ */
+export interface PriceCtaBlockSelect<T extends boolean = true> {
+  heading?: T;
+  text?: T;
+  buttonLabel?: T;
+  contactLabel?: T;
+  image?: T;
+  priceService?: T;
+  spacingBefore?: T;
+  spacingAfter?: T;
+  mutedBackground?: T;
+  blockClass?: T;
   id?: T;
   blockName?: T;
 }

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { RelatedBrands } from '@/components/article/RelatedBrands'
-import { NAV_ICON_BY_CATEGORY_SLUG } from '@/components/layout/NavIcons'
+import { CalculatorIcon, NAV_ICON_BY_CATEGORY_SLUG } from '@/components/layout/NavIcons'
 import { RichText } from '@/components/RichText'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import { getCms } from '@/lib/cms'
@@ -72,28 +72,40 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
               </h1>
             </div>
 
-            <nav className="flex gap-2" aria-label="Kategorier">
-              {TAB_SLUGS.map((tabSlug, index) => {
-                const Icon = NAV_ICON_BY_CATEGORY_SLUG[tabSlug]
-                const isCurrent = tabSlug === category.slug
-                return (
-                  <Link
-                    key={tabSlug}
-                    href={ROUTES.category(tabSlug)}
-                    data-animate="fade-up"
-                    data-delay={index * 100}
-                    aria-current={isCurrent ? 'page' : undefined}
-                    className={`flex h-12 w-12 items-center justify-center rounded-lg transition-colors duration-200 ${
-                      isCurrent
-                        ? 'bg-brand-500 text-[#edf0f3]'
-                        : 'bg-[#ced5e1] text-text-body hover:bg-[#69748c] hover:text-background'
-                    }`}
-                  >
-                    {Icon && <Icon className="h-auto w-[1.35rem]" />}
-                  </Link>
-                )
-              })}
-            </nav>
+            <div className="flex flex-wrap items-center gap-2">
+              <nav className="flex gap-2" aria-label="Kategorier">
+                {TAB_SLUGS.map((tabSlug, index) => {
+                  const Icon = NAV_ICON_BY_CATEGORY_SLUG[tabSlug]
+                  const isCurrent = tabSlug === category.slug
+                  return (
+                    <Link
+                      key={tabSlug}
+                      href={ROUTES.category(tabSlug)}
+                      data-animate="fade-up"
+                      data-delay={index * 100}
+                      aria-current={isCurrent ? 'page' : undefined}
+                      className={`flex h-12 w-12 items-center justify-center rounded-lg transition-colors duration-200 ${
+                        isCurrent
+                          ? 'bg-brand-500 text-[#edf0f3]'
+                          : 'bg-[#ced5e1] text-text-body hover:bg-[#69748c] hover:text-background'
+                      }`}
+                    >
+                      {Icon && <Icon className="h-auto w-[1.35rem]" />}
+                    </Link>
+                  )
+                })}
+              </nav>
+              <Link
+                href={ROUTES.priceCalculator()}
+                data-animate="fade-up"
+                data-delay={TAB_SLUGS.length * 100}
+                aria-label="Beregn pris"
+                title="Beregn pris"
+                className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#ced5e1] text-text-body transition-colors duration-200 hover:bg-[#69748c] hover:text-background"
+              >
+                <CalculatorIcon className="h-auto w-[1.35rem]" />
+              </Link>
+            </div>
           </div>
 
           <div data-animate="fade-left" className="flex w-full max-w-[768px] flex-col gap-8">
