@@ -30,6 +30,7 @@ export const priceCtaBlock: Block = {
               name: 'contactLabel',
               type: 'text',
               label: 'Contact button text',
+              defaultValue: 'Kontakt os',
               admin: { description: 'A second button to the contact page. Empty: no second button.' },
             },
             { name: 'image', type: 'upload', relationTo: 'media', label: 'Image', admin: { description: 'Shown to the right of the text. Empty: text only.' } },
