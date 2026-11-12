@@ -79,6 +79,16 @@ export const Articles: CollectionConfig = {
       label: 'Related brands',
     },
     {
+      name: 'priceService',
+      type: 'relationship',
+      relationTo: 'priceServices',
+      label: 'Price calculator service',
+      admin: {
+        position: 'sidebar',
+        description: 'The "Beregn pris" button on the article opens the price calculator with this service already chosen. Empty: the calculator opens without a choice.',
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {

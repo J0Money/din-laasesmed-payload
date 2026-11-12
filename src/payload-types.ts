@@ -423,6 +423,10 @@ export interface Article {
    */
   publishedAt?: string | null;
   brands?: (string | Brand)[] | null;
+  /**
+   * The "Beregn pris" button on the article opens the price calculator with this service already chosen. Empty: the calculator opens without a choice.
+   */
+  priceService?: (string | null) | PriceService;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -502,6 +506,63 @@ export interface Brand {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * Services in the price calculator. Drag to change the order. Amounts are excluding VAT.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "priceServices".
+ */
+export interface PriceService {
+  id: string;
+  _order?: string | null;
+  /**
+   * Shown to the customer.
+   */
+  name: string;
+  category: 'emergency' | 'mechanical' | 'electronic';
+  description?: string | null;
+  /**
+   * Price range: shows "X to Y kr." and sends the customer to the quote form. In store: shows a text instead of a price.
+   */
+  pricingModel: 'perUnit' | 'priceRange' | 'inStore';
+  minQuantity?: number | null;
+  maxQuantity?: number | null;
+  unitPrice?: number | null;
+  /**
+   * Mounting time, multiplied by the hourly rate.
+   */
+  minutesPerUnit?: number | null;
+  fromPrice?: number | null;
+  toPrice?: number | null;
+  /**
+   * Shown in the price box when the service is chosen.
+   */
+  storeText?: string | null;
+  /**
+   * Choices the customer can tick.
+   */
+  options?:
+    | {
+        name: string;
+        price?: number | null;
+        /**
+         * Multiplied by the quantity.
+         */
+        perUnit?: boolean | null;
+        /**
+         * Only shown from this quantity. Empty: always.
+         */
+        showFromQuantity?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Turn off to hide the service.
+   */
+  enabled?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1365,63 +1426,6 @@ export interface Job {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Services in the price calculator. Drag to change the order. Amounts are excluding VAT.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "priceServices".
- */
-export interface PriceService {
-  id: string;
-  _order?: string | null;
-  /**
-   * Shown to the customer.
-   */
-  name: string;
-  category: 'emergency' | 'mechanical' | 'electronic';
-  description?: string | null;
-  /**
-   * Price range: shows "X to Y kr." and sends the customer to the quote form. In store: shows a text instead of a price.
-   */
-  pricingModel: 'perUnit' | 'priceRange' | 'inStore';
-  minQuantity?: number | null;
-  maxQuantity?: number | null;
-  unitPrice?: number | null;
-  /**
-   * Mounting time, multiplied by the hourly rate.
-   */
-  minutesPerUnit?: number | null;
-  fromPrice?: number | null;
-  toPrice?: number | null;
-  /**
-   * Shown in the price box when the service is chosen.
-   */
-  storeText?: string | null;
-  /**
-   * Choices the customer can tick.
-   */
-  options?:
-    | {
-        name: string;
-        price?: number | null;
-        /**
-         * Multiplied by the quantity.
-         */
-        perUnit?: boolean | null;
-        /**
-         * Only shown from this quantity. Empty: always.
-         */
-        showFromQuantity?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Turn off to hide the service.
-   */
-  enabled?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -2196,6 +2200,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   mainText?: T;
   publishedAt?: T;
   brands?: T;
+  priceService?: T;
   meta?:
     | T
     | {

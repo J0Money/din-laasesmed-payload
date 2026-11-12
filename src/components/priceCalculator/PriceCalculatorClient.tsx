@@ -196,7 +196,7 @@ function PriceCount({ high, low, total }: { high: number; low: number; total: nu
   )
 }
 
-// Værdierne i adressen: /prisberegner?type=erhverv&kategori=akut&postnummer=8000
+// Værdierne i adressen: /prisberegner?type=erhverv&kategori=akut&postnummer=8000&ydelse=<ydelsens id>
 const CUSTOMER_PARAMS: Record<string, CustomerType> = { privat: 'private', erhverv: 'business' }
 const CATEGORY_PARAMS: Record<string, Category> = { akut: 'emergency', mekanisk: 'mechanical', elektronisk: 'electronic' }
 const paramFor = <T extends string>(map: Record<string, T>, value: T) => Object.keys(map).find((key) => map[key] === value)
@@ -278,11 +278,16 @@ export function PriceCalculatorClient({
   // og bogstaver og overskydende cifre i postnummeret også.
   const searchParams = useSearchParams()
   const [customerType, setCustomerType] = useState<CustomerType>(() => CUSTOMER_PARAMS[searchParams.get('type') ?? ''] ?? 'private')
+  // ?ydelse=<id> vælger ydelsen på forhånd (fx fra en artikel) og dens kategori. Ydelsen skal findes, og kategorien skal vises.
+  const [preselected] = useState(() => {
+    const service = services.find((item) => item.id === searchParams.get('ydelse'))
+    return service && categories.includes(service.category) ? service : null
+  })
   const [category, setCategory] = useState<Category | null>(() => {
     const fromUrl = CATEGORY_PARAMS[searchParams.get('kategori') ?? '']
-    return fromUrl && categories.includes(fromUrl) ? fromUrl : null
+    return preselected?.category ?? (fromUrl && categories.includes(fromUrl) ? fromUrl : null)
   })
-  const [chosen, setChosen] = useState<Chosen>({})
+  const [chosen, setChosen] = useState<Chosen>(() => (preselected ? { [preselected.id]: { quantity: preselected.minQuantity ?? 1, optionIds: [] } } : {}))
   const [period, setPeriod] = useState<Period>('day')
   const [postcode, setPostcode] = useState(() => (searchParams.get('postnummer') ?? '').replace(/\D/g, '').slice(0, 4))
   const [showForm, setShowForm] = useState(false)
@@ -295,6 +300,7 @@ export function PriceCalculatorClient({
     // Adressen følger valgene, så et link kan deles og overleve en genindlæsning. replaceState i stedet for push, så tilbage-knappen
     // ikke skal gennem hvert klik. Privat er standard og står ikke i adressen; et delvist postnummer skrives ikke.
     const params = new URLSearchParams(window.location.search)
+    params.delete('ydelse') // Forvalget er brugt ved indlæsning; siden må ikke vælge igen, hvis man fravælger ydelsen og genindlæser.
     if (customerType === 'business') params.set('type', 'erhverv')
     else if (params.get('type') === 'erhverv') params.delete('type')
     if (category) params.set('kategori', paramFor(CATEGORY_PARAMS, category)!)

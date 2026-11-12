@@ -98,8 +98,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               {article.mainHeading}
             </h1>
   
-            <div className="mt-[22px] flex flex-wrap items-center gap-4 max-[479px]:flex-nowrap max-[479px]:items-stretch">
-              <Link href={ROUTES.contact()} className="button-accent max-[479px]:h-[62px] max-[479px]:shrink-0">
+            <div className="mt-[22px] flex flex-wrap items-center gap-4">
+              <Link href={ROUTES.priceCalculator(typeof article.priceService === 'object' ? article.priceService?.id : undefined)} className="button-accent">
+                Beregn pris
+              </Link>
+              <Link href={ROUTES.contact()} className="button">
                 Kontakt os i dag
               </Link>
               <span className="text-text-body">Få et gratis servicetjek</span>

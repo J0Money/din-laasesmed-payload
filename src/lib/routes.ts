@@ -10,7 +10,7 @@ export const ROUTES = {
   page: (slug: string) => `/${slug}`,
   contact: () => '/kontakt',
   contactAalborg: () => '/laasesmed-aalborg',
-  priceCalculator: () => '/prisberegner',
+  priceCalculator: (serviceId?: string) => (serviceId ? `/prisberegner?ydelse=${serviceId}` : '/prisberegner'),
   notFound: () => '/404',
 } as const
 
