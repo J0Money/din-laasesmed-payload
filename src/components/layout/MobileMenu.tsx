@@ -71,7 +71,7 @@ export function MobileMenu({ cta, links, main, secondaryCta }: MobileMenuProps) 
           ))}
           {secondaryCta && (
             <li>
-              <Link href={secondaryCta.href} className="button-outline w-full">
+              <Link href={secondaryCta.href} className="button-accent w-full">
                 {secondaryCta.label}
               </Link>
             </li>

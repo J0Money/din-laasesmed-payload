@@ -153,7 +153,7 @@ export async function Header() {
 
               <div className="flex items-center gap-3 max-[991px]:hidden">
                 {secondaryCta && (
-                  <Link href={secondaryCta.href} className="button-outline whitespace-nowrap min-[992px]:max-[1199px]:px-4">
+                  <Link href={secondaryCta.href} className="button-accent whitespace-nowrap min-[992px]:max-[1199px]:px-4">
                     {secondaryCta.label}
                   </Link>
                 )}

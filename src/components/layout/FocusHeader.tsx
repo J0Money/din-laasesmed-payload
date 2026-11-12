@@ -18,7 +18,7 @@ export async function FocusHeader() {
           <Logo className="h-auto w-full overflow-visible" />
         </Link>
         {siteSettings.phone && (
-          <a href={`tel:${siteSettings.phone.replace(/\s/g, '')}`} className="button-outline whitespace-nowrap max-[991px]:h-9 max-[991px]:px-4">
+          <a href={`tel:${siteSettings.phone.replace(/\s/g, '')}`} className="button-accent whitespace-nowrap max-[991px]:h-9 max-[991px]:px-4">
             <span className="max-[479px]:hidden">Ring til&nbsp;</span>
             {siteSettings.phone}
           </a>
