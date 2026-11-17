@@ -21,3 +21,16 @@ pnpm dev
 ```
 
 Åbn [http://localhost:3456](http://localhost:3456) for frontend og `/admin` for Payloads admin-panel.
+
+## Scripts
+| Kommando | Beskrivelse |
+| --- | --- |
+| `pnpm dev` | Starter dev-server på port 3456 |
+| `pnpm build` | Bygger til produktion |
+| `pnpm start` | Kører den byggede app |
+| `pnpm lint` | Linter kodebasen |
+| `pnpm generate:types` | Genererer TypeScript-typer ud fra Payload-collections |
+| `pnpm generate:importmap` | Genererer Payloads importmap til admin-panelet |
+| `pnpm check:spacing` | Tjekker spacing-konsistens i blokke |
+| `pnpm seed` | Seeder databasen med testdata |
+| `pnpm import:webflow` | Importerer indhold fra den gamle Webflow-side |
